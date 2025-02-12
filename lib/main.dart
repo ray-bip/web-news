@@ -15,7 +15,7 @@ class TheApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      title: 'Web Newsss',
+      title: 'Web News',
         theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 3, 66, 31),
