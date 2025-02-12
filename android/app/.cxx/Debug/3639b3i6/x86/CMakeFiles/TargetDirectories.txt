@@ -1,0 +1,2 @@
+/mnt/files_4tb/Dropbox/9999__Development/Applications/web_news/android/app/.cxx/Debug/3639b3i6/x86/CMakeFiles/edit_cache.dir
+/mnt/files_4tb/Dropbox/9999__Development/Applications/web_news/android/app/.cxx/Debug/3639b3i6/x86/CMakeFiles/rebuild_cache.dir
