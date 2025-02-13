@@ -63,7 +63,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       ) : null,
       body: Column(
         children: [
-          if (Platform.isLinux) const WindowTopBar(currentRoute: FeedContentScreen.routeName),
+          if (Platform.isLinux) WindowTopBar(
+            currentRoute: FeedContentScreen.routeName,
+            windowTitle: widget.feedTitle,
+          ),
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.surfaceContainer,
@@ -72,8 +75,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                 child: isLoading
                 ? Center(
                   child: CircularProgressIndicator(
-                    color: Theme.of(context).colorScheme.secondaryContainer,
-                  )
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 )
                 : FutureBuilder(
                   future: articlesFuture,

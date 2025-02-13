@@ -1,13 +1,14 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:web_news/utils/constants.dart';
 
 class WindowTopBar extends StatelessWidget {
   final String currentRoute;
+  final String windowTitle;
   
   const WindowTopBar({
     super.key,
     required this.currentRoute,
+    required this.windowTitle,
   });
 
   @override
@@ -23,7 +24,7 @@ class WindowTopBar extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                 child: Text(
-                  appName,
+                  windowTitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface.withAlpha(175),
@@ -53,16 +54,29 @@ class WindowTopBar extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: appWindow.close,
-                        icon: const Icon(Icons.close),
-                        hoverColor: const Color.fromARGB(255, 201, 7, 7),
+                        onPressed: () {
+                          print('click!');
+                          appWindow.close();
+                        },
+                        hoverColor: Colors.transparent,
+                        icon: Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          child: InkWell(
+                            onTap: () {
+                              print('click!');
+                              appWindow.close();
+                            },
+                            borderRadius: BorderRadius.circular(0),
+                            hoverColor: const Color.fromARGB(255, 201, 7, 7),
+                            child: const Icon(Icons.close,),
+                          ),
+                        ),
                       ),
-                      // CloseWindowButton(
-                      //   colors: WindowButtonColors(
-                      //     iconNormal: Theme.of(context).colorScheme.onSurface.withAlpha(175),
-                      //     mouseOver: const Color.fromARGB(255, 201, 7, 7)
-                      //   ),
-                      // ),
                     ],
                   ),
                 ],

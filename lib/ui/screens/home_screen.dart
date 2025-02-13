@@ -22,7 +22,10 @@ class HomeScreen extends StatelessWidget {
       ) : null,
       body: Column(
         children: [
-          if (Platform.isLinux) const WindowTopBar(currentRoute: routeName),
+          if (Platform.isLinux) const WindowTopBar(
+            currentRoute: routeName,
+            windowTitle: appName,
+          ),
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.surfaceContainer,
