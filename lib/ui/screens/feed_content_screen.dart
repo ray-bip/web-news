@@ -81,102 +81,109 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                 : FutureBuilder(
                   future: articlesFuture,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    return ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(height: 8);
+                    return GestureDetector(
+                      onHorizontalDragEnd: (details) {
+                        if (details.primaryVelocity! > 0) {
+                          Navigator.pop(context);
+                        }
                       },
-                      itemCount: feedItems.length > int.tryParse(widget.feedLength)!
-                        ? int.tryParse(widget.feedLength)!
-                        : feedItems.length,
-                      itemBuilder: (context, index) {
-                        var item = feedItems[index];
-            
-                        // retrieve images (oh, so many ways!)
-                        String feedItemImage = '';
-                        if (item['enclosure'] != null && item['enclosure']['url'] != null) {
-                          feedItemImage = item['enclosure']['url'].toString();
-                        } else if (item['image'] != null && item['image'] != '') {
-                          feedItemImage = item['image']['\$t'];
-                        } else if (item['media\$thumbnail'] != null) {
-                          feedItemImage = item['media\$thumbnail']['url'];
-                        } else if (item['media\$content'] != null) {
-                          feedItemImage = item['media\$content']['url'];
-                        }
-            
-                        // retrieve and sanitize title
-                        String feedItemTitle = '';
-                        if (item['title'] != null && item['title']?['\$t'] != null) {
-                          feedItemTitle = item['title']['\$t'].toString();
-                        } else if (item['title'] != null) {
-                          feedItemTitle = item['title'].toString();
-                        }
-                
-                        feedItemTitle = HtmlUnescape().convert(feedItemTitle
-                            .toString()
-                            .replaceAll('{__cdata:', '')
-                            .replaceAll('}', '')
-                            .trim());
-                        
-                        // retrieve and format date
-                        String dateString = item['pubDate']['\$t'] ?? '';
-                        DateTime parsedDate =
-                          DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
-                        String feedItemDate = DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
-            
-                        // retrieve and sanitize the bejesus out of description
-                        String feedItemDescription = '';
-                        if (item['description'] != null && item['description']['\$t'] != null) {
-                          feedItemDescription = item['description']['\$t'].toString();
-                        } else if (item['description'] != null) {
-                          feedItemDescription = item['description'].toString();
-                        }
-                        
-                        feedItemDescription = HtmlUnescape().convert(feedItemDescription
-                            .toString()
-                            .replaceAll('{__cdata:', '')
-                            .replaceAll('}', '')
-                            // remove complete hyperlinks
-                            .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
-                            // remove all HTML tags
-                            .replaceAll(RegExp(r'</?([a-zA-Z0-9]+)[^>]*>'), '')
-                            // replace [...] and everything that follows with ...
-                            .replaceAll(RegExp(r'\[.*?\].*'), '...')
-                            .trim());
-            
-                        // retrieve and sanitize the bejesus out of content
-                        String feedItemContent = '';
-                        if (item['content\$encoded'] != null && item['content\$encoded']['\$t'] != null) {
-                          feedItemContent = item['content\$encoded']['\$t'].toString();
-                        } else if (item['content\$encoded'] != null) {
-                          feedItemContent = item['content\$encoded'].toString();
-                        }
-                        
-                        feedItemContent = feedItemContent
-                            .toString()
-                            .replaceAll('{__cdata:', '')
-                            .replaceAll('}', '')
-                            .replaceAll('\\\\n', '')
-                            // replace [...] and everything that follows with ...
-                            .replaceAll(RegExp(r'\[.*?\].*'), '...')
-                            // replace <!-- and everything that follows with ...
-                            .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
-                            .trim();
-            
-                        // retrieve link
-                        String feedItemLink = item['link']?['\$t']?.toString() ?? '';
-                
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                          child: FeedItemTile(
-                            feedItemImage: feedItemImage,
-                            feedItemTitle: feedItemTitle,
-                            feedItemDate: feedItemDate,
-                            feedItemDescription: feedItemDescription,
-                            feedItemContent: feedItemContent,
-                            feedItemLink: feedItemLink,
-                          ),
-                        );
-                      },
+                      child: ListView.separated(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 8);
+                        },
+                        itemCount: feedItems.length > int.tryParse(widget.feedLength)!
+                          ? int.tryParse(widget.feedLength)!
+                          : feedItems.length,
+                        itemBuilder: (context, index) {
+                          var item = feedItems[index];
+                                  
+                          // retrieve images (oh, so many ways!)
+                          String feedItemImage = '';
+                          if (item['enclosure'] != null && item['enclosure']['url'] != null) {
+                            feedItemImage = item['enclosure']['url'].toString();
+                          } else if (item['image'] != null && item['image'] != '') {
+                            feedItemImage = item['image']['\$t'];
+                          } else if (item['media\$thumbnail'] != null) {
+                            feedItemImage = item['media\$thumbnail']['url'];
+                          } else if (item['media\$content'] != null) {
+                            feedItemImage = item['media\$content']['url'];
+                          }
+                                  
+                          // retrieve and sanitize title
+                          String feedItemTitle = '';
+                          if (item['title'] != null && item['title']?['\$t'] != null) {
+                            feedItemTitle = item['title']['\$t'].toString();
+                          } else if (item['title'] != null) {
+                            feedItemTitle = item['title'].toString();
+                          }
+                                      
+                          feedItemTitle = HtmlUnescape().convert(feedItemTitle
+                              .toString()
+                              .replaceAll('{__cdata:', '')
+                              .replaceAll('}', '')
+                              .trim());
+                          
+                          // retrieve and format date
+                          String dateString = item['pubDate']['\$t'] ?? '';
+                          DateTime parsedDate =
+                            DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
+                          String feedItemDate = DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
+                                  
+                          // retrieve and sanitize the bejesus out of description
+                          String feedItemDescription = '';
+                          if (item['description'] != null && item['description']['\$t'] != null) {
+                            feedItemDescription = item['description']['\$t'].toString();
+                          } else if (item['description'] != null) {
+                            feedItemDescription = item['description'].toString();
+                          }
+                          
+                          feedItemDescription = HtmlUnescape().convert(feedItemDescription
+                              .toString()
+                              .replaceAll('{__cdata:', '')
+                              .replaceAll('}', '')
+                              // remove complete hyperlinks
+                              .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
+                              // remove all HTML tags
+                              .replaceAll(RegExp(r'</?([a-zA-Z0-9]+)[^>]*>'), '')
+                              // replace [...] and everything that follows with ...
+                              .replaceAll(RegExp(r'\[.*?\].*'), '...')
+                              .trim());
+                                  
+                          // retrieve and sanitize the bejesus out of content
+                          String feedItemContent = '';
+                          if (item['content\$encoded'] != null && item['content\$encoded']['\$t'] != null) {
+                            feedItemContent = item['content\$encoded']['\$t'].toString();
+                          } else if (item['content\$encoded'] != null) {
+                            feedItemContent = item['content\$encoded'].toString();
+                          }
+                          
+                          feedItemContent = feedItemContent
+                              .toString()
+                              .replaceAll('{__cdata:', '')
+                              .replaceAll('}', '')
+                              .replaceAll('\\\\n', '')
+                              // replace [...] and everything that follows with ...
+                              .replaceAll(RegExp(r'\[.*?\].*'), '...')
+                              // replace <!-- and everything that follows with ...
+                              .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
+                              .trim();
+                                  
+                          // retrieve link
+                          String feedItemLink = item['link']?['\$t']?.toString() ?? '';
+                                      
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                            child: FeedItemTile(
+                              feedItemImage: feedItemImage,
+                              feedItemTitle: feedItemTitle,
+                              feedItemDate: feedItemDate,
+                              feedItemDescription: feedItemDescription,
+                              feedItemContent: feedItemContent,
+                              feedItemLink: feedItemLink,
+                            ),
+                          );
+                        },
+                      ),
                     );
                   },
                 ),
