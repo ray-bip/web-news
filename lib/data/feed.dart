@@ -31,6 +31,11 @@ class Feed {
       length: '20',
     ),
     Feed(
+      title: 'UN - Top Stories',
+      url: 'https://news.un.org/feed/subscribe/en/news/all/rss.xml',
+      length: '20',
+    ),
+    Feed(
       title: 'GP 33',
       url: 'https://gp33.nl/sitemap/news.xml',
       length: '20',

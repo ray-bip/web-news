@@ -6,14 +6,6 @@ class HomeScreen extends StatelessWidget {
   static const String routeName = 'home';
   HomeScreen({super.key});
 
-  // final List<Map<String, String>> feeds = [
-  //   {'title': 'Nu.nl - Binnenland', 'url': 'https://www.nu.nl/rss/Binnenland'},
-  //   {'title': 'Nu.nl - Buitenland', 'url': 'https://www.nu.nl/rss/Buitenland'},
-  //   {'title': '112 Nederland', 'url': 'https://112nederland.nl/feed/'},
-  //   {'title': 'BBC - World', 'url': 'https://feeds.bbci.co.uk/news/world/rss.xml'},
-  //   {'title': 'Flutter', 'url': 'https://blog.flutter.wtf/rss/'},
-  // ];
-
   final List<Feed> feeds = Feed.feeds;
     
   @override
@@ -27,17 +19,20 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
           child: ListView.separated(
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 8);
             },
             itemCount: feeds.length,
             itemBuilder: (BuildContext context, int index) { 
-              return FeedTile(
-                feedTitle: feeds[index].title,
-                feedUrl: feeds[index].url,
-                feedLength: feeds[index].length,
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                child: FeedTile(
+                  feedTitle: feeds[index].title,
+                  feedUrl: feeds[index].url,
+                  feedLength: feeds[index].length,
+                ),
               );
             },
           ),
