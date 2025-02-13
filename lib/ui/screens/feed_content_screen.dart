@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:web_news/ui/components/feed_item_tile.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -10,10 +11,13 @@ class FeedContentScreen extends StatefulWidget {
   static const String routeName = 'feed_content';
   final String feedTitle;
   final String feedUrl;
+  final String feedLength;
+
   const FeedContentScreen({
     super.key,
-    required this.feedUrl,
     required this.feedTitle,
+    required this.feedUrl,
+    required this.feedLength,
   });
 
   @override
@@ -22,6 +26,7 @@ class FeedContentScreen extends StatefulWidget {
 
 class _FeedContentScreenState extends State<FeedContentScreen> {
   late Future<void> articlesFuture;
+  bool isLoading = true;
   final Xml2Json xml2json = Xml2Json();
   List feedItems = [];
 
@@ -36,6 +41,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     
     setState(() {
       feedItems = data['rss']['channel']['item'];
+      isLoading = false;
     });
   }
 
@@ -56,19 +62,26 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       body: Container(
         color: Theme.of(context).colorScheme.surfaceContainer,
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: FutureBuilder(
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+          child: isLoading
+          ? Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+            )
+          )
+          : FutureBuilder(
             future: articlesFuture,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               return ListView.separated(
                 separatorBuilder: (BuildContext context, int index) {
                   return const SizedBox(height: 8);
                 },
-                itemCount: feedItems.length >= 10 ? 10 : feedItems.length,
+                itemCount: int.tryParse(widget.feedLength)!,
                 itemBuilder: (context, index) {
                   var item = feedItems[index];
                   print(item);
 
+                  // retrieve images (oh, so many ways!)
                   String feedItemImage = '';
                   if (item['enclosure'] != null && item['enclosure']['url'] != null) {
                     feedItemImage = item['enclosure']['url'].toString();
@@ -80,20 +93,27 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     feedItemImage = item['media\$content']['url'];
                   }
 
+                  // retrieve and sanitize title
                   String feedItemTitle = '';
                   if (item['title'] != null && item['title']?['\$t'] != null) {
                     feedItemTitle = item['title']['\$t'].toString();
                   } else if (item['title'] != null) {
                     feedItemTitle = item['title'].toString();
                   }
-
-                  // sanitize the title
+          
                   feedItemTitle = HtmlUnescape().convert(feedItemTitle
                       .toString()
                       .replaceAll('{__cdata:', '')
                       .replaceAll('}', '')
                       .trim());
                   
+                  // retrieve and format date
+                  String dateString = item['pubDate']['\$t'] ?? '';
+                  DateTime parsedDate =
+                    DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
+                  String feedItemDate = DateFormat('yyyyMMdd - HHmm').format(parsedDate);
+
+                  // retrieve and sanitize the bejesus out of  description
                   String feedItemDescription = '';
                   if (item['description'] != null && item['description']['\$t'] != null) {
                     feedItemDescription = item['description']['\$t'].toString();
@@ -101,13 +121,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     feedItemDescription = item['description'].toString();
                   }
                   
-                  // sanitize the bejesus out of the desciption
                   feedItemDescription = HtmlUnescape().convert(feedItemDescription
                       .toString()
-                      .replaceAll('<![CDATA[]>', '')
-                      .replaceAll(']]>', '')
                       .replaceAll('{__cdata:', '')
-                      .replaceAll('.}', '.')
+                      .replaceAll('}', '')
                       // remove complete hyperlinks
                       .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
                       // remove all HTML tags
@@ -116,13 +133,18 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       .replaceAll(RegExp(r'\[.*?\].*'), '...')
                       .trim());
 
+                  // retrieve link
                   String feedItemLink = item['link']?['\$t']?.toString() ?? '';
-
-                  return FeedItemTile(
-                    feedItemImage: feedItemImage,
-                    feedItemTitle: feedItemTitle,
-                    feedItemDescription: feedItemDescription,
-                    feedItemLink: feedItemLink,
+          
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                    child: FeedItemTile(
+                      feedItemImage: feedItemImage,
+                      feedItemTitle: feedItemTitle,
+                      feedItemDate: feedItemDate,
+                      feedItemDescription: feedItemDescription,
+                      feedItemLink: feedItemLink,
+                    ),
                   );
                 },
               );

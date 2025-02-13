@@ -5,6 +5,7 @@ import 'package:web_news/utils/helper_functions.dart';
 class FeedItemTile extends StatefulWidget {
   final String feedItemImage;
   final String feedItemTitle;
+  final String feedItemDate;
   final String feedItemDescription;
   final String feedItemLink;
 
@@ -12,6 +13,7 @@ class FeedItemTile extends StatefulWidget {
     super.key,
     required this.feedItemImage,
     required this.feedItemTitle,
+    required this.feedItemDate,
     required this.feedItemDescription,
     required this.feedItemLink,
   });
@@ -28,36 +30,66 @@ class _FeedItemTileState extends State<FeedItemTile> {
     return Material(
       child: Column(
         children: [
-          ListTile(
-            onTap: () {
-              openBrowser(widget.feedItemLink);
-            },
-            leading: widget.feedItemImage != ''
-              ? Image.network(
-                widget.feedItemImage,
-                width: 48,
-                height: 48,
-                fit: BoxFit.cover) 
-              : null,
-            title: Text(widget.feedItemTitle),
-            trailing: widget.feedItemDescription != ''
-              ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    showDescription = !showDescription;
-                  });
-                },
-                icon: Icon(showDescription ? Icons.arrow_upward : Icons.arrow_downward))
-              : null,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            tileColor: Theme.of(context).colorScheme.tertiaryContainer,
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.tertiaryContainer.withAlpha(96),
+                  Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomLeft,
+              ),
+              borderRadius: BorderRadius.circular(2),
+            ),
+            child: ListTile(
+              onTap: () {
+                openBrowser(widget.feedItemLink);
+              },
+              isThreeLine: true,
+              leading: widget.feedItemImage != ''
+                ? Image.network(
+                  widget.feedItemImage,
+                  width: 64,
+                  height: 64,
+                  fit: BoxFit.cover) 
+                : null,
+              title: Text(
+                widget.feedItemTitle,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  '(${widget.feedItemDate})',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.normal
+                  ),
+                ),
+              ),
+              trailing: widget.feedItemDescription != ''
+                ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      showDescription = !showDescription;
+                    });
+                  },
+                  icon: Icon(showDescription ? Icons.arrow_upward : Icons.arrow_downward))
+                : null,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              // tileColor: Theme.of(context).colorScheme.tertiaryContainer,
+            ),
           ),
           showDescription
           ? Container(
-            color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(150),
+            color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192),
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(widget.feedItemDescription),
+              child: Text(
+                widget.feedItemDescription,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
             )
           )
           : const Material(),
