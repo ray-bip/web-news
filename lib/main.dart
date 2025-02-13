@@ -1,10 +1,57 @@
+import 'dart:io';
+
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:screen_retriever/screen_retriever.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
 import 'package:web_news/ui/screens/home_screen.dart';
+import 'package:web_news/utils/constants.dart';
 
 void main() {
-  runApp(TheApp());
+  if (Platform.isLinux) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // set window size to (0, 0) initially, to hide any flickering
+    appWindow.size = const Size(0, 0);
+
+    // initialize application
+    Display? primaryDisplay;
+    Offset? primaryDisplayPosition;
+    double primaryDisplayWidth;
+    double primaryDisplayHeight;
+    Offset windowOffset;
+    
+    void initializeApplication() async {
+      // get primary display details
+      primaryDisplay = await screenRetriever.getPrimaryDisplay();
+      primaryDisplayPosition = primaryDisplay?.visiblePosition;
+      primaryDisplayWidth = primaryDisplay!.size.width;
+      primaryDisplayHeight = primaryDisplay!.size.height;
+
+      // calculate window position
+      windowOffset = Offset(
+        primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
+        primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
+      );
+
+      // run the app
+      runApp(TheApp());
+
+      // do window management
+      doWhenWindowReady(() {
+        const initialSize = Size(windowWidth, windowHeight);
+        appWindow.minSize = initialSize;
+        appWindow.position = windowOffset;
+        appWindow.size = initialSize;
+        appWindow.title = appName;
+        appWindow.show();
+      });
+    }
+    initializeApplication();
+  } else {
+    runApp(TheApp());
+  }
 }
 
 class TheApp extends StatelessWidget {
@@ -15,7 +62,7 @@ class TheApp extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
-      title: 'Web News',
+      title: appName,
         theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 3, 66, 31),

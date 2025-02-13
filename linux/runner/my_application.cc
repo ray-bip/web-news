@@ -1,3 +1,5 @@
+#include <bitsdojo_window_linux/bitsdojo_window_plugin.h>
+#include <unistd.h>  // For usleep
 #include "my_application.h"
 
 #include <flutter_linux/flutter_linux.h>
@@ -47,7 +49,17 @@ static void my_application_activate(GApplication* application) {
     gtk_window_set_title(window, "web_news");
   }
 
-  gtk_window_set_default_size(window, 1280, 720);
+  // gtk_window_set_default_size(window, 1280, 720);
+  // gtk_widget_show(GTK_WIDGET(window));
+
+  // use gtk AND bdw to manage window settings
+  // set gtk window size to (0, 0) initially
+  // flutter will do the same
+  // this will completely hide any flickering at start-up
+  // once the app is initialized, bdw will kick in with actual window size
+  gtk_window_set_default_size(window, 0, 0);
+  auto bdw = bitsdojo_window_from(window);
+  bdw->setCustomFrame(true);
   gtk_widget_show(GTK_WIDGET(window));
 
   g_autoptr(FlDartProject) project = fl_dart_project_new();

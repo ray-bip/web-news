@@ -16,6 +16,17 @@ class FeedTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void goToFeedContentScreen() {
+      context.goNamed(
+        FeedContentScreen.routeName,
+        pathParameters: {
+          'feedTitle': feedTitle,
+          'feedUrl': feedUrl,
+          'feedLength': feedLength,
+        },
+      );
+    }
+    
     return Material(
       child: Container(
         decoration: BoxDecoration(
@@ -30,21 +41,15 @@ class FeedTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(2),
         ),
         child: ListTile(
-          onTap: () {
-            context.goNamed(
-              FeedContentScreen.routeName,
-              pathParameters: {
-                'feedTitle': feedTitle,
-                'feedUrl': feedUrl,
-                'feedLength': feedLength,
-              },
-            );
-          },
+          onTap: goToFeedContentScreen,
           title: Text(
             feedTitle,
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          trailing: const Icon(Icons.arrow_forward),
+          trailing: IconButton(
+            onPressed: goToFeedContentScreen,
+            icon: const Icon(Icons.arrow_forward),
+          ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),
       ),

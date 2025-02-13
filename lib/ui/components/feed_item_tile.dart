@@ -26,7 +26,7 @@ class FeedItemTile extends StatefulWidget {
 }
 
 class _FeedItemTileState extends State<FeedItemTile> {
-  bool showDescriptionOrContent = false;
+  bool _showDescriptionOrContent = false;
 
   @override
   Widget build(BuildContext context) {
@@ -75,30 +75,29 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? IconButton(
                   onPressed: () {
                     setState(() {
-                      showDescriptionOrContent = !showDescriptionOrContent;
+                      _showDescriptionOrContent = !_showDescriptionOrContent;
                     });
                   },
-                  icon: Icon(showDescriptionOrContent ? Icons.arrow_upward : Icons.arrow_downward))
+                  icon: Icon(_showDescriptionOrContent ? Icons.arrow_upward : Icons.arrow_downward))
                 : null,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
-          showDescriptionOrContent
-          ? Container(
-            color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: widget.feedItemContent != ''
-              ? Html(
-                data: widget.feedItemContent,
-                doNotRenderTheseTags: {'a', 'img'},
+          if (_showDescriptionOrContent)
+            Container(
+              color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: widget.feedItemContent != ''
+                ? Html(
+                  data: widget.feedItemContent,
+                  doNotRenderTheseTags: {'a', 'img'},
+                )
+                : Text(widget.feedItemDescription,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
               )
-              : Text(widget.feedItemDescription,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            )
-          )
-          : const Material(),
+            ),
         ],
       ),
     );
