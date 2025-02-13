@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
 class FeedItemTile extends StatefulWidget {
@@ -7,6 +8,7 @@ class FeedItemTile extends StatefulWidget {
   final String feedItemTitle;
   final String feedItemDate;
   final String feedItemDescription;
+  final String feedItemContent;
   final String feedItemLink;
 
   const FeedItemTile({
@@ -15,6 +17,7 @@ class FeedItemTile extends StatefulWidget {
     required this.feedItemTitle,
     required this.feedItemDate,
     required this.feedItemDescription,
+    required this.feedItemContent,
     required this.feedItemLink,
   });
 
@@ -23,7 +26,7 @@ class FeedItemTile extends StatefulWidget {
 }
 
 class _FeedItemTileState extends State<FeedItemTile> {
-  bool showDescription = false;
+  bool showDescriptionOrContent = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,22 +75,25 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? IconButton(
                   onPressed: () {
                     setState(() {
-                      showDescription = !showDescription;
+                      showDescriptionOrContent = !showDescriptionOrContent;
                     });
                   },
-                  icon: Icon(showDescription ? Icons.arrow_upward : Icons.arrow_downward))
+                  icon: Icon(showDescriptionOrContent ? Icons.arrow_upward : Icons.arrow_downward))
                 : null,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              // tileColor: Theme.of(context).colorScheme.tertiaryContainer,
             ),
           ),
-          showDescription
+          showDescriptionOrContent
           ? Container(
             color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192),
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(
-                widget.feedItemDescription,
+              child: widget.feedItemContent != ''
+              ? Html(
+                data: widget.feedItemContent,
+                doNotRenderTheseTags: {'a', 'img'},
+              )
+              : Text(widget.feedItemDescription,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             )

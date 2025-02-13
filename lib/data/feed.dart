@@ -31,6 +31,26 @@ class Feed {
       length: '20',
     ),
     Feed(
+      title: 'GP 33',
+      url: 'https://gp33.nl/sitemap/news.xml',
+      length: '20',
+    ),
+    Feed(
+      title: 'GP Blog',
+      url: 'https://www.gpblog.com/nl/rss/index.xml',
+      length: '20',
+    ),
+    Feed(
+      title: 'GP Fans',
+      url: 'https://www.gpfans.com/nl/rss.xml',
+      length: '20',
+    ),
+    Feed(
+      title: 'Motorsport.com - NL',
+      url: 'https://nl.motorsport.com/rss/',
+      length: '20',
+    ),
+    Feed(
       title: 'Nu.nl - Tech & Wetenschap',
       url: 'https://www.nu.nl/rss/tech-wetenschap',
       length: '10',
@@ -69,6 +89,11 @@ class Feed {
       title: 'Flutter',
       url: 'https://blog.flutter.wtf/rss/',
       length: '5',
+    ),
+    Feed(
+      title: 'De Speld',
+      url: 'https://speld.nl/feed',
+      length: '10',
     ),
   ];
 }
