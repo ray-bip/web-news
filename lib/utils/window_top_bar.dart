@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class WindowTopBar extends StatelessWidget {
   final String currentRoute;
   final String windowTitle;
+  final VoidCallback? refreshPage;
   
   const WindowTopBar({
     super.key,
     required this.currentRoute,
     required this.windowTitle,
+    this.refreshPage,
   });
 
   @override
@@ -45,6 +47,13 @@ class WindowTopBar extends StatelessWidget {
                         },
                         icon: Icon(
                           Icons.arrow_back, size: 24,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        )
+                      ),
+                      IconButton(
+                        onPressed: refreshPage,
+                        icon: Icon(
+                          Icons.refresh, size: 24,
                           color: Theme.of(context).colorScheme.onSurface,
                         )
                       ),

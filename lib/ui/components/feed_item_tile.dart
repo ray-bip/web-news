@@ -31,12 +31,12 @@ class _FeedItemTileState extends State<FeedItemTile> {
   bool _showDescriptionOrContent = false;
   
   bool isImage(String imageLocation) {
-    return imageLocation.toLowerCase().endsWith('.gif') ||
-      imageLocation.toLowerCase().endsWith('.jpeg') ||
-      imageLocation.toLowerCase().endsWith('.jpg') ||
-      imageLocation.toLowerCase().endsWith('.png') ||
-      imageLocation.toLowerCase().endsWith('.svg') ||
-      imageLocation.toLowerCase().endsWith('.webp');
+    return imageLocation.toLowerCase().contains('.gif') ||
+      imageLocation.toLowerCase().contains('.jpeg') ||
+      imageLocation.toLowerCase().contains('.jpg') ||
+      imageLocation.toLowerCase().contains('.png') ||
+      imageLocation.toLowerCase().contains('.svg') ||
+      imageLocation.toLowerCase().contains('.webp');
   }
 
   bool isHtml(String textInput) {
@@ -157,7 +157,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                             ),
                           }
                         ) : Text(
-                          widget.feedItemContent,
+                          widget.feedItemContent.replaceAll('<p>', ''),
                           style: TextStyle(
                             height: Platform.isLinux ? 1.8 : 1.6,
                             fontSize: Platform.isLinux ? 18 : 16,
@@ -178,7 +178,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                             ),
                           }
                         ) : Text(
-                          widget.feedItemDescription,
+                          widget.feedItemDescription.replaceAll('<p>', ''),
                           style: TextStyle(
                             height: Platform.isLinux ? 1.8 : 1.6,
                             fontSize: Platform.isLinux ? 18 : 16,
