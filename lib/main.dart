@@ -63,7 +63,7 @@ class TheApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       title: appName,
-        theme: ThemeData(
+      theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           // old color below (using tertiaryContainer / onTertiaryContainer was best)
           // seedColor: const Color.fromARGB(255, 3, 66, 31),
@@ -87,12 +87,26 @@ class TheApp extends StatelessWidget {
           GoRoute(
             name: FeedContentScreen.routeName,
             path: 'feed_content/:feedTitle/:feedUrl',
-            builder: (context, state) {
-              final String? feedTitle = state.pathParameters['feedTitle'];
-              final String? feedUrl = state.pathParameters['feedUrl'];
-              return FeedContentScreen(
-                feedTitle: feedTitle!,
-                feedUrl: feedUrl!,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                key: state.pageKey,
+                child: FeedContentScreen(
+                  feedTitle: state.pathParameters['feedTitle']!,
+                  feedUrl: state.pathParameters['feedUrl']!,
+                ),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0); // Slide from right
+                  const end = Offset.zero;
+                  const curve = Curves.fastOutSlowIn;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
               );
             },
           ),

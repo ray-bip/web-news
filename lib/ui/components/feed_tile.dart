@@ -39,6 +39,7 @@ class FeedTile extends StatelessWidget {
         ),
         child: ListTile(
           onTap: goToFeedContentScreen,
+          splashColor: Colors.transparent,
           title: Text(
             feedTitle,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(

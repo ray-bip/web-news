@@ -28,6 +28,12 @@ class FeedItemTile extends StatefulWidget {
 class _FeedItemTileState extends State<FeedItemTile> {
   bool _showDescriptionOrContent = false;
 
+  bool isImage(String imageLocation) {
+    return imageLocation.toLowerCase().endsWith('.png') ||
+      imageLocation.toLowerCase().endsWith('.jpg') ||
+      imageLocation.toLowerCase().endsWith('.jpeg');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -50,13 +56,17 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 openBrowser(widget.feedItemLink);
               },
               isThreeLine: true,
-              leading: widget.feedItemImage != ''
+              leading: isImage(widget.feedItemImage)
                 ? Image.network(
                   widget.feedItemImage,
                   width: 64,
                   height: 64,
                   fit: BoxFit.cover) 
-                : null,
+                : const SizedBox(
+                  width: 64,
+                  height: 64,
+                  child: Center(child: Text('N/A')),
+                ),
               title: Text(
                 widget.feedItemTitle,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -107,6 +117,10 @@ class _FeedItemTileState extends State<FeedItemTile> {
                         FontSize(Theme.of(context).textTheme.titleMedium?.fontSize ?? 18),
                       margin: Margins.only(top: 32),
                     ),
+                    'p': Style(
+                      fontSize:
+                        FontSize(Theme.of(context).textTheme.bodyLarge?.fontSize ?? 16),
+                    ),
                   }
                 )
                 : Html(
@@ -117,6 +131,11 @@ class _FeedItemTileState extends State<FeedItemTile> {
                       fontSize:
                         FontSize(Theme.of(context).textTheme.titleMedium?.fontSize ?? 18),
                       margin: Margins.only(top: 32),
+                    ),
+                    'p': Style(
+                      fontSize:
+                        FontSize(Theme.of(context).textTheme.bodyLarge?.fontSize ?? 16),
+                      lineHeight: const LineHeight(1.6)
                     ),
                   }
                 )
