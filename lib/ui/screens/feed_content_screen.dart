@@ -56,7 +56,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     _scrollController.addListener(() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      getFeedItems(startIndex: feedItems.length, batchSize: 10);
+      getFeedItems(
+        startIndex: feedItems.length,
+        batchSize: 10
+      );
     }
   });
     feedItemsFuture = getFeedItems();
@@ -91,7 +94,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                   child: isLoading
                   ? Center(
                     child: CircularProgressIndicator(
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   )
                   : GestureDetector(
@@ -110,7 +113,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                         if (index == feedItems.length) {
                           return Center(
                               child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.secondary,
+                            color: Theme.of(context).colorScheme.primaryContainer,
                           ));
                         }
                         
@@ -162,8 +165,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                             .replaceAll('}', '')
                             // remove complete hyperlinks
                             .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
-                            // remove all HTML tags
-                            // .replaceAll(RegExp(r'</?([a-zA-Z0-9]+)[^>]*>'), '')
                             // replace [...] and everything that follows with ...
                             .replaceAll(RegExp(r'\[.*?\].*'), '...')
                             .trim());
@@ -195,7 +196,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                           child: FeedItemTile(
                             feedItemImage: feedItemImage,
                             feedItemTitle: feedItemTitle,
-                            feedItemDate: '[${(index + 1).toString()}] ($feedItemDate)',
+                            feedItemDate: '[${(index + 1).toString()}] [$feedItemDate]',
                             feedItemDescription: feedItemDescription,
                             feedItemContent: feedItemContent,
                             feedItemLink: feedItemLink,

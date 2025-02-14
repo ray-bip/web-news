@@ -37,8 +37,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Theme.of(context).colorScheme.tertiaryContainer.withAlpha(96),
-                  Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160),
+                  Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                  Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
@@ -60,7 +60,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               title: Text(
                 widget.feedItemTitle,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               subtitle: Padding(
@@ -68,7 +68,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 child: Text(
                   widget.feedItemDate,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(175),
+                    color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(192),
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.normal,
                   ),
@@ -85,7 +85,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                       _showDescriptionOrContent
                       ? Icons.arrow_upward
                       : Icons.arrow_downward,
-                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                      color: Theme.of(context).colorScheme.onSurface,
                     )
                   )
                 : null,
@@ -94,9 +94,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
           ),
           if (_showDescriptionOrContent)
             Container(
-              color: Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192),
+              color: Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 child: widget.feedItemContent != ''
                 ? Html(
                   data: widget.feedItemContent,

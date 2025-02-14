@@ -29,8 +29,8 @@ class FeedTile extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Theme.of(context).colorScheme.tertiaryContainer.withAlpha(96),
-              Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160),
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -42,14 +42,14 @@ class FeedTile extends StatelessWidget {
           title: Text(
             feedTitle,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onTertiaryContainer,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           trailing: IconButton(
             onPressed: goToFeedContentScreen,
             icon: Icon(
               Icons.arrow_forward,
-              color: Theme.of(context).colorScheme.onTertiaryContainer,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
