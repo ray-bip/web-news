@@ -27,7 +27,7 @@ class WindowTopBar extends StatelessWidget {
                   windowTitle,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withAlpha(175),
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontSize: 20,
                   ),
                 ),
@@ -43,7 +43,10 @@ class WindowTopBar extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back, size: 24)
+                        icon: Icon(
+                          Icons.arrow_back, size: 24,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        )
                       ),
                     ],
                   ),
@@ -73,7 +76,10 @@ class WindowTopBar extends StatelessWidget {
                             },
                             borderRadius: BorderRadius.circular(0),
                             hoverColor: const Color.fromARGB(255, 201, 7, 7),
-                            child: const Icon(Icons.close,),
+                            child: Icon(
+                              Icons.close,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
                           ),
                         ),
                       ),

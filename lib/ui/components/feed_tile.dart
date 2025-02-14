@@ -41,11 +41,16 @@ class FeedTile extends StatelessWidget {
           onTap: goToFeedContentScreen,
           title: Text(
             feedTitle,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onTertiaryContainer,
+            ),
           ),
           trailing: IconButton(
             onPressed: goToFeedContentScreen,
-            icon: const Icon(Icons.arrow_forward),
+            icon: Icon(
+              Icons.arrow_forward,
+              color: Theme.of(context).colorScheme.onTertiaryContainer,
+            ),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),

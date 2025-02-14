@@ -17,6 +17,26 @@ class Feed {
       url: 'https://www.nu.nl/rss/Buitenland',
     ),
     Feed(
+      title: 'Nu.nl - Tech & Wetenschap',
+      url: 'https://www.nu.nl/rss/tech-wetenschap',
+    ),
+    Feed(
+      title: 'Nu.nl - Opmerkelijk',
+      url: 'https://www.nu.nl/rss/Opmerkelijk',
+    ),
+    Feed(
+      title: 'NOS - Binnenland',
+      url: 'https://feeds.nos.nl/nosnieuwsbinnenland',
+    ),
+    Feed(
+      title: 'NOS - Buitenland',
+      url: 'https://feeds.nos.nl/nosnieuwsbuitenland',
+    ),
+    Feed(
+      title: 'NOS - Opmerkelijk',
+      url: 'https://feeds.nos.nl/nosnieuwsopmerkelijk',
+    ),
+    Feed(
       title: '112 Nederland',
       url: 'https://112nederland.nl/feed/',
     ),
@@ -43,10 +63,6 @@ class Feed {
     Feed(
       title: 'Motorsport.com - NL',
       url: 'https://nl.motorsport.com/rss/',
-    ),
-    Feed(
-      title: 'Nu.nl - Tech & Wetenschap',
-      url: 'https://www.nu.nl/rss/tech-wetenschap',
     ),
     Feed(
       title: 'Scientias - Algemeen',

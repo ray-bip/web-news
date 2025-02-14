@@ -59,15 +59,18 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 : null,
               title: Text(
                 widget.feedItemTitle,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                ),
               ),
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   widget.feedItemDate,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(175),
                     fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.normal
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ),
@@ -78,7 +81,13 @@ class _FeedItemTileState extends State<FeedItemTile> {
                       _showDescriptionOrContent = !_showDescriptionOrContent;
                     });
                   },
-                  icon: Icon(_showDescriptionOrContent ? Icons.arrow_upward : Icons.arrow_downward))
+                  icon: Icon(
+                      _showDescriptionOrContent
+                      ? Icons.arrow_upward
+                      : Icons.arrow_downward,
+                      color: Theme.of(context).colorScheme.onTertiaryContainer,
+                    )
+                  )
                 : null,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
@@ -92,10 +101,25 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? Html(
                   data: widget.feedItemContent,
                   doNotRenderTheseTags: {'a', 'img'},
+                  style: {
+                    'h2': Style(
+                      fontSize:
+                        FontSize(Theme.of(context).textTheme.titleMedium?.fontSize ?? 18),
+                      margin: Margins.only(top: 32),
+                    ),
+                  }
                 )
-                : Text(widget.feedItemDescription,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                : Html(
+                  data: widget.feedItemDescription,
+                  doNotRenderTheseTags: {'a', 'img'},
+                  style: {
+                    'h2': Style(
+                      fontSize:
+                        FontSize(Theme.of(context).textTheme.titleMedium?.fontSize ?? 18),
+                      margin: Margins.only(top: 32),
+                    ),
+                  }
+                )
               )
             ),
         ],
