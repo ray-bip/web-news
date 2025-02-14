@@ -149,9 +149,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                         String dateString = item['pubDate']['\$t'] ?? '';
                         DateTime parsedDate =
                           DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
-                        String feedItemDate = DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
+                        String feedItemDate =
+                          DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
                                 
-                        // retrieve and sanitize the bejesus out of description
+                        // retrieve and sanitize description
                         String feedItemDescription = '';
                         if (item['description'] != null && item['description']['\$t'] != null) {
                           feedItemDescription = item['description']['\$t'].toString();
@@ -171,7 +172,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                 
                         // retrieve and sanitize the bejesus out of content
                         String feedItemContent = '';
-                        if (item['content\$encoded'] != null && item['content\$encoded']['\$t'] != null) {
+                        if (item['content\$encoded'] != null &&
+                          item['content\$encoded']['\$t'] != null) {
                           feedItemContent = item['content\$encoded']['\$t'].toString();
                         } else if (item['content\$encoded'] != null) {
                           feedItemContent = item['content\$encoded'].toString();

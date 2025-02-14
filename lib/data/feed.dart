@@ -60,10 +60,10 @@ class Feed {
       title: 'GP Fans',
       url: 'https://www.gpfans.com/nl/rss.xml',
     ),
-    Feed(
-      title: 'Motorsport.com - NL',
-      url: 'https://nl.motorsport.com/rss/',
-    ),
+    // Feed(
+    //   title: 'Motorsport.com - NL',
+    //   url: 'https://nl.motorsport.com/rss/',
+    // ),
     Feed(
       title: 'Scientias - Algemeen',
       url: 'https://feeds.feedburner.com/scientias-wetenschap',
@@ -76,10 +76,10 @@ class Feed {
       title: 'Scientias - Astronomie & Ruimtevaart',
       url: 'https://scientias.nl/nieuws/astronomie-ruimtevaart/feed/',
     ),
-    Feed(
-      title: 'Scientias - Psychologie',
-      url: 'https://scientias.nl/nieuws/gezondheid-psychologie/feed/',
-    ),
+    // Feed(
+    //   title: 'Scientias - Psychologie',
+    //   url: 'https://scientias.nl/nieuws/gezondheid-psychologie/feed/',
+    // ),
     Feed(
       title: 'Scientias - Natuur & Klimaat',
       url: 'https://scientias.nl/nieuws/natuur-klimaat/feed/',
