@@ -64,7 +64,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
             ),
             child: ListTile(
               onTap: () {
-                openBrowser(widget.feedItemLink);
+                setState(() {
+                  _showDescriptionOrContent = !_showDescriptionOrContent;
+                });
               },
               isThreeLine: true,
               leading: isImage(widget.feedItemImage)
@@ -114,14 +116,10 @@ class _FeedItemTileState extends State<FeedItemTile> {
               trailing: widget.feedItemDescription != ''
                 ? IconButton(
                   onPressed: () {
-                    setState(() {
-                      _showDescriptionOrContent = !_showDescriptionOrContent;
-                    });
+                    openBrowser(widget.feedItemLink);
                   },
                   icon: Icon(
-                      _showDescriptionOrContent
-                      ? Icons.arrow_upward
-                      : Icons.arrow_downward,
+                      Icons.open_in_new,
                       color: Theme.of(context).colorScheme.onSurface,
                     )
                   )
