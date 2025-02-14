@@ -5,13 +5,11 @@ import 'package:web_news/ui/screens/feed_content_screen.dart';
 class FeedTile extends StatelessWidget {
   final String feedTitle;
   final String feedUrl;
-  final String feedLength;
 
   const FeedTile({
     super.key,
     required this.feedTitle,
     required this.feedUrl,
-    required this.feedLength,
   });
 
   @override
@@ -22,7 +20,6 @@ class FeedTile extends StatelessWidget {
         pathParameters: {
           'feedTitle': feedTitle,
           'feedUrl': feedUrl,
-          'feedLength': feedLength,
         },
       );
     }

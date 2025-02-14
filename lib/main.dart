@@ -84,15 +84,13 @@ class TheApp extends StatelessWidget {
         routes: [
           GoRoute(
             name: FeedContentScreen.routeName,
-            path: 'feed_content/:feedTitle/:feedUrl/:feedLength',
+            path: 'feed_content/:feedTitle/:feedUrl',
             builder: (context, state) {
               final String? feedTitle = state.pathParameters['feedTitle'];
               final String? feedUrl = state.pathParameters['feedUrl'];
-              final String? feedLength = state.pathParameters['feedLength'];
               return FeedContentScreen(
                 feedTitle: feedTitle!,
                 feedUrl: feedUrl!,
-                feedLength: feedLength!,
               );
             },
           ),

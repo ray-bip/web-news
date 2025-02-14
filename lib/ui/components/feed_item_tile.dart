@@ -64,7 +64,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               subtitle: Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
-                  '(${widget.feedItemDate})',
+                  widget.feedItemDate,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontStyle: FontStyle.italic,
                     fontWeight: FontWeight.normal
