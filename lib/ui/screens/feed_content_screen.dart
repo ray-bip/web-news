@@ -83,7 +83,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       ) : null,
       body: Focus(
         onKeyEvent: (FocusNode node, KeyEvent event) {
-          if (event.logicalKey == LogicalKeyboardKey.arrowLeft || event.logicalKey == LogicalKeyboardKey.tab) {
+          if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+            event.logicalKey == LogicalKeyboardKey.tab) {
             Navigator.pop(context);
             return KeyEventResult.handled;
           }

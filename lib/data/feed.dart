@@ -7,6 +7,12 @@ class Feed {
     required this.url,
   });
 
+  // feeds Rianne:
+  // NOS binnenland + buitenland
+  // 112 Nederland
+  // BBC World + UN
+  // Scientias feeds
+
   static final List<Feed> feeds = [
     Feed(
       title: 'Nu.nl - Binnenland',
@@ -60,10 +66,38 @@ class Feed {
       title: 'GP Fans',
       url: 'https://www.gpfans.com/nl/rss.xml',
     ),
-    // Feed(
-    //   title: 'Motorsport.com - NL',
-    //   url: 'https://nl.motorsport.com/rss/',
-    // ),
+    Feed(
+      title: 'Motorsport.com - NL',
+      url: 'https://nl.motorsport.com/rss/',
+    ),
+    Feed(
+      title: 'Open AI',
+      url: 'https://openai.com/news/rss.xml',
+    ),
+    Feed(
+      title: 'Wired - AI',
+      url: 'https://www.wired.com/feed/tag/ai/latest/rss',
+    ),
+    Feed(
+      title: 'MIT - AI',
+      url: 'https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml',
+    ),
+    Feed(
+      title: 'Machine Learning Mastery',
+      url: 'https://machinelearningmastery.com/feed/',
+    ),
+    Feed(
+      title: 'Gizmodo',
+      url: 'https://gizmodo.com/feed',
+    ),
+    Feed(
+      title: 'Hugging Face',
+      url: 'https://papers.takara.ai/api/feed',
+    ),
+    Feed(
+      title: 'TechCrunch',
+      url: 'https://techcrunch.com/feed/',
+    ),
     Feed(
       title: 'Scientias - Algemeen',
       url: 'https://feeds.feedburner.com/scientias-wetenschap',
@@ -76,10 +110,10 @@ class Feed {
       title: 'Scientias - Astronomie & Ruimtevaart',
       url: 'https://scientias.nl/nieuws/astronomie-ruimtevaart/feed/',
     ),
-    // Feed(
-    //   title: 'Scientias - Psychologie',
-    //   url: 'https://scientias.nl/nieuws/gezondheid-psychologie/feed/',
-    // ),
+    Feed(
+      title: 'Scientias - Psychologie',
+      url: 'https://scientias.nl/nieuws/gezondheid-psychologie/feed/',
+    ),
     Feed(
       title: 'Scientias - Natuur & Klimaat',
       url: 'https://scientias.nl/nieuws/natuur-klimaat/feed/',
