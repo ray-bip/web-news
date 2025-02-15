@@ -47,6 +47,8 @@ dependencies:
   bitsdojo_window: ^0.1.6
   screen_retriever: ^0.2.0
 
+dependency_overrides:
+  html: ^0.15.0
 
 dev_dependencies:
   flutter_test:

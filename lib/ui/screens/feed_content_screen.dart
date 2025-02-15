@@ -50,6 +50,40 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     });
   }
 
+  String sanitizeDirtyString(String dirtyString) {
+    return HtmlUnescape().convert(dirtyString
+      .replaceAll('{__cdata:', '')
+      .replaceAll('}', '')
+      // remove "\\n"
+      .replaceAll('\\\\n', '')
+      // remove complete hyperlinks
+      .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
+      // remove images
+      .replaceAll(RegExp(r'<img[^>]*>'), '')
+      // remove forms
+      .replaceAll(RegExp(r'<form\b[^>]*>.*?</form>', dotAll: true, caseSensitive: false), '')
+      // remove inputs
+      .replaceAll(RegExp(r'<input\b[^>]*\/?>', caseSensitive: false), '')
+      // replace [...] and everything that follows with ...
+      .replaceAll(RegExp(r'\[.*?\].*'), '...')
+      // replace <!-- and everything that follows with ...
+      .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
+      // replace dumb, hideous single and double quotes
+      .replaceAll('‘', '\'')
+      .replaceAll('’', '\'')
+      .replaceAll('â', '\'')
+      .replaceAll('â', '\'')
+      .replaceAll('â', '\'')
+      .replaceAll('â', '\'')
+      .replaceAll('â', '"')
+      // the empty space here contains a character, believe it or not
+      // (and it works, so don't touch it!)
+      .replaceAll(',â', '"')
+      // replace a collection of common phrases
+      .replaceAll('Het bericht  verscheen eerst op .', '')
+      .trim());
+  }
+
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -162,12 +196,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                             } else if (item['title'] != null) {
                               feedItemTitle = item['title'].toString();
                             }
-                                        
-                            feedItemTitle = HtmlUnescape().convert(feedItemTitle
-                                .toString()
-                                .replaceAll('{__cdata:', '')
-                                .replaceAll('}', '')
-                                .trim());
+
+                            feedItemTitle = sanitizeDirtyString(feedItemTitle);
                             
                             // retrieve and format date
                             String dateString = item['pubDate']['\$t'] ?? '';
@@ -184,18 +214,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                               feedItemDescription = item['description'].toString();
                             }
                             
-                            feedItemDescription = HtmlUnescape().convert(feedItemDescription
-                                .toString()
-                                .replaceAll('{__cdata:', '')
-                                .replaceAll('}', '')
-                                // remove complete hyperlinks
-                                .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
-                                // remove images
-                                .replaceAll(RegExp(r'<img[^>]*>'), '')
-                                // replace [...] and everything that follows with ...
-                                .replaceAll(RegExp(r'\[.*?\].*'), '...')
-                                .trim());
-                                    
+                            feedItemDescription = sanitizeDirtyString(feedItemDescription);
+                                
                             // retrieve and sanitize the bejesus out of content
                             String feedItemContent = '';
                             if (item['content\$encoded'] != null &&
@@ -205,19 +225,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                               feedItemContent = item['content\$encoded'].toString();
                             }
                             
-                            feedItemContent = feedItemContent
-                                .toString()
-                                .replaceAll('{__cdata:', '')
-                                .replaceAll('}', '')
-                                .replaceAll('\\\\n', '')
-                                // replace [...] and everything that follows with ...
-                                .replaceAll(RegExp(r'\[.*?\].*'), '...')
-                                // remove images
-                                .replaceAll(RegExp(r'<img[^>]*>'), '')
-                                // replace <!-- and everything that follows with ...
-                                .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
-                                .trim();
-                                    
+                            feedItemContent = sanitizeDirtyString(feedItemContent);
+
                             // retrieve link
                             String feedItemLink = item['link']?['\$t']?.toString() ?? '';
                                         

@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
@@ -28,7 +29,7 @@ class FeedItemTile extends StatefulWidget {
 }
 
 class _FeedItemTileState extends State<FeedItemTile> {
-  bool _showDescriptionOrContent = false;
+  bool _showContentOrDescription = false;
   
   bool isImage(String imageLocation) {
     return imageLocation.toLowerCase().contains('.gif') ||
@@ -39,10 +40,46 @@ class _FeedItemTileState extends State<FeedItemTile> {
       imageLocation.toLowerCase().contains('.webp');
   }
 
-  bool isHtml(String textInput) {
-    return (textInput.contains('<') &&
-      textInput.contains('</') || textInput.contains('<') &&
-      textInput.contains('/>'));
+  void toggleContentOrDescription() {
+    setState(() {
+      _showContentOrDescription = !_showContentOrDescription;
+    });
+  }
+
+  InkWell displayContentOrDescription(String contentOrDescription) {
+    // wrap the entire thing in <p></p> if that's not already the case, for consistent spacing
+    if (!contentOrDescription.startsWith('<p>')) {
+      contentOrDescription = '<p>$contentOrDescription</p>';
+    }
+
+    // return as HTML with some styling
+    return InkWell(
+      onLongPress: () {
+        Clipboard.setData(ClipboardData(text: contentOrDescription));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Text copied!')),
+        );
+      },
+      child: Html(
+        data: contentOrDescription,
+        doNotRenderTheseTags: {'a', 'img', 'br', 'form'},
+        style: {
+          '*' : Style(
+            fontSize: FontSize(Platform.isLinux ? 18 : 16),
+            lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
+          ),
+          'h2': Style(
+            fontSize: FontSize( Platform.isLinux ? 20 : 18),
+            margin: Margins.only(top: 32),
+          ),
+          'p': Style(
+            fontSize: FontSize(Platform.isLinux ? 18 : 16),
+            lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
+            margin: Margins.only(bottom: 24),
+          ),
+        }
+      ),
+    );
   }
 
   @override
@@ -63,10 +100,12 @@ class _FeedItemTileState extends State<FeedItemTile> {
               borderRadius: BorderRadius.circular(2),
             ),
             child: ListTile(
-              onTap: () {
-                setState(() {
-                  _showDescriptionOrContent = !_showDescriptionOrContent;
-                });
+              onTap: toggleContentOrDescription,
+              onLongPress: () {
+                Clipboard.setData(ClipboardData(text: widget.feedItemTitle));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Title copied!')),
+                );
               },
               isThreeLine: true,
               leading: isImage(widget.feedItemImage)
@@ -118,6 +157,12 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   onPressed: () {
                     openBrowser(widget.feedItemLink);
                   },
+                  onLongPress: () {
+                    Clipboard.setData(ClipboardData(text: widget.feedItemLink));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Link copied!')),
+                      );
+                  },
                   icon: Icon(
                       Icons.open_in_new,
                       color: Theme.of(context).colorScheme.onSurface,
@@ -127,7 +172,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
-          if (_showDescriptionOrContent)
+          if (_showContentOrDescription)
             Container(
               color: Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
               child: Row(
@@ -136,54 +181,18 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                      // check if content property is present
-                      // >> if so: check if it's HTML
-                      // >>>> if so: display as HTML, otherwise display as text
-                      // >> if no content property: use description and check if it's HTML
-                      // >>>> if so: display as HTML, otherwise display as text
-                      child: widget.feedItemContent != ''
-                      ? isHtml(widget.feedItemContent)
-                        ? Html(
-                          data: widget.feedItemContent,
-                          doNotRenderTheseTags: {'a', 'img'},
-                          style: {
-                            'h2': Style(
-                              fontSize: FontSize( Platform.isLinux ? 20 : 18),
-                              margin: Margins.only(top: 32),
-                            ),
-                            'p': Style(
-                              fontSize: FontSize(Platform.isLinux ? 18 : 16),
-                              lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
-                            ),
-                          }
-                        ) : Text(
-                          widget.feedItemContent.replaceAll('<p>', ''),
-                          style: TextStyle(
-                            height: Platform.isLinux ? 1.8 : 1.6,
-                            fontSize: Platform.isLinux ? 18 : 16,
-                          ),
-                        )
-                      : isHtml(widget.feedItemDescription)
-                        ? Html(
-                          data: widget.feedItemDescription,
-                          doNotRenderTheseTags: {'a', 'img'},
-                          style: {
-                            'h2': Style(
-                              fontSize: FontSize(Platform.isLinux ? 20 : 18),
-                              margin: Margins.only(top: 32),
-                            ),
-                            'p': Style(
-                              fontSize: FontSize(Platform.isLinux ? 18 : 16),
-                              lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
-                            ),
-                          }
-                        ) : Text(
-                          widget.feedItemDescription.replaceAll('<p>', ''),
-                          style: TextStyle(
-                            height: Platform.isLinux ? 1.8 : 1.6,
-                            fontSize: Platform.isLinux ? 18 : 16,
-                          ),
+                      child: widget.feedItemDescription == '' && widget.feedItemContent == ''
+                      ? Padding(
+                        // I think it should be 88 for Linux below, but the UI says 84
+                        // so I guess I'm wrong then...
+                        padding: EdgeInsets.only(left: Platform.isLinux ? 84 : 80),
+                        child: const Expanded(
+                          child: Text('[No content available in rss feed]'),
                         ),
+                      )
+                      : widget.feedItemContent != ''
+                          ? displayContentOrDescription(widget.feedItemContent)
+                          : displayContentOrDescription(widget.feedItemDescription),
                     ),
                   ),
                 ],
