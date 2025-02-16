@@ -27,7 +27,7 @@ class FeedItemTileLeading extends StatelessWidget {
               height: 64,
               child: Center(
                 child: Text(
-                  'image loading',
+                  'image loading...',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
                     fontSize: 10,

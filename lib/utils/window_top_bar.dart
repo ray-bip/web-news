@@ -67,7 +67,6 @@ class WindowTopBar extends StatelessWidget {
                     children: [
                       IconButton(
                         onPressed: () {
-                          print('click!');
                           appWindow.close();
                         },
                         hoverColor: Colors.transparent,

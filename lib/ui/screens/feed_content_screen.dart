@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:html_unescape/html_unescape.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:web_news/ui/components/feed_item_tile.dart';
+import 'package:web_news/utils/helper_functions.dart';
 import 'package:web_news/utils/window_top_bar.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -50,50 +50,15 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     });
   }
 
-  String sanitizeDirtyString(String dirtyString) {
-    return HtmlUnescape().convert(dirtyString
-      .replaceAll('{__cdata:', '')
-      .replaceAll('}', '')
-      // remove "\\n"
-      .replaceAll('\\\\n', '')
-      // remove complete hyperlinks
-      .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
-      // remove images
-      .replaceAll(RegExp(r'<img[^>]*>'), '')
-      // remove forms
-      .replaceAll(RegExp(r'<form\b[^>]*>.*?</form>', dotAll: true, caseSensitive: false), '')
-      // remove inputs
-      .replaceAll(RegExp(r'<input\b[^>]*\/?>', caseSensitive: false), '')
-      // replace [...] and everything that follows with ...
-      .replaceAll(RegExp(r'\[.*?\].*'), '...')
-      // replace <!-- and everything that follows with ...
-      .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
-      // replace dumb, hideous single and double quotes
-      .replaceAll('‘', '\'')
-      .replaceAll('’', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '"')
-      // the empty space below contains a character, believe it or not
-      // (and it works, so don't touch it!)
-      .replaceAll(',â', '"')
-      // replace some other weird character with a space
-      .replaceAll('â', ' ')
-      // replace a collection of common phrases
-      .replaceAll('Het bericht  verscheen eerst op .', '')
-      .trim());
-  }
-
   @override
   void initState() {
+    // fetch new feed items when scrolling down
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
           getFeedItems(
             startIndex: feedItems.length,
-            batchSize: 10
+            batchSize: 10,
           );
       }
     });
