@@ -23,9 +23,9 @@ class HomeScreen extends StatelessWidget {
       body: Container(
         decoration: Platform.isLinux ?  BoxDecoration(
           border: Border.all(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              width: 1.6,
-            ),
+            color: Theme.of(context).colorScheme.surfaceBright,
+            width: 1.6,
+          ),
         ) : null,
         child: Column(
           children: [
