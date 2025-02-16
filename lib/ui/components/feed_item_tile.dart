@@ -141,11 +141,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: widget.feedItemDescription == '' && widget.feedItemContent == ''
-                      ? Padding(
-                        // I think it should be 88 for Linux below, but the UI says 84
-                        // so I guess I'm wrong then...
-                        padding: EdgeInsets.only(left: Platform.isLinux ? 84 : 80),
-                        child: const Expanded(
+                      ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 16),
                           child: Text('[No content available in rss feed]'),
                         ),
                       )
