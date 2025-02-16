@@ -76,9 +76,11 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       .replaceAll('â', '\'')
       .replaceAll('â', '\'')
       .replaceAll('â', '"')
-      // the empty space here contains a character, believe it or not
+      // the empty space below contains a character, believe it or not
       // (and it works, so don't touch it!)
       .replaceAll(',â', '"')
+      // replace some other weird character with a space
+      .replaceAll('â', ' ')
       // replace a collection of common phrases
       .replaceAll('Het bericht  verscheen eerst op .', '')
       .trim());

@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:web_news/ui/components/feed_item_tile_leading.dart';
+import 'package:web_news/ui/components/feed_item_tile_subtitle.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
 class FeedItemTile extends StatefulWidget {
@@ -108,30 +111,13 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 );
               },
               isThreeLine: true,
-              leading: isImage(widget.feedItemImage)
-                ? Image.network(
-                  widget.feedItemImage,
-                  width: 64,
-                  height: 64,
-                  fit: BoxFit.cover) 
-                : Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  width: 64,
-                  height: 64,
-                  child: Center(
-                    child: Text(
-                      'image not available',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
-                        fontSize: 10,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
+              contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+              leading: FeedItemTileLeading(
+                feedItemImage: widget.feedItemImage
+              ),
               title: Padding(
                 padding: Platform.isLinux
-                  ? const EdgeInsets.only(left: 8) : const EdgeInsets.all(0),
+                  ? const EdgeInsets.fromLTRB(8, 2, 8, 0) : const EdgeInsets.only(top: 2),
                 child: Text(
                   widget.feedItemTitle,
                   style: TextStyle(
@@ -140,36 +126,11 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   ),
                 ),
               ),
-              subtitle: Padding(
-                padding: Platform.isLinux
-                  ? const EdgeInsets.fromLTRB(8, 12, 0 ,0) : const EdgeInsets.only(top: 8),
-                child: Text(
-                  widget.feedItemDate,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(192),
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
+              titleAlignment: ListTileTitleAlignment.titleHeight,
+              subtitle: FeedItemTileSubtitle(
+                feedItemDate: widget.feedItemDate,
+                feedItemLink: widget.feedItemLink,
               ),
-              trailing: widget.feedItemDescription != ''
-                ? IconButton(
-                  onPressed: () {
-                    openBrowser(widget.feedItemLink);
-                  },
-                  onLongPress: () {
-                    Clipboard.setData(ClipboardData(text: widget.feedItemLink));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Link copied!')),
-                      );
-                  },
-                  icon: Icon(
-                      Icons.open_in_new,
-                      color: Theme.of(context).colorScheme.onSurface,
-                    )
-                  )
-                : null,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
           ),
           if (_showContentOrDescription)
@@ -180,7 +141,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                       child: widget.feedItemDescription == '' && widget.feedItemContent == ''
                       ? Padding(
                         // I think it should be 88 for Linux below, but the UI says 84
@@ -197,6 +158,22 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   ),
                 ],
               )
+            ),
+          if (_showContentOrDescription)
+            Container(
+              color: Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: IconButton(
+                      onPressed: toggleContentOrDescription,
+                      icon: const Icon(Icons.arrow_circle_up, size: 32),
+                    ),
+                  ),
+                ],
+              ),
             ),
         ],
       ),
