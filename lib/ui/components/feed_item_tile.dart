@@ -4,10 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:web_news/ui/components/feed_item_tile_leading.dart';
 import 'package:web_news/ui/components/feed_item_tile_subtitle.dart';
-import 'package:web_news/utils/helper_functions.dart';
 
 class FeedItemTile extends StatefulWidget {
   final String feedItemImage;
