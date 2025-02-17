@@ -65,8 +65,6 @@ class TheApp extends StatelessWidget {
       title: appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          // old color below (using tertiaryContainer / onTertiaryContainer was best)
-          // seedColor: const Color.fromARGB(255, 3, 66, 31),
           seedColor: const Color.fromARGB(255, 9, 127, 115),
           brightness: Brightness.dark,
         ),

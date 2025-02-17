@@ -45,6 +45,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
     setState(() {
       _showContentOrDescription = !_showContentOrDescription;
       _tileIsActive = !_tileIsActive;
+      print(widget.feedItemLink);
     });
   }
 
@@ -164,7 +165,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: Platform.isLinux ? 704 : 480,
+                  maxHeight: Platform.isLinux
+                    ? MediaQuery.of(context).size.height - 260
+                    : MediaQuery.of(context).size.height - 320,
                 ),
                 child: SingleChildScrollView(
                   child: 
