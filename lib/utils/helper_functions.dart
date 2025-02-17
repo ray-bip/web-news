@@ -20,6 +20,7 @@ String sanitizeDirtyString(String dirtyString) {
     return HtmlUnescape().convert(dirtyString
       .replaceAll('{__cdata:', '')
       .replaceAll('}', '')
+      .replaceAll('\\t', '')
       // remove "\\n"
       .replaceAll('\\\\n', '')
       // remove complete hyperlinks

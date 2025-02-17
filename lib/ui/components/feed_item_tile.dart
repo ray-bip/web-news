@@ -108,10 +108,10 @@ class _FeedItemTileState extends State<FeedItemTile> {
               gradient: LinearGradient(
                 colors: [
                   _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(128)
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
                   : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
                   _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.primaryContainer,
                 ],
                 begin: Alignment.topLeft,
@@ -149,12 +149,19 @@ class _FeedItemTileState extends State<FeedItemTile> {
               subtitle: FeedItemTileSubtitle(
                 feedItemDate: widget.feedItemDate,
                 feedItemLink: widget.feedItemLink,
+                tileIsActive: _tileIsActive,
               ),
             ),
           ),
           if (_showContentOrDescription)
-            Container(
-              color: Theme.of(context).colorScheme.secondaryContainer.withAlpha(192),
+            AnimatedContainer(
+              duration: _tileIsActive 
+                ? const Duration(milliseconds: 0)
+                : const Duration(milliseconds: 1600),
+              curve: Curves.easeInOut,
+              color: _tileIsActive
+                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux ? 704 : 480,
@@ -179,8 +186,14 @@ class _FeedItemTileState extends State<FeedItemTile> {
               )
             ),
           if (_showContentOrDescription)
-            Container(
-              color: Theme.of(context).colorScheme.secondaryContainer.withAlpha(160),
+            AnimatedContainer(
+              duration: _tileIsActive 
+                ? const Duration(milliseconds: 0)
+                : const Duration(milliseconds: 1600),
+              curve: Curves.easeInOut,
+              color: _tileIsActive
+                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
+                : Theme.of(context).colorScheme.primaryContainer.withAlpha(128),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

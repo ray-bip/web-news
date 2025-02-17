@@ -206,8 +206,15 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                 
                                 feedItemContent = sanitizeDirtyString(feedItemContent);
                             
-                                // retrieve link
-                                String feedItemLink = item['link']?['\$t']?.toString() ?? '';
+                                // retrieve link and clean it a bit
+                                String feedItemLink = '';
+                                if (item['link']['\$t'] != null) {
+                                  feedItemLink = item['link']['\$t'].toString();
+                                } else {
+                                  feedItemLink = item['link'].toString()
+                                    .replaceAll('{__cdata: ', '')
+                                    .replaceAll('}', '');
+                                }
                                             
                                 return Padding(
                                   padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),

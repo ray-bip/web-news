@@ -103,6 +103,14 @@ class Feed {
       url: 'https://techcrunch.com/feed/',
     ),
     Feed(
+      title: 'European Space Agency',
+      url: 'http://www.esa.int/rssfeed/Our_Activities/Space_News',
+    ),
+    Feed(
+      title: 'NASA',
+      url: 'https://www.nasa.gov/news-release/feed/',
+    ),
+    Feed(
       title: 'Scientias - Algemeen',
       url: 'https://feeds.feedburner.com/scientias-wetenschap',
     ),

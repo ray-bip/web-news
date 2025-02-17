@@ -8,11 +8,13 @@ import 'package:web_news/utils/helper_functions.dart';
 class FeedItemTileSubtitle extends StatelessWidget {
   final String feedItemDate;
   final String feedItemLink;
+  final bool tileIsActive;
 
   const FeedItemTileSubtitle({
     super.key,
     required this.feedItemDate,
     required this.feedItemLink,
+    required this.tileIsActive,
   });
 
   @override
@@ -28,8 +30,9 @@ class FeedItemTileSubtitle extends StatelessWidget {
               feedItemDate,
               softWrap: false,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color:
-                  Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                color: tileIsActive
+                  ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
+                  : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
                 fontSize: Platform.isLinux ? 12 : 11,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.normal,
@@ -45,8 +48,9 @@ class FeedItemTileSubtitle extends StatelessWidget {
                 icon: Icon(
                   Icons.share,
                   size: Platform.isLinux ? 24 : 18,
-                  color: 
-                    Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                  color: tileIsActive
+                    ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
+                    : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
                 ),
                 visualDensity: Platform.isLinux
                   ? VisualDensity.comfortable
@@ -65,8 +69,9 @@ class FeedItemTileSubtitle extends StatelessWidget {
                 icon: Icon(
                   Icons.open_in_new,
                   size: Platform.isLinux ? 24 : 18,
-                  color:
-                    Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                  color: tileIsActive
+                    ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
+                    : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
                 ),
                 visualDensity: Platform.isLinux
                   ? VisualDensity.comfortable
