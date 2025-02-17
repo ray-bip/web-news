@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -31,7 +30,8 @@ class FeedItemTile extends StatefulWidget {
 
 class _FeedItemTileState extends State<FeedItemTile> {
   bool _showContentOrDescription = false;
-  
+  bool _tileIsActive = false;
+
   bool isImage(String imageLocation) {
     return imageLocation.toLowerCase().contains('.gif') ||
       imageLocation.toLowerCase().contains('.jpeg') ||
@@ -44,6 +44,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
   void toggleContentOrDescription() {
     setState(() {
       _showContentOrDescription = !_showContentOrDescription;
+      _tileIsActive = !_tileIsActive;
     });
   }
 
@@ -66,11 +67,16 @@ class _FeedItemTileState extends State<FeedItemTile> {
           const SnackBar(content: Text('Text copied!')),
         );
       },
+      focusColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
       child: Html(
         data: contentOrDescription,
         doNotRenderTheseTags: {'a', 'img', 'form'},
         style: {
           '*' : Style(
+            color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(192),
             fontSize: FontSize(Platform.isLinux ? 18 : 16),
             lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
           ),
@@ -93,12 +99,20 @@ class _FeedItemTileState extends State<FeedItemTile> {
     return Material(
       child: Column(
         children: [
-          Container(
+          AnimatedContainer(
+            duration: _tileIsActive 
+              ? const Duration(milliseconds: 0)
+              : const Duration(milliseconds: 1600),
+            curve: Curves.easeInOut,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
-                  Theme.of(context).colorScheme.primaryContainer,
+                  _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(128)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                  _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                  : Theme.of(context).colorScheme.primaryContainer,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
@@ -113,6 +127,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   const SnackBar(content: Text('Title copied!')),
                 );
               },
+              hoverColor: Colors.black.withAlpha(32),
+              splashColor: Colors.black.withAlpha(96),
               isThreeLine: true,
               contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
               leading: FeedItemTileLeading(
@@ -138,16 +154,17 @@ class _FeedItemTileState extends State<FeedItemTile> {
           ),
           if (_showContentOrDescription)
             Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.secondaryContainer.withAlpha(192),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxHeight: Platform.isLinux ? 640 : 480,
+                  maxHeight: Platform.isLinux ? 704 : 480,
                 ),
                 child: SingleChildScrollView(
                   child: 
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                      child: widget.feedItemDescription == '' && widget.feedItemContent == ''
+                      child: widget.feedItemDescription.isEmpty
+                        && widget.feedItemContent.isEmpty
                       ? const Center(
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 16),
@@ -158,18 +175,17 @@ class _FeedItemTileState extends State<FeedItemTile> {
                           ? displayContentOrDescription(widget.feedItemContent)
                           : displayContentOrDescription(widget.feedItemDescription),
                     ),
-                  
                 ),
               )
             ),
           if (_showContentOrDescription)
             Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: Theme.of(context).colorScheme.secondaryContainer.withAlpha(160),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                     child: IconButton(
                       onPressed: toggleContentOrDescription,
                       icon: const Icon(Icons.arrow_circle_up, size: 32),

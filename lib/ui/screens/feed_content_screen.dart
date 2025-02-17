@@ -132,6 +132,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                         ),
                       )
                       : GestureDetector(
+                        // allow swipe to navigate back
                         onHorizontalDragEnd: (details) {
                           if (details.primaryVelocity! > 0) {
                             Navigator.pop(context);
@@ -228,12 +229,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                 onVerticalDragUpdate: _onVerticalDragUpdate,
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 8),
-                                  height: 256,
-                                  width: 24,
+                                  height: 960,
+                                  width: 90,
                                   decoration: BoxDecoration(
-                                    color:
-                                      Theme.of(context).colorScheme.onPrimary
-                                        .withAlpha(192),
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
