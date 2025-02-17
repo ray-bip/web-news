@@ -48,6 +48,11 @@ class _FeedItemTileState extends State<FeedItemTile> {
   }
 
   InkWell displayContentOrDescription(String contentOrDescription) {
+    // remove "<br><br>" from start of contentOrDescription
+    if (contentOrDescription.startsWith('<br><br>')) {
+      contentOrDescription = contentOrDescription.substring(8);
+    }
+    
     // wrap the entire thing in <p></p> if that's not already the case, for consistent spacing
     if (!contentOrDescription.startsWith('<p>')) {
       contentOrDescription = '<p>$contentOrDescription</p>';
@@ -63,7 +68,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
       },
       child: Html(
         data: contentOrDescription,
-        doNotRenderTheseTags: {'a', 'img', 'br', 'form'},
+        doNotRenderTheseTags: {'a', 'img', 'form'},
         style: {
           '*' : Style(
             fontSize: FontSize(Platform.isLinux ? 18 : 16),
@@ -140,20 +145,18 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ),
                 child: SingleChildScrollView(
                   child: 
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                        child: widget.feedItemDescription == '' && widget.feedItemContent == ''
-                        ? const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 16),
-                            child: Text('[No content available in rss feed]'),
-                          ),
-                        )
-                        : widget.feedItemContent != ''
-                            ? displayContentOrDescription(widget.feedItemContent)
-                            : displayContentOrDescription(widget.feedItemDescription),
-                      ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                      child: widget.feedItemDescription == '' && widget.feedItemContent == ''
+                      ? const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(bottom: 16),
+                          child: Text('[No content available in rss feed]'),
+                        ),
+                      )
+                      : widget.feedItemContent != ''
+                          ? displayContentOrDescription(widget.feedItemContent)
+                          : displayContentOrDescription(widget.feedItemDescription),
                     ),
                   
                 ),

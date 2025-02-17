@@ -154,7 +154,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                 }
                                 
                                 var item = feedItems[index];
-                                        
+
                                 // retrieve images (oh, so many ways!)
                                 String feedItemImage = '';
                                 if (item['enclosure'] != null && item['enclosure']['url'] != null) {
