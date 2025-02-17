@@ -93,7 +93,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               gradient: LinearGradient(
                 colors: [
                   Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
-                  Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
+                  Theme.of(context).colorScheme.primaryContainer,
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
@@ -133,31 +133,35 @@ class _FeedItemTileState extends State<FeedItemTile> {
           ),
           if (_showContentOrDescription)
             Container(
-              color: Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                      child: widget.feedItemDescription == '' && widget.feedItemContent == ''
-                      ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: Text('[No content available in rss feed]'),
-                        ),
-                      )
-                      : widget.feedItemContent != ''
-                          ? displayContentOrDescription(widget.feedItemContent)
-                          : displayContentOrDescription(widget.feedItemDescription),
+              color: Theme.of(context).colorScheme.primaryContainer,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: Platform.isLinux ? 640 : 480,
+                ),
+                child: SingleChildScrollView(
+                  child: 
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                        child: widget.feedItemDescription == '' && widget.feedItemContent == ''
+                        ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Text('[No content available in rss feed]'),
+                          ),
+                        )
+                        : widget.feedItemContent != ''
+                            ? displayContentOrDescription(widget.feedItemContent)
+                            : displayContentOrDescription(widget.feedItemDescription),
+                      ),
                     ),
-                  ),
-                ],
+                  
+                ),
               )
             ),
           if (_showContentOrDescription)
             Container(
-              color: Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
+              color: Theme.of(context).colorScheme.primaryContainer,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

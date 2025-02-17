@@ -40,18 +40,19 @@ class FeedTile extends StatelessWidget {
         child: ListTile(
           onTap: goToFeedContentScreen,
           splashColor: Colors.transparent,
+          leading: Icon(
+            Icons.rss_feed,
+            color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+          ),
           title: Text(
             feedTitle,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
-          trailing: IconButton(
-            onPressed: goToFeedContentScreen,
-            icon: Icon(
-              Icons.arrow_forward,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+          trailing: Icon(
+            Icons.arrow_forward,
+            color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
           ),
           contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         ),

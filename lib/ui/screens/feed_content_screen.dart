@@ -31,7 +31,16 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   final Xml2Json xml2json = Xml2Json();
   List feedItems = [];
   final ScrollController _scrollController = ScrollController();
-
+  
+  // make listview draggable
+  void _onVerticalDragUpdate(DragUpdateDetails details) {
+    _scrollController.jumpTo(
+      (_scrollController.offset - details.primaryDelta!).clamp(
+        0.0,
+        _scrollController.position.maxScrollExtent,
+      ),
+    );
+  }
 
   Future<void> getFeedItems({int startIndex = 0, int batchSize = 10}) async {
     if (widget.feedUrl.isEmpty) return;
@@ -128,87 +137,109 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                             Navigator.pop(context);
                           }
                         },
-                        child: ListView.separated(
-                          controller: _scrollController,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const SizedBox(height: 8);
-                          },
-                          itemCount: feedItems.length + (isLoading ? 1 : 0),
-                          itemBuilder: (context, index) {
-                            if (index == feedItems.length) {
-                              return Center(
-                                  child: CircularProgressIndicator(
-                                color: Theme.of(context).colorScheme.primaryContainer,
-                              ));
-                            }
-                            
-                            var item = feedItems[index];
-                                    
-                            // retrieve images (oh, so many ways!)
-                            String feedItemImage = '';
-                            if (item['enclosure'] != null && item['enclosure']['url'] != null) {
-                              feedItemImage = item['enclosure']['url'].toString();
-                            } else if (item['image'] != null && item['image'] != '') {
-                              feedItemImage = item['image']['\$t'];
-                            } else if (item['media\$thumbnail'] != null) {
-                              feedItemImage = item['media\$thumbnail']['url'];
-                            } else if (item['media\$content'] != null) {
-                              feedItemImage = item['media\$content']['url'];
-                            }
-                                    
-                            // retrieve and sanitize title
-                            String feedItemTitle = '';
-                            if (item['title'] != null && item['title']?['\$t'] != null) {
-                              feedItemTitle = item['title']['\$t'].toString();
-                            } else if (item['title'] != null) {
-                              feedItemTitle = item['title'].toString();
-                            }
-
-                            feedItemTitle = sanitizeDirtyString(feedItemTitle);
-                            
-                            // retrieve and format date
-                            String dateString = item['pubDate']['\$t'] ?? '';
-                            DateTime parsedDate =
-                              DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
-                            String feedItemDate =
-                              DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
-                                    
-                            // retrieve and sanitize description
-                            String feedItemDescription = '';
-                            if (item['description'] != null && item['description']['\$t'] != null) {
-                              feedItemDescription = item['description']['\$t'].toString();
-                            } else if (item['description'] != null) {
-                              feedItemDescription = item['description'].toString();
-                            }
-                            
-                            feedItemDescription = sanitizeDirtyString(feedItemDescription);
+                        child: Stack(
+                          children: [
+                            ListView.separated(
+                              controller: _scrollController,
+                              separatorBuilder: (BuildContext context, int index) {
+                                return const SizedBox(height: 8);
+                              },
+                              itemCount: feedItems.length + (isLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index == feedItems.length) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    color: Theme.of(context).colorScheme.primaryContainer,
+                                  ));
+                                }
                                 
-                            // retrieve and sanitize the bejesus out of content
-                            String feedItemContent = '';
-                            if (item['content\$encoded'] != null &&
-                              item['content\$encoded']['\$t'] != null) {
-                              feedItemContent = item['content\$encoded']['\$t'].toString();
-                            } else if (item['content\$encoded'] != null) {
-                              feedItemContent = item['content\$encoded'].toString();
-                            }
-                            
-                            feedItemContent = sanitizeDirtyString(feedItemContent);
-
-                            // retrieve link
-                            String feedItemLink = item['link']?['\$t']?.toString() ?? '';
+                                var item = feedItems[index];
                                         
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-                              child: FeedItemTile(
-                                feedItemImage: feedItemImage,
-                                feedItemTitle: feedItemTitle,
-                                feedItemDate: '[${(index + 1).toString()}] [$feedItemDate]',
-                                feedItemDescription: feedItemDescription,
-                                feedItemContent: feedItemContent,
-                                feedItemLink: feedItemLink,
+                                // retrieve images (oh, so many ways!)
+                                String feedItemImage = '';
+                                if (item['enclosure'] != null && item['enclosure']['url'] != null) {
+                                  feedItemImage = item['enclosure']['url'].toString();
+                                } else if (item['image'] != null && item['image'] != '') {
+                                  feedItemImage = item['image']['\$t'];
+                                } else if (item['media\$thumbnail'] != null) {
+                                  feedItemImage = item['media\$thumbnail']['url'];
+                                } else if (item['media\$content'] != null) {
+                                  feedItemImage = item['media\$content']['url'];
+                                }
+                                        
+                                // retrieve and sanitize title
+                                String feedItemTitle = '';
+                                if (item['title'] != null && item['title']?['\$t'] != null) {
+                                  feedItemTitle = item['title']['\$t'].toString();
+                                } else if (item['title'] != null) {
+                                  feedItemTitle = item['title'].toString();
+                                }
+                            
+                                feedItemTitle = sanitizeDirtyString(feedItemTitle);
+                                
+                                // retrieve and format date
+                                String dateString = item['pubDate']['\$t'] ?? '';
+                                DateTime parsedDate =
+                                  DateFormat('EEE, dd MMM yyyy HH:mm:ss Z').parse(dateString);
+                                String feedItemDate =
+                                  DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
+                                        
+                                // retrieve and sanitize description
+                                String feedItemDescription = '';
+                                if (item['description'] != null && item['description']['\$t'] != null) {
+                                  feedItemDescription = item['description']['\$t'].toString();
+                                } else if (item['description'] != null) {
+                                  feedItemDescription = item['description'].toString();
+                                }
+                                
+                                feedItemDescription = sanitizeDirtyString(feedItemDescription);
+                                    
+                                // retrieve and sanitize the bejesus out of content
+                                String feedItemContent = '';
+                                if (item['content\$encoded'] != null &&
+                                  item['content\$encoded']['\$t'] != null) {
+                                  feedItemContent = item['content\$encoded']['\$t'].toString();
+                                } else if (item['content\$encoded'] != null) {
+                                  feedItemContent = item['content\$encoded'].toString();
+                                }
+                                
+                                feedItemContent = sanitizeDirtyString(feedItemContent);
+                            
+                                // retrieve link
+                                String feedItemLink = item['link']?['\$t']?.toString() ?? '';
+                                            
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+                                  child: FeedItemTile(
+                                    feedItemImage: feedItemImage,
+                                    feedItemTitle: feedItemTitle,
+                                    feedItemDate: '[${(index + 1).toString()}] [$feedItemDate]',
+                                    feedItemDescription: feedItemDescription,
+                                    feedItemContent: feedItemContent,
+                                    feedItemLink: feedItemLink,
+                                  ),
+                                );
+                              },
+                            ),
+                            if (Platform.isLinux)
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: GestureDetector(
+                                onVerticalDragUpdate: _onVerticalDragUpdate,
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 8),
+                                  height: 256,
+                                  width: 24,
+                                  decoration: BoxDecoration(
+                                    color:
+                                      Theme.of(context).colorScheme.onPrimary
+                                        .withAlpha(192),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
                     ),

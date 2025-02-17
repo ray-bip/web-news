@@ -23,7 +23,7 @@ class Feed {
       url: 'https://www.nu.nl/rss/Buitenland',
     ),
     Feed(
-      title: 'Nu.nl - Tech & Wetenschap',
+      title: 'Nu.nl - Technologie & Wetenschap',
       url: 'https://www.nu.nl/rss/tech-wetenschap',
     ),
     Feed(
@@ -47,6 +47,10 @@ class Feed {
       url: 'https://112nederland.nl/feed/',
     ),
     Feed(
+      title: 'Omroep Gelderland',
+      url: 'https://www.gld.nl/rss/index.xml',
+    ),
+    Feed(
       title: 'BBC - World',
       url: 'https://feeds.bbci.co.uk/news/world/rss.xml',
     ),
@@ -68,7 +72,7 @@ class Feed {
     ),
     Feed(
       title: 'Motorsport.com - NL',
-      url: 'https://nl.motorsport.com/rss/',
+      url: 'https://nl.motorsport.com/rss/f1/news/',
     ),
     Feed(
       title: 'Open AI',
@@ -82,10 +86,10 @@ class Feed {
       title: 'MIT - AI',
       url: 'https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml',
     ),
-    Feed(
-      title: 'Machine Learning Mastery',
-      url: 'https://machinelearningmastery.com/feed/',
-    ),
+    // Feed(
+    //   title: 'Machine Learning Mastery',
+    //   url: 'https://machinelearningmastery.com/feed/',
+    // ),
     Feed(
       title: 'Gizmodo',
       url: 'https://gizmodo.com/feed',
@@ -111,8 +115,8 @@ class Feed {
       url: 'https://scientias.nl/nieuws/astronomie-ruimtevaart/feed/',
     ),
     Feed(
-      title: 'Scientias - Psychologie',
-      url: 'https://scientias.nl/nieuws/gezondheid-psychologie/feed/',
+      title: 'Scientias - Gezondheid',
+      url: 'https://scientias.nl/nieuws/gezondheid/feed/',
     ),
     Feed(
       title: 'Scientias - Natuur & Klimaat',
@@ -125,6 +129,10 @@ class Feed {
     Feed(
       title: 'Flutter',
       url: 'https://blog.flutter.wtf/rss/',
+    ),
+    Feed(
+      title: 'Visual Studio Code',
+      url: 'https://code.visualstudio.com/feed.xml',
     ),
     Feed(
       title: 'De Speld',

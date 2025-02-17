@@ -48,14 +48,18 @@ class WindowTopBar extends StatelessWidget {
                         icon: Icon(
                           Icons.arrow_back, size: 24,
                           color: Theme.of(context).colorScheme.onSurface,
-                        )
+                        ),
+                        hoverColor:
+                          Theme.of(context).colorScheme.onSurface.withAlpha(32),
                       ),
                       IconButton(
                         onPressed: refreshPage,
                         icon: Icon(
                           Icons.refresh, size: 24,
                           color: Theme.of(context).colorScheme.onSurface,
-                        )
+                        ),
+                        hoverColor:
+                          Theme.of(context).colorScheme.onSurface.withAlpha(32),
                       ),
                     ],
                   ),
