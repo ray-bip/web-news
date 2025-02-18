@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:web_news/ui/screens/full_article_screen.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
 class FeedItemTileSubtitle extends StatelessWidget {
@@ -19,6 +21,25 @@ class FeedItemTileSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void goToFullArticleScreen() {
+      final String feedTitle = GoRouterState.of(context).pathParameters['feedTitle'].toString();
+      final String feedUrl = GoRouterState.of(context).pathParameters['feedUrl'].toString();
+      final String feedContentElement = GoRouterState.of(context).pathParameters['feedContentElement'].toString();
+
+      context.goNamed(
+        FullArticleScreen.routeName,
+        // it only works when all pathParameters are provided
+        // but this might not be necessary, since we're only extending the route
+        // TODO: find out if existing path parameters can be left out
+        pathParameters: {
+          'pageUrl': feedItemLink,
+          'feedTitle': feedTitle,
+          'feedUrl': feedUrl,
+          'feedContentElement': feedContentElement,
+        },
+      );
+    }
+
     return Padding(
       padding: Platform.isLinux
         ? const EdgeInsets.fromLTRB(8, 12, 0 ,0) : const EdgeInsets.only(top: 0),
@@ -56,6 +77,7 @@ class FeedItemTileSubtitle extends StatelessWidget {
                   ? VisualDensity.comfortable
                   : VisualDensity.compact,
               ),
+              const SizedBox(width: 8),
               IconButton(
                 onPressed: () {
                   openBrowser(feedItemLink);
@@ -69,6 +91,20 @@ class FeedItemTileSubtitle extends StatelessWidget {
                 icon: Icon(
                   Icons.open_in_new,
                   size: Platform.isLinux ? 24 : 18,
+                  color: tileIsActive
+                    ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
+                    : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                ),
+                visualDensity: Platform.isLinux
+                  ? VisualDensity.comfortable
+                  : VisualDensity.compact,
+              ),
+              const SizedBox(width: 8),
+              IconButton(
+                onPressed: goToFullArticleScreen,
+                icon: Icon(
+                  Icons.read_more,
+                  size: Platform.isLinux ? 32 : 24,
                   color: tileIsActive
                     ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
                     : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),

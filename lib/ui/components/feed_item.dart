@@ -19,8 +19,6 @@ class FeedItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(feedType);
-    
     String feedItemImage = '';
     String feedItemTitle = '';
     String feedItemDate = '';

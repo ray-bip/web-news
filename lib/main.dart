@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:screen_retriever/screen_retriever.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
+import 'package:web_news/ui/screens/full_article_screen.dart';
 import 'package:web_news/ui/screens/home_screen.dart';
 import 'package:web_news/utils/constants.dart';
 
@@ -108,6 +109,33 @@ class TheApp extends StatelessWidget {
                 },
               );
             },
+            routes: [
+              GoRoute(
+                name: FullArticleScreen.routeName,
+                path: 'full_article/:pageUrl',
+                pageBuilder: (context, state) {
+                  return CustomTransitionPage(
+                    key: state.pageKey,
+                    child: FullArticleScreen(
+                      pageUrl: state.pathParameters['pageUrl']!,
+                    ),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      const begin = Offset(1.0, 0.0); // Slide from right
+                      const end = Offset.zero;
+                      const curve = Curves.fastOutSlowIn;
+
+                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
+
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    },
+                  );
+                },
+              ),
+            ]
           ),
         ],
       ),
