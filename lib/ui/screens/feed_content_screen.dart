@@ -42,7 +42,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     );
   }
   
-  // declare feed type variable
   late String feedType = '';
   
   Future<void> getFeedItems({int startIndex = 0, int batchSize = 10}) async {
@@ -145,7 +144,9 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       )
                       : GestureDetector(
                         onHorizontalDragEnd: (details) {
-                          if (details.primaryVelocity! > 0) {
+                          const double swipeThreshold = 1000;
+
+                          if (details.primaryVelocity != null && details.primaryVelocity! > swipeThreshold) {
                             Navigator.pop(context);
                           }
                         },

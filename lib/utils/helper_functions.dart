@@ -1,18 +1,12 @@
-import 'dart:io';
-
 import 'package:html_unescape/html_unescape.dart' show HtmlUnescape;
 import 'package:url_launcher/url_launcher.dart';
 
 void openBrowser(String url) async {
-  if (Platform.isLinux) {
-    Process.run('xdg-open', [url]);
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   } else {
-    final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
-    }
+    throw 'Could not launch $url';
   }
 }
 

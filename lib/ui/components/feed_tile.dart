@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
+import 'package:web_news/utils/helper_functions.dart';
 
 class FeedTile extends StatelessWidget {
   final String feedTitle;
@@ -43,7 +46,17 @@ class FeedTile extends StatelessWidget {
         child: ListTile(
           onTap: goToFeedContentScreen,
           splashColor: Colors.transparent,
-          leading: Icon(
+          leading: Platform.isLinux
+          ? IconButton(
+            onPressed: () {
+              openBrowser(feedUrl);
+            },
+            icon: Icon(
+              Icons.rss_feed,
+              color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+            ),
+          )
+          : Icon(
             Icons.rss_feed,
             color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
           ),
