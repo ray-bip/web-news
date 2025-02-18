@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class FeedItemTileLeading extends StatelessWidget {
@@ -14,8 +16,8 @@ class FeedItemTileLeading extends StatelessWidget {
       borderRadius: BorderRadius.circular(2),
       child: Image.network(
         feedItemImage,
-        width: 64,
-        height: 64,
+        width: Platform.isLinux ? 72 : 56,
+        height: Platform.isLinux ? 72 : 56,
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) {
