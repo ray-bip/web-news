@@ -14,11 +14,13 @@ class FeedContentScreen extends StatefulWidget {
   static const String routeName = 'feed_content';
   final String feedTitle;
   final String feedUrl;
+  final String feedContentElement;
 
   const FeedContentScreen({
     super.key,
     required this.feedTitle,
     required this.feedUrl,
+    required this.feedContentElement
   });
 
   @override
@@ -203,26 +205,28 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                     feedItemDate =
                                       DateFormat('yyyy/MM/dd - HH:mm').format(parsedDate);
                                   }
-                                          
-                                  // retrieve and sanitize description
-                                  if (item['description'] != null && item['description']['\$t'] != null) {
-                                    feedItemDescription = item['description']['\$t'].toString();
-                                  } else if (item['description'] != null) {
-                                    feedItemDescription = item['description'].toString();
+
+                                  if (widget.feedContentElement == 'description') {
+                                    // retrieve and sanitize description
+                                    if (item['description'] != null && item['description']['\$t'] != null) {
+                                      feedItemDescription = item['description']['\$t'].toString();
+                                    } else if (item['description'] != null) {
+                                      feedItemDescription = item['description'].toString();
+                                    }
+                                    
+                                    feedItemDescription = sanitizeDirtyString(feedItemDescription);
+                                  } else {
+                                    // retrieve and sanitize content
+                                    if (item['content\$encoded'] != null &&
+                                      item['content\$encoded']['\$t'] != null) {
+                                      feedItemContent = item['content\$encoded']['\$t'].toString();
+                                    } else if (item['content\$encoded'] != null) {
+                                      feedItemContent = item['content\$encoded'].toString();
+                                    }
+                                    
+                                    feedItemContent = sanitizeDirtyString(feedItemContent);
                                   }
                                   
-                                  feedItemDescription = sanitizeDirtyString(feedItemDescription);
-                                      
-                                  // retrieve and sanitize content
-                                  if (item['content\$encoded'] != null &&
-                                    item['content\$encoded']['\$t'] != null) {
-                                    feedItemContent = item['content\$encoded']['\$t'].toString();
-                                  } else if (item['content\$encoded'] != null) {
-                                    feedItemContent = item['content\$encoded'].toString();
-                                  }
-                                  
-                                  feedItemContent = sanitizeDirtyString(feedItemContent);
-                              
                                   // retrieve and clean link
                                   if (item['link'] != null) {
                                     if (item['link'] is Map && item['link']['\$t'] != null) {

@@ -84,13 +84,14 @@ class TheApp extends StatelessWidget {
         routes: [
           GoRoute(
             name: FeedContentScreen.routeName,
-            path: 'feed_content/:feedTitle/:feedUrl',
+            path: 'feed_content/:feedTitle/:feedUrl/:feedContentElement',
             pageBuilder: (context, state) {
               return CustomTransitionPage(
                 key: state.pageKey,
                 child: FeedContentScreen(
                   feedTitle: state.pathParameters['feedTitle']!,
                   feedUrl: state.pathParameters['feedUrl']!,
+                  feedContentElement: state.pathParameters['feedContentElement']!,
                 ),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                   const begin = Offset(1.0, 0.0); // Slide from right

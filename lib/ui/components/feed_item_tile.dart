@@ -74,7 +74,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
       splashColor: Colors.transparent,
       child: Html(
         data: contentOrDescription,
-        doNotRenderTheseTags: {'a', 'img', 'form'},
+        doNotRenderTheseTags: {'a', 'form', 'img'},
         style: {
           '*' : Style(
             color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(192),

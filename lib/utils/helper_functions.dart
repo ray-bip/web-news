@@ -46,8 +46,9 @@ String sanitizeDirtyString(String dirtyString) {
       // the empty space below contains a character, believe it or not
       // (and it works, so don't touch it!)
       .replaceAll(',â', '"')
-      // replace some other weird character with a space
+      // replace some other weird characters with whatever is appropriate
       .replaceAll('â', ' ')
+      .replaceAll('â¢', '&bull;')
       // replace a collection of common phrases
       .replaceAll('Het bericht  verscheen eerst op .', '')
       .trim());

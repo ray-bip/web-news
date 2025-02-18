@@ -49,6 +49,7 @@ class HomeScreen extends StatelessWidget {
                         child: FeedTile(
                           feedTitle: feeds[index].title,
                           feedUrl: feeds[index].url,
+                          feedContentElement: feeds[index].contentElement,
                         ),
                       );
                     },
