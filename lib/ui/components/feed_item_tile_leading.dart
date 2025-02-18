@@ -24,14 +24,14 @@ class FeedItemTileLeading extends StatelessWidget {
             return child;
           } else {
             return Container(
-              color: Theme.of(context).colorScheme.surface,
-              width: 64,
-              height: 64,
+              color: Theme.of(context).colorScheme.surface.withAlpha(128),
+              width: Platform.isLinux ? 72 : 56,
+              height: Platform.isLinux ? 72 : 56,
               child: Center(
                 child: Text(
                   'image loading...',
                   style: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+                    color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
                     fontSize: 10,
                   ),
                   textAlign: TextAlign.center,
@@ -42,14 +42,14 @@ class FeedItemTileLeading extends StatelessWidget {
         },
         errorBuilder: (context, error, stackTrace) {
           return Container(
-            color: Theme.of(context).colorScheme.surface,
-            width: 64,
-            height: 64,
+            color: Theme.of(context).colorScheme.surface.withAlpha(128),
+            width: Platform.isLinux ? 72 : 56,
+            height: Platform.isLinux ? 72 : 56,
             child: Center(
               child: Text(
                 'image not available',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(160),
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
                   fontSize: 10,
                 ),
                 textAlign: TextAlign.center,

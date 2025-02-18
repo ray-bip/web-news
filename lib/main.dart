@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:screen_retriever/screen_retriever.dart';
+import 'package:web_news/providers/theme_provider.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
 import 'package:web_news/ui/screens/home_screen.dart';
 import 'package:web_news/utils/constants.dart';
@@ -36,7 +38,12 @@ void main() {
       );
 
       // run the app
-      runApp(TheApp());
+      runApp(
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
+          child: TheApp(),
+        ),
+      );
 
       // do window management
       doWhenWindowReady(() {
@@ -50,7 +57,12 @@ void main() {
     }
     initializeApplication();
   } else {
-    runApp(TheApp());
+    runApp(
+      ChangeNotifierProvider(
+        create: (context) => ThemeProvider(),
+        child: TheApp(),
+      ),
+    );
   }
 }
 
@@ -59,13 +71,24 @@ class TheApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
       title: appName,
+      themeMode: themeProvider.themeMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 9, 127, 115),
+          brightness: Brightness.light,
+        ),
+        useMaterial3: true,
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 9, 127, 115),
+          // seedColor: const Color.fromARGB(255, 44, 19, 88), // nice purple alternative
           brightness: Brightness.dark,
         ),
         useMaterial3: true,

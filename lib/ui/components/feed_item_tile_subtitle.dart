@@ -32,7 +32,7 @@ class FeedItemTileSubtitle extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: tileIsActive
                   ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
-                  : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                  : Theme.of(context).colorScheme.onSurface.withAlpha(192),
                 fontSize: Platform.isLinux ? 12 : 11,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.normal,
@@ -50,7 +50,7 @@ class FeedItemTileSubtitle extends StatelessWidget {
                   size: Platform.isLinux ? 24 : 18,
                   color: tileIsActive
                     ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
-                    : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                    : Theme.of(context).colorScheme.onSurface.withAlpha(192),
                 ),
                 visualDensity: Platform.isLinux
                   ? VisualDensity.comfortable
@@ -71,7 +71,7 @@ class FeedItemTileSubtitle extends StatelessWidget {
                   size: Platform.isLinux ? 24 : 18,
                   color: tileIsActive
                     ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
-                    : Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+                    : Theme.of(context).colorScheme.onSurface.withAlpha(192),
                 ),
                 visualDensity: Platform.isLinux
                   ? VisualDensity.comfortable

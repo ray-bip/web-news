@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart' show HtmlUnescape;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,4 +47,8 @@ String sanitizeDirtyString(String dirtyString) {
       // replace a collection of common phrases
       .replaceAll('Het bericht  verscheen eerst op .', '')
       .trim());
+  }
+
+  bool isDarkMode(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
   }

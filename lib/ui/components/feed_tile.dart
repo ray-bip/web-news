@@ -34,9 +34,14 @@ class FeedTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
+            colors: isDarkMode(context)
+            ? [
               Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
               Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
+            ]
+            : [
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(64),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

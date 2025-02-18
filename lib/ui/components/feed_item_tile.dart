@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:web_news/ui/components/feed_item_tile_leading.dart';
 import 'package:web_news/ui/components/feed_item_tile_subtitle.dart';
+import 'package:web_news/utils/helper_functions.dart';
 
 class FeedItemTile extends StatefulWidget {
   final String feedItemImage;
@@ -107,13 +108,22 @@ class _FeedItemTileState extends State<FeedItemTile> {
             curve: Curves.easeInOut,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
+                colors: isDarkMode(context)
+                ? [
                   _tileIsActive
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
                   : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
                   _tileIsActive
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.primaryContainer,
+                ]
+                : [
+                  _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
+                  _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
@@ -128,8 +138,12 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   const SnackBar(content: Text('Title copied!')),
                 );
               },
-              hoverColor: Colors.black.withAlpha(32),
-              splashColor: Colors.black.withAlpha(96),
+              hoverColor: isDarkMode(context)
+                ? Colors.black.withAlpha(160)
+                : Colors.white,
+              splashColor: isDarkMode(context)
+                ? Colors.black.withAlpha(96)
+                : Colors.white.withAlpha(96),
               isThreeLine: true,
               contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
               leading: FeedItemTileLeading(
@@ -160,9 +174,13 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? const Duration(milliseconds: 0)
                 : const Duration(milliseconds: 1600),
               curve: Curves.easeInOut,
-              color: _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+              color: isDarkMode(context)
+                ? _tileIsActive
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(160)
+                : _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(144),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
@@ -175,15 +193,15 @@ class _FeedItemTileState extends State<FeedItemTile> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                       child: widget.feedItemDescription.isEmpty
                         && widget.feedItemContent.isEmpty
-                      ? const Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(bottom: 16),
-                          child: Text('[No content available in rss feed]'),
-                        ),
-                      )
-                      : widget.feedItemContent != ''
-                          ? displayContentOrDescription(widget.feedItemContent)
-                          : displayContentOrDescription(widget.feedItemDescription),
+                        ? const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 16),
+                            child: Text('[No content available in rss feed]'),
+                          ),
+                        )
+                        : widget.feedItemContent != ''
+                            ? displayContentOrDescription(widget.feedItemContent)
+                            : displayContentOrDescription(widget.feedItemDescription),
                     ),
                 ),
               )
@@ -194,9 +212,13 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? const Duration(milliseconds: 0)
                 : const Duration(milliseconds: 1600),
               curve: Curves.easeInOut,
-              color: _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
-                : Theme.of(context).colorScheme.primaryContainer.withAlpha(128),
+              color: isDarkMode(context)
+                ? _tileIsActive
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
+                : _tileIsActive
+                  ? Theme.of(context).colorScheme.secondaryContainer
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(160),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

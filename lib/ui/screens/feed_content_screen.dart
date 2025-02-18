@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_news/ui/components/feed_item.dart';
+import 'package:web_news/utils/helper_functions.dart';
 import 'package:web_news/utils/window_top_bar.dart';
 import 'package:xml2json/xml2json.dart';
 
@@ -133,7 +134,9 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    color: isDarkMode(context)
+                    ? Theme.of(context).colorScheme.surfaceContainer
+                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(64),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                       child: isLoading

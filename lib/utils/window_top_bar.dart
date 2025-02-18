@@ -1,5 +1,8 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:web_news/providers/theme_provider.dart';
+import 'package:web_news/utils/helper_functions.dart';
 
 class WindowTopBar extends StatelessWidget {
   final String currentRoute;
@@ -18,7 +21,9 @@ class WindowTopBar extends StatelessWidget {
     return SizedBox(
       height: 48,
       child: Container(
-        color: Theme.of(context).colorScheme.surface,
+        color: isDarkMode(context)
+        ? Theme.of(context).colorScheme.surface
+        : Theme.of(context).colorScheme.surfaceTint.withAlpha(112),
         child: WindowTitleBarBox(
           child: Stack(
             children: [
@@ -70,6 +75,16 @@ class WindowTopBar extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
+                        icon: Icon(
+                          Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+                              ? Icons.dark_mode
+                              : Icons.light_mode,
+                        ),
+                        onPressed: () {
+                          Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                        },
+                      ),
+                      IconButton(
                         onPressed: () {
                           appWindow.close();
                         },
@@ -83,7 +98,6 @@ class WindowTopBar extends StatelessWidget {
                           ),
                           child: InkWell(
                             onTap: () {
-                              print('click!');
                               appWindow.close();
                             },
                             borderRadius: BorderRadius.circular(0),

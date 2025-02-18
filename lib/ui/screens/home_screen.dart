@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:web_news/data/feed.dart';
+import 'package:web_news/providers/theme_provider.dart';
 import 'package:web_news/ui/components/feed_tile.dart';
 import 'package:web_news/utils/constants.dart';
+import 'package:web_news/utils/helper_functions.dart';
 import 'package:web_news/utils/window_top_bar.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,13 +20,25 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: Platform.isAndroid ? AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
+        leading: IconButton(
+          icon: Icon(
+            Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+                ? Icons.dark_mode
+                : Icons.light_mode,
+          ),
+          onPressed: () {
+            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+          },
+        ),
         title: const Text(appName),
         centerTitle: true,
       ) : null,
       body: Container(
-        decoration: Platform.isLinux ?  BoxDecoration(
+        decoration: Platform.isLinux ? BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).colorScheme.surfaceBright,
+            color: isDarkMode(context)
+            ? Theme.of(context).colorScheme.surfaceBright
+            : Theme.of(context).colorScheme.surfaceTint.withAlpha(160),
             width: 1.6,
           ),
         ) : null,
@@ -35,7 +50,9 @@ class HomeScreen extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.surfaceContainer,
+                color: isDarkMode(context)
+                ? Theme.of(context).colorScheme.surfaceContainer
+                : Theme.of(context).colorScheme.surfaceTint.withAlpha(64),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                   child: ListView.separated(
