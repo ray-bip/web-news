@@ -83,6 +83,7 @@ class TheApp extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 9, 127, 115), // turquiose
           // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple 1
           // seedColor: const Color.fromARGB(255, 5, 0, 12), // purple 2
+          // seedColor: const Color.fromARGB(255, 231, 137, 30), // orange
           brightness: Brightness.light,
         ),
         useMaterial3: true,
@@ -92,6 +93,7 @@ class TheApp extends StatelessWidget {
           seedColor: const Color.fromARGB(255, 9, 127, 115), // turquiose
           // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple 1
           // seedColor: const Color.fromARGB(255, 5, 0, 12), // purple 2
+          // seedColor: const Color.fromARGB(255, 231, 137, 30), // orange
           brightness: Brightness.dark,
         ),
         useMaterial3: true,

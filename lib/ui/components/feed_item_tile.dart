@@ -188,7 +188,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
-                    ? MediaQuery.of(context).size.height - 260
+                    ? MediaQuery.of(context).size.height - 280
                     : MediaQuery.of(context).size.height - 320,
                 ),
                 child: SingleChildScrollView(
