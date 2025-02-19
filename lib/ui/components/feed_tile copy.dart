@@ -23,35 +23,12 @@ class FeedTile extends StatefulWidget {
 
 class _FeedTileState extends State<FeedTile> {
   bool _tileIsActive = false;
-  late GoRouter router;
-
-  @override
-  void initState() {
-    super.initState();
-    router = GoRouter.of(context);
-    router.routerDelegate.addListener(_onRouteChange);
-  }
-
-  @override
-  void dispose() {
-    router.routerDelegate.removeListener(_onRouteChange);
-    super.dispose();
-  }
-
-  void _onRouteChange() {
-    final currentRoute = router.routerDelegate.currentConfiguration.uri.toString();
-    if (currentRoute == '/') {
-      setState(() {
-        _tileIsActive = false;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     void goToFeedContentScreen() {
       setState(() {
-        _tileIsActive = true;
+        _tileIsActive = !_tileIsActive;
       });
 
       context.goNamed(
@@ -68,27 +45,36 @@ class _FeedTileState extends State<FeedTile> {
       child: AnimatedContainer(
         duration: _tileIsActive
           ? const Duration(milliseconds: 0)
-          : const Duration(milliseconds: 2000),
+          : const Duration(milliseconds: 1600),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDarkMode(context)
-              ? [
-                _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
-                : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
-                _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                : Theme.of(context).colorScheme.primaryContainer,
-              ]
-              : [
-                _tileIsActive
-                ? Theme.of(context).colorScheme.secondaryContainer
-                : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
-                _tileIsActive
-                ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
-                : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
-              ],
+            ? [
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(255),
+            ]
+            : [
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(80),
+              Theme.of(context).colorScheme.primaryContainer.withAlpha(64),
+            ],
+            // colors: isDarkMode(context)
+            //   ? [
+            //     _tileIsActive
+            //     ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
+            //     : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+            //     _tileIsActive
+            //     ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+            //     : Theme.of(context).colorScheme.primaryContainer,
+            //   ]
+            //   : [
+            //     _tileIsActive
+            //     ? Theme.of(context).colorScheme.secondaryContainer
+            //     : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
+            //     _tileIsActive
+            //     ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+            //     : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
+            //   ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

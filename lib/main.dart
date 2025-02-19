@@ -87,8 +87,8 @@ class TheApp extends StatelessWidget {
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 9, 127, 115),
-          // seedColor: const Color.fromARGB(255, 44, 19, 88), // nice purple alternative
+          seedColor: const Color.fromARGB(255, 9, 127, 115), // green
+          // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
