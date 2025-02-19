@@ -137,8 +137,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                 Expanded(
                   child: Container(
                     color: isDarkMode(context)
-                    ? Theme.of(context).colorScheme.surfaceContainer
-                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(64),
+                      ? Theme.of(context).colorScheme.surfaceContainer
+                      : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                       child: _isLoading
@@ -149,9 +149,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                       )
                       : GestureDetector(
                         onHorizontalDragEnd: (details) {
-                          const double swipeThreshold = 1000;
+                          const double swipeThreshold = 640;
 
-                          if (details.primaryVelocity != null && details.primaryVelocity! > swipeThreshold) {
+                          if (details.primaryVelocity != null 
+                            && details.primaryVelocity! > swipeThreshold) {
                             Navigator.pop(context);
                           }
                         },

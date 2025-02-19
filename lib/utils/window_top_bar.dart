@@ -22,8 +22,8 @@ class WindowTopBar extends StatelessWidget {
       height: 48,
       child: Container(
         color: isDarkMode(context)
-        ? Theme.of(context).colorScheme.surface
-        : Theme.of(context).colorScheme.surfaceTint.withAlpha(112),
+          ? Theme.of(context).colorScheme.surface
+          : Theme.of(context).colorScheme.surface,
         child: WindowTitleBarBox(
           child: Stack(
             children: [
@@ -77,8 +77,8 @@ class WindowTopBar extends StatelessWidget {
                       IconButton(
                         icon: Icon(
                           Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
-                              ? Icons.dark_mode
-                              : Icons.light_mode,
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
                         ),
                         onPressed: () {
                           Provider.of<ThemeProvider>(context, listen: false).toggleTheme();

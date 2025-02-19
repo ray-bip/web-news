@@ -30,8 +30,12 @@ class FeedItemTileSubtitle extends StatelessWidget {
               feedItemDate,
               softWrap: false,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: tileIsActive
+                color: isDarkMode(context)
+                ? tileIsActive
                   ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
+                  : Theme.of(context).colorScheme.onSurface.withAlpha(192)
+                : tileIsActive
+                  ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.onSurface.withAlpha(192),
                 fontSize: Platform.isLinux ? 12 : 11,
                 fontStyle: FontStyle.italic,
@@ -56,10 +60,10 @@ class FeedItemTileSubtitle extends StatelessWidget {
                   ? VisualDensity.comfortable
                   : VisualDensity.compact,
               ),
+              if (Platform.isLinux)
+              const SizedBox(width: 8),
               IconButton(
-                onPressed: () {
-                  openBrowser(feedItemLink);
-                },
+                onPressed: () => openBrowser(feedItemLink),
                 onLongPress: () {
                   Clipboard.setData(ClipboardData(text: feedItemLink));
                   ScaffoldMessenger.of(context).showSnackBar(

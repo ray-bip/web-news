@@ -113,19 +113,19 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 colors: isDarkMode(context)
                   ? [
                     _tileIsActive
-                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
-                    : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                      ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
+                      : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
                     _tileIsActive
-                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                    : Theme.of(context).colorScheme.primaryContainer,
+                      ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                      : Theme.of(context).colorScheme.primaryContainer,
                   ]
                   : [
                     _tileIsActive
-                    ? Theme.of(context).colorScheme.secondaryContainer
-                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
+                      ? Theme.of(context).colorScheme.surfaceTint.withAlpha(80)
+                      : Theme.of(context).colorScheme.secondaryContainer.withAlpha(160),
                     _tileIsActive
-                    ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
-                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
+                      ? Theme.of(context).colorScheme.surfaceTint.withAlpha(56)
+                      : Theme.of(context).colorScheme.secondaryContainer.withAlpha(128),
                   ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
@@ -140,12 +140,14 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   const SnackBar(content: Text('Title copied!')),
                 );
               },
-              hoverColor: isDarkMode(context)
-                ? Colors.black.withAlpha(160)
-                : Colors.white,
+              hoverColor: _tileIsActive
+                ? Colors.transparent
+                : isDarkMode(context)
+                    ? Colors.black
+                    : Colors.black.withAlpha(16),
               splashColor: isDarkMode(context)
                 ? Colors.black.withAlpha(96)
-                : Colors.white.withAlpha(96),
+                : Colors.black.withAlpha(8),
               isThreeLine: true,
               contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
               leading: FeedItemTileLeading(
@@ -181,7 +183,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.primaryContainer.withAlpha(160)
                 : _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                  ? Theme.of(context).colorScheme.surfaceTint.withAlpha(56)
                   : Theme.of(context).colorScheme.surfaceTint.withAlpha(144),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
@@ -219,16 +221,31 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
                   : Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
                 : _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer
+                  ? Theme.of(context).colorScheme.surfaceTint.withAlpha(80)
                   : Theme.of(context).colorScheme.surfaceTint.withAlpha(160),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                    child: IconButton(
-                      onPressed: toggleContentOrDescription,
-                      icon: const Icon(Icons.arrow_circle_up, size: 32),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => openBrowser(widget.feedItemLink),
+                          onLongPress: () {
+                            Clipboard.setData(ClipboardData(text: widget.feedItemLink));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Link copied!')),
+                            );
+                          },
+                          icon: const Icon(Icons.open_in_new, size: 32),
+                        ),
+                        const SizedBox(width: 16),
+                        IconButton(
+                          onPressed: toggleContentOrDescription,
+                          icon: const Icon(Icons.arrow_circle_up, size: 32),
+                        ),
+                      ],
                     ),
                   ),
                 ],

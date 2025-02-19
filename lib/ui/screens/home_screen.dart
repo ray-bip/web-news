@@ -23,8 +23,8 @@ class HomeScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(
             Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
-                ? Icons.dark_mode
-                : Icons.light_mode,
+              ? Icons.light_mode
+              : Icons.dark_mode,
           ),
           onPressed: () {
             Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
@@ -37,8 +37,8 @@ class HomeScreen extends StatelessWidget {
         decoration: Platform.isLinux ? BoxDecoration(
           border: Border.all(
             color: isDarkMode(context)
-            ? Theme.of(context).colorScheme.surfaceBright
-            : Theme.of(context).colorScheme.surfaceTint.withAlpha(160),
+              ? Theme.of(context).colorScheme.surfaceBright
+              : Theme.of(context).colorScheme.surfaceBright,
             width: 1.6,
           ),
         ) : null,
@@ -51,8 +51,8 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 color: isDarkMode(context)
-                ? Theme.of(context).colorScheme.surfaceContainer
-                : Theme.of(context).colorScheme.surfaceTint.withAlpha(64),
+                  ? Theme.of(context).colorScheme.surfaceContainer
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(48),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                   child: ListView.separated(

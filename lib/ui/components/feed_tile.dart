@@ -68,26 +68,26 @@ class _FeedTileState extends State<FeedTile> {
       child: AnimatedContainer(
         duration: _tileIsActive
           ? const Duration(milliseconds: 0)
-          : const Duration(milliseconds: 2000),
+          : const Duration(milliseconds: 2400),
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: isDarkMode(context)
               ? [
                 _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
-                : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(192),
                 _tileIsActive
-                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                : Theme.of(context).colorScheme.primaryContainer,
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                  : Theme.of(context).colorScheme.primaryContainer,
               ]
               : [
                 _tileIsActive
-                ? Theme.of(context).colorScheme.secondaryContainer
-                : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
+                  ? Theme.of(context).colorScheme.tertiaryContainer
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(64),
                 _tileIsActive
-                ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
-                : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
+                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
+                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(96),
               ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -97,6 +97,9 @@ class _FeedTileState extends State<FeedTile> {
         child: ListTile(
           onTap: goToFeedContentScreen,
           splashColor: Colors.transparent,
+          hoverColor: isDarkMode(context)
+            ? Colors.white.withAlpha(64)
+            : Colors.black.withAlpha(16),
           leading: Platform.isLinux
           ? IconButton(
             onPressed: () {
