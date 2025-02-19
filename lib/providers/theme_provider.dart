@@ -15,16 +15,16 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
     _saveTheme();
   }
-
+  
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final isDark = prefs.getBool('isDarkTheme') ?? false;
-    _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
+    final isLight = prefs.getBool('isLightTheme') ?? false;
+    _themeMode = isLight ? ThemeMode.light : ThemeMode.dark;
     notifyListeners();
   }
 
   Future<void> _saveTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isDarkTheme', _themeMode == ThemeMode.dark);
+    prefs.setBool('isLightTheme', _themeMode == ThemeMode.light);
   }
 }
