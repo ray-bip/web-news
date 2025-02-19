@@ -19,7 +19,8 @@ String sanitizeDirtyString(String dirtyString) {
       // remove "\\n"
       .replaceAll('\\\\n', '')
       // remove complete hyperlinks
-      .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
+      // as a test, we're keeping them for now, so the line below is commented out
+      // .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
       // remove images
       .replaceAll(RegExp(r'<img[^>]*>'), '')
       // remove forms
@@ -30,21 +31,26 @@ String sanitizeDirtyString(String dirtyString) {
       .replaceAll(RegExp(r'\[.*?\].*'), '...')
       // replace <!-- and everything that follows with ...
       .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
+      
+      // disable filters below, as we are now properly decoding the http response
+      // test this for a while, and remove commented out code below if no longer needed
       // replace dumb, hideous single and double quotes
-      .replaceAll('‘', '\'')
-      .replaceAll('’', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '\'')
-      .replaceAll('â', '"')
+      // .replaceAll('‘', '\'')
+      // .replaceAll('’', '\'')
+      // .replaceAll('â', '\'')
+      // .replaceAll('â', '\'')
+      // .replaceAll('â', '\'')
+      // .replaceAll('â', '\'')
+      // .replaceAll('â', '"')
       // the empty space below contains a character, believe it or not
       // (and it works, so don't touch it!)
-      .replaceAll(',â', '"')
+      // .replaceAll(',â', '"')
       // replace some other weird characters with whatever is appropriate
-      .replaceAll('â', ' ')
-      .replaceAll('â¢', '&bull;')
+      // .replaceAll('â', ' ')
+      // .replaceAll('â¢', '&bull;')
       // replace a collection of common phrases
+
+      
       .replaceAll('Het bericht  verscheen eerst op .', '')
       .trim());
   }

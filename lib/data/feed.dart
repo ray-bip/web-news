@@ -12,6 +12,7 @@ class Feed {
   // feeds Rianne:
   // NOS binnenland + buitenland
   // 112 Nederland
+  // GelreNieuws
   // Omroep Gelderland
   // BBC World + UN
   // Scientias feeds
@@ -55,6 +56,11 @@ class Feed {
     Feed(
       title: '112 Nederland',
       url: 'https://112nederland.nl/feed/',
+      contentElement: 'description'
+    ),
+    Feed(
+      title: 'GelreNieuws',
+      url: 'https://www.gelrenieuws.nl/rss',
       contentElement: 'description'
     ),
     Feed(

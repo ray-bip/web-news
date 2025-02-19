@@ -82,13 +82,14 @@ class FeedItem extends StatelessWidget {
       if (item['link'] != null) {
         if (item['link'] is Map && item['link']['\$t'] != null) {
           feedItemLink = item['link']['\$t'].toString();
-        } else if (item['link'] is String) {
+        } else if (item['link'] is Map && item['link']['\$t'] == null) {
           feedItemLink = item['link'].toString()
             .replaceAll('{__cdata: ', '')
             .replaceAll('}', '');
-        } 
+        }
       }
-    } else {
+
+    } else if (feedType == 'feed') {
       // retrieve image
       feedItemImage = (item['link'] as List)
         .firstWhere((l) => l['rel'] == 'related',

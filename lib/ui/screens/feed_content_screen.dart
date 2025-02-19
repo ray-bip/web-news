@@ -27,12 +27,12 @@ class FeedContentScreen extends StatefulWidget {
 }
 
 class _FeedContentScreenState extends State<FeedContentScreen> {
-  late Future<void> feedItemsFuture;
-  bool isLoading = true;
-  final Xml2Json xml2json = Xml2Json();
+  bool _isLoading = true;
   List feedItems = [];
+  late Future<void> feedItemsFuture;
+  final Xml2Json xml2json = Xml2Json();
   final ScrollController _scrollController = ScrollController();
-  
+
   // make listview draggable
   void _onVerticalDragUpdate(DragUpdateDetails details) {
     _scrollController.jumpTo(
@@ -50,8 +50,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
     final url = Uri.parse(widget.feedUrl);
     final response = await http.get(url);
+    final utf8ResponsBody = utf8.decode(response.bodyBytes);
 
-    xml2json.parse(response.body);
+    // xml2json.parse(response.body);
+    xml2json.parse(utf8ResponsBody);
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
     
@@ -67,7 +69,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
     setState(() {
       feedItems.addAll(newItems.skip(startIndex).take(batchSize));
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -139,7 +141,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                     : Theme.of(context).colorScheme.surfaceTint.withAlpha(64),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                      child: isLoading
+                      child: _isLoading
                       ? Center(
                         child: CircularProgressIndicator(
                           color: Theme.of(context).colorScheme.primaryContainer,
@@ -160,7 +162,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                               separatorBuilder: (BuildContext context, int index) {
                                 return const SizedBox(height: 8);
                               },
-                              itemCount: feedItems.length + (isLoading ? 1 : 0),
+                              itemCount: feedItems.length + (_isLoading ? 1 : 0),
                               itemBuilder: (context, index) {
                                 if (index == feedItems.length) {
                                   return Center(
@@ -183,13 +185,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                               child: GestureDetector(
                                 onVerticalDragUpdate: _onVerticalDragUpdate,
                                 child: Container(
-                                  margin: const EdgeInsets.only(left: 8),
-                                  height: 960,
+                                  margin: const EdgeInsets.fromLTRB(8, 6, 0, 0),
+                                  height: MediaQuery.of(context).size.height - 90,
                                   width: 90,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                                  color: Colors.transparent,
                                 ),
                               ),
                             ),

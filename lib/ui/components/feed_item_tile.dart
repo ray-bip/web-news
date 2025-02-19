@@ -46,7 +46,6 @@ class _FeedItemTileState extends State<FeedItemTile> {
     setState(() {
       _showContentOrDescription = !_showContentOrDescription;
       _tileIsActive = !_tileIsActive;
-      print(widget.feedItemLink);
     });
   }
 
@@ -75,12 +74,15 @@ class _FeedItemTileState extends State<FeedItemTile> {
       splashColor: Colors.transparent,
       child: Html(
         data: contentOrDescription,
-        doNotRenderTheseTags: {'a', 'form', 'img'},
+        doNotRenderTheseTags: {'form', 'img'},
         style: {
           '*' : Style(
             color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(192),
             fontSize: FontSize(Platform.isLinux ? 18 : 16),
             lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
+          ),
+          'a': Style(
+            textDecoration: TextDecoration.none,
           ),
           'h2': Style(
             fontSize: FontSize( Platform.isLinux ? 20 : 18),
@@ -109,22 +111,22 @@ class _FeedItemTileState extends State<FeedItemTile> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDarkMode(context)
-                ? [
-                  _tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
-                  _tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                  : Theme.of(context).colorScheme.primaryContainer,
-                ]
-                : [
-                  _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer
-                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
-                  _tileIsActive
-                  ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
-                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
-                ],
+                  ? [
+                    _tileIsActive
+                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
+                    : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                    _tileIsActive
+                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                    : Theme.of(context).colorScheme.primaryContainer,
+                  ]
+                  : [
+                    _tileIsActive
+                    ? Theme.of(context).colorScheme.secondaryContainer
+                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(96),
+                    _tileIsActive
+                    ? Theme.of(context).colorScheme.secondaryContainer.withAlpha(192)
+                    : Theme.of(context).colorScheme.surfaceTint.withAlpha(80),
+                  ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
               ),
