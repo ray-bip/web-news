@@ -80,7 +80,9 @@ class TheApp extends StatelessWidget {
       themeMode: themeProvider.themeMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 9, 127, 115),
+          seedColor: const Color.fromARGB(255, 9, 127, 115), // green
+          // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple 1
+          // seedColor: const Color.fromARGB(255, 5, 0, 12), // purple 2
           brightness: Brightness.light,
         ),
         useMaterial3: true,
@@ -88,7 +90,8 @@ class TheApp extends StatelessWidget {
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 9, 127, 115), // green
-          // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple
+          // seedColor: const Color.fromARGB(255, 44, 19, 88), // purple 1
+          // seedColor: const Color.fromARGB(255, 5, 0, 12), // purple 2
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
