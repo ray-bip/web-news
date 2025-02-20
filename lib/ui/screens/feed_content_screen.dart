@@ -44,34 +44,48 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   }
   
   late String feedType = '';
-  
+  bool _isFetching = false;
+
   Future<void> getFeedItems({int startIndex = 0, int batchSize = 10}) async {
-    if (widget.feedUrl.isEmpty) return;
+    if (widget.feedUrl.isEmpty || _isFetching) return;
+    
+    _isFetching = true;
 
     final url = Uri.parse(widget.feedUrl);
     final response = await http.get(url);
     final utf8ResponsBody = utf8.decode(response.bodyBytes);
 
-    // xml2json.parse(response.body);
     xml2json.parse(utf8ResponsBody);
     var jsondata = xml2json.toGData();
     var data = json.decode(jsondata);
-    
+
     List newItems = [];
-    
+
     if (data['rss'] != null) {
-      newItems = data['rss']['channel']['item'];
+      newItems = List.from(data['rss']['channel']['item']);
       feedType = 'rss';
     } else {
-      newItems = data['feed']['entry'];
+      newItems = List.from(data['feed']['entry']);
       feedType = 'feed';
     }
 
-    setState(() {
-      feedItems.addAll(newItems.skip(startIndex).take(batchSize));
-      _isLoading = false;
-    });
+    int remainingItems = newItems.length - startIndex;
+    int itemsToTake = remainingItems < batchSize ? remainingItems : batchSize;
+
+    if (itemsToTake > 0) {
+      setState(() {
+        for (var item in newItems.skip(startIndex).take(itemsToTake)) {
+          if (!feedItems.contains(item)) {
+            feedItems.add(item);
+          }
+        }
+        _isLoading = false;
+      });
+    }
+
+    _isFetching = false;
   }
+
 
   @override
   void initState() {

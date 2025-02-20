@@ -94,8 +94,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
               hoverColor: _tileIsActive
                 ? Colors.transparent
                 : isDarkMode(context)
-                    ? Colors.black
-                    : Colors.black.withAlpha(16),
+                  ? Colors.black
+                  : Colors.black.withAlpha(16),
               splashColor: isDarkMode(context)
                 ? Colors.black.withAlpha(96)
                 : Colors.black.withAlpha(8),
