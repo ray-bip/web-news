@@ -104,11 +104,6 @@ class Feed {
     // contentElement: 'description'
     // ),
     Feed(
-      title: 'Wired - AI',
-      url: 'https://www.wired.com/feed/tag/ai/latest/rss',
-      contentElement: 'description'
-    ),
-    Feed(
       title: 'MIT - AI',
       url: 'https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml',
       contentElement: 'content'

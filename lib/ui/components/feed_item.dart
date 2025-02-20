@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:web_news/ui/components/feed_item_tile.dart';
-import 'package:web_news/utils/helper_functions.dart' show sanitizeDirtyString;
+import 'package:web_news/utils/helper_functions.dart' show extractImageFromContent, sanitizeDirtyString;
 
 class FeedItem extends StatelessWidget {
   final dynamic item;
@@ -27,17 +27,6 @@ class FeedItem extends StatelessWidget {
     String feedItemLink = '';
 
     if (feedType == 'rss') {
-      // retrieve image
-      if (item['enclosure'] != null && item['enclosure']['url'] != null) {
-        feedItemImage = item['enclosure']['url'].toString();
-      } else if (item['image'] != null && item['image'] != '') {
-        feedItemImage = item['image']['\$t'];
-      } else if (item['media\$thumbnail'] != null) {
-        feedItemImage = item['media\$thumbnail']['url'];
-      } else if (item['media\$content'] != null) {
-        feedItemImage = item['media\$content']['url'];
-      }
-              
       // retrieve and sanitize title
       if (item['title'] != null && item['title']?['\$t'] != null) {
         feedItemTitle = item['title']['\$t'].toString();
@@ -87,6 +76,22 @@ class FeedItem extends StatelessWidget {
             .replaceAll('{__cdata: ', '')
             .replaceAll('}', '');
         }
+      }
+
+      // retrieve image
+      // do this last, because we may need to get this from the description / content
+      if (item['enclosure'] != null && item['enclosure']['url'] != null) {
+        feedItemImage = item['enclosure']['url'].toString();
+      } else if (item['image'] != null && item['image'] != '') {
+        feedItemImage = item['image']['\$t'];
+      } else if (item['media\$thumbnail'] != null) {
+        feedItemImage = item['media\$thumbnail']['url'];
+      } else if (item['media\$content'] != null) {
+        feedItemImage = item['media\$content']['url'];
+      } else if (item['description'].toString().contains(RegExp(r'<img[^>]*>'))) {
+        feedItemImage = extractImageFromContent(item['description'].toString())!;
+      } else if (item['content\$encoded'].toString().contains(RegExp(r'<img[^>]*>'))) {
+        feedItemImage = extractImageFromContent(item['content\$encoded'].toString())!;
       }
 
     } else if (feedType == 'feed') {

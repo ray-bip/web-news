@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:web_news/ui/components/feed_item_tile_content.dart';
 import 'package:web_news/ui/components/feed_item_tile_leading.dart';
 import 'package:web_news/ui/components/feed_item_tile_subtitle.dart';
 import 'package:web_news/utils/helper_functions.dart';
@@ -48,56 +48,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
       _tileIsActive = !_tileIsActive;
     });
   }
-
-  InkWell displayContentOrDescription(String contentOrDescription) {
-    // remove "<br><br>" from start of contentOrDescription
-    if (contentOrDescription.startsWith('<br><br>')) {
-      contentOrDescription = contentOrDescription.substring(8);
-    }
-    
-    // wrap the entire thing in <p></p> if that's not already the case, for consistent spacing
-    if (!contentOrDescription.startsWith('<p>')) {
-      contentOrDescription = '<p>$contentOrDescription</p>';
-    }
-
-    // return as HTML with some styling
-    return InkWell(
-      onLongPress: () {
-        Clipboard.setData(ClipboardData(text: contentOrDescription));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Text copied!')),
-        );
-      },
-      focusColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      child: Html(
-        data: contentOrDescription,
-        doNotRenderTheseTags: {'form', 'img'},
-        style: {
-          '*' : Style(
-            color: Theme.of(context).colorScheme.onSecondaryContainer.withAlpha(192),
-            fontSize: FontSize(Platform.isLinux ? 18 : 16),
-            lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
-          ),
-          'a': Style(
-            textDecoration: TextDecoration.none,
-          ),
-          'h2': Style(
-            fontSize: FontSize( Platform.isLinux ? 20 : 18),
-            margin: Margins.only(top: 32),
-          ),
-          'p': Style(
-            fontSize: FontSize(Platform.isLinux ? 18 : 16),
-            lineHeight: LineHeight(Platform.isLinux ? 1.8: 1.6),
-            margin: Margins.only(bottom: 24),
-          ),
-        }
-      ),
-    );
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -160,7 +111,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
                   widget.feedItemTitle,
                   style: TextStyle(
                     fontSize: Platform.isLinux ? 18 : 16,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: isDarkMode(context)
+                      ? Theme.of(context).colorScheme.onSurface.withAlpha(216)
+                      : Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -188,25 +141,32 @@ class _FeedItemTileState extends State<FeedItemTile> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
-                    ? MediaQuery.of(context).size.height - 280
-                    : MediaQuery.of(context).size.height - 320,
+                    ? MediaQuery.of(context).size.height - 320
+                    : MediaQuery.of(context).size.height - 344,
                 ),
-                child: SingleChildScrollView(
-                  child: 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                      child: widget.feedItemDescription.isEmpty
-                        && widget.feedItemContent.isEmpty
-                        ? const Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 16),
-                            child: Text('[No content available in rss feed]'),
-                          ),
-                        )
-                        : widget.feedItemContent != ''
-                            ? displayContentOrDescription(widget.feedItemContent)
-                            : displayContentOrDescription(widget.feedItemDescription),
-                    ),
+                child: RawScrollbar(
+                  thumbColor: Platform.isLinux
+                    ? Colors.transparent
+                    : Theme.of(context).colorScheme.tertiary.withAlpha(64),
+                  radius: const Radius.circular(8),
+                  thickness: 4,
+                  child: SingleChildScrollView(
+                    child: 
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 16, 24, 32),
+                        child: widget.feedItemDescription.isEmpty
+                          && widget.feedItemContent.isEmpty
+                          ? const Center(
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 16),
+                              child: Text('[No content available in rss feed]'),
+                            ),
+                          )
+                          : widget.feedItemContent != ''
+                              ? FeedItemTileContent(content: widget.feedItemContent)
+                              : FeedItemTileContent(content: widget.feedItemDescription),
+                      ),
+                  ),
                 ),
               )
             ),
