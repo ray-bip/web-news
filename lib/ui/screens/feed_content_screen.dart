@@ -104,6 +104,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         title: Text(widget.feedTitle),
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.home),
+        ),
       ) : null,
       body: Focus(
         onKeyEvent: (FocusNode node, KeyEvent event) {

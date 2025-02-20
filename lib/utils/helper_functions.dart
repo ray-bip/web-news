@@ -77,3 +77,7 @@ String? extractImageFromContent(String htmlContent) {
   
   return imgTag?.attributes['src'];
 }
+
+String htmlToPlainText(String htmlContent) {
+  return htmlContent.replaceAll(RegExp(r'<[^>]+>'), '');
+}

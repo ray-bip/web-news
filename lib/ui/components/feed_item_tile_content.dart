@@ -16,6 +16,7 @@ class FeedItemTileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String contentToDisplay = content;
+    print(contentToDisplay);
     
     // remove "<br><br>" from start of contentOrDescription
     if (contentToDisplay.startsWith('<br><br>')) {
@@ -29,7 +30,7 @@ class FeedItemTileContent extends StatelessWidget {
 
     return InkWell(
       onLongPress: () {
-        Clipboard.setData(ClipboardData(text: contentToDisplay));
+        Clipboard.setData(ClipboardData(text: htmlToPlainText(contentToDisplay)));
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Text copied!')),
         );
@@ -41,37 +42,84 @@ class FeedItemTileContent extends StatelessWidget {
       child: HtmlWidget(
         contentToDisplay,
         customStylesBuilder: (element) {
-          if (element.localName == 'a') {
-            return {
-              'color': colorToCss(Theme.of(context).colorScheme.onSurface.withAlpha(192)),
-              'text-decoration': 'underline',
-              'text-decoration-color': 
-                colorToCss(Theme.of(context).colorScheme.onSurface.withAlpha(192)),
-            };
-          } else if (element.localName == 'h2') {
+          if (element.localName == 'h2') {
             return {
               'color': colorToCss(Theme.of(context).colorScheme.onSurface.withAlpha(192)),
               'font-size': Platform.isLinux ? '20px' : '18px',
               'margin-top': '32px',
             };
-          }
-          else if (element.localName == 'img') {
-            return {
-              'display': 'block',
-              'margin-bottom': '24px',
-              'margin-top': '24px',
-              'max-width': '${MediaQuery.of(context).size.width - 80}px',
-            };
-          }
-          else if (element.localName == 'p') {
+          } else if (element.localName == 'p') {
             return {
               'color': colorToCss(Theme.of(context).colorScheme.onSurface.withAlpha(192)),
               'font-size': Platform.isLinux ? '18px' : '16px',
               'line-height':  Platform.isLinux ? '180%' : '160%',
             };
           }
-          return {};
+          return {
+            'color': colorToCss(Theme.of(context).colorScheme.onSurface.withAlpha(192)),
+            'font-size': Platform.isLinux ? '18px' : '16px',
+            'line-height':  Platform.isLinux ? '180%' : '160%',
+          };
         },
+        customWidgetBuilder: (element) {
+          if (element.localName == 'img') {
+            String imageUrl = element.attributes['src'].toString();
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 24),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width - 80
+                ),
+                child: GestureDetector(
+                  onLongPress: () {
+                    Clipboard.setData(ClipboardData(text: imageUrl));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Image URL copied!')),
+                    );
+                  },
+                  child: Image.network(
+                    imageUrl,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Container(
+                          color: Theme.of(context).colorScheme.surface.withAlpha(128),
+                          child: Center(
+                            child: Text(
+                              'image loading...',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        color: Theme.of(context).colorScheme.surface.withAlpha(128),
+                        child: Center(
+                          child: Text(
+                            'image not available',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface.withAlpha(128),
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            );
+          }
+          return null;
+        }
       ),
     );
   }

@@ -51,7 +51,7 @@ class WindowTopBar extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         icon: Icon(
-                          Icons.arrow_back, size: 24,
+                          Icons.home, size: 24,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         hoverColor:

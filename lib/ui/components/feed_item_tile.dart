@@ -141,8 +141,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
-                    ? MediaQuery.of(context).size.height - 320
-                    : MediaQuery.of(context).size.height - 344,
+                    ? MediaQuery.of(context).size.height - 264
+                    : MediaQuery.of(context).size.height - 328,
                 ),
                 child: RawScrollbar(
                   thumbColor: Platform.isLinux
@@ -163,8 +163,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
                             ),
                           )
                           : widget.feedItemContent != ''
-                              ? FeedItemTileContent(content: widget.feedItemContent)
-                              : FeedItemTileContent(content: widget.feedItemDescription),
+                            ? FeedItemTileContent(content: widget.feedItemContent)
+                            : FeedItemTileContent(content: widget.feedItemDescription),
                       ),
                   ),
                 ),
