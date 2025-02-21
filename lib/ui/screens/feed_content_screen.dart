@@ -88,7 +88,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     _isFetching = false;
   }
 
-
   @override
   void initState() {
     // fetch new feed items when scrolling down
@@ -113,6 +112,18 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     super.dispose();
   }
 
+  KeyEventResult _onKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent is KeyDownEvent) {
+      final logicalKey = keyEvent.logicalKey;
+      getFeedItems();
+      if (logicalKey == LogicalKeyboardKey.f5) {
+        
+        return KeyEventResult.handled;
+      }
+    }
+    return KeyEventResult.ignored;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -128,21 +139,11 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
               icon: const Icon(Icons.home),
             ),
           ) : null,
-          body: Focus(
-            onKeyEvent: (FocusNode node, KeyEvent event) {
-              if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
-                event.logicalKey == LogicalKeyboardKey.tab) {
-                Navigator.pop(context);
-                return KeyEventResult.handled;
-              }
-              if (event.logicalKey == LogicalKeyboardKey.f5) {
-                getFeedItems();
-                return KeyEventResult.handled;
-              }
-              return KeyEventResult.ignored;
-            },
-            child: RefreshIndicator(
-              onRefresh: getFeedItems,
+          body: RefreshIndicator(
+            onRefresh: getFeedItems,
+            child: KeyboardListener(
+              focusNode: FocusNode()..requestFocus(),
+              onKeyEvent: _onKeyEvent,
               child: Container(
                 decoration: Platform.isLinux ? BoxDecoration(
                   border: Border.all(
@@ -170,47 +171,37 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                               color: Theme.of(context).colorScheme.primaryContainer,
                             ),
                           )
-                          : GestureDetector(
-                            onHorizontalDragEnd: (details) {
-                              const double swipeThreshold = 640;
-
-                              if (details.primaryVelocity != null 
-                                && details.primaryVelocity! > swipeThreshold) {
-                                Navigator.pop(context);
-                              }
-                            },
-                            child: Stack(
-                              children: [
-                                ListView.separated(
-                                  physics: Platform.isLinux
-                                    ? context.watch<GlobalStateProvider>().isScrollingAllowed
-                                        ? null
-                                        : const NeverScrollableScrollPhysics()
-                                    : null,
-                                  controller: _scrollController,
-                                  separatorBuilder: (BuildContext context, int index) {
-                                    return const SizedBox(height: 8);
-                                  },
-                                  itemCount: feedItems.length + (_isLoading ? 1 : 0),
-                                  itemBuilder: (context, index) {
-                                    if (index == feedItems.length) {
-                                      return Center(
-                                          child: CircularProgressIndicator(
-                                        color: Theme.of(context).colorScheme.primaryContainer,
-                                      ));
-                                    }
-                                    
-                                    return FeedItem(
-                                      item: feedItems[index],
-                                      index: index,
-                                      feedType: feedType,
-                                      feedContentElement: widget.feedContentElement,
-                                      onVerticalDragUpdate: _onVerticalDragUpdate,
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                          : Stack(
+                            children: [
+                              ListView.separated(
+                                physics: Platform.isLinux
+                                  ? context.watch<GlobalStateProvider>().isScrollingAllowed
+                                      ? null
+                                      : const NeverScrollableScrollPhysics()
+                                  : null,
+                                controller: _scrollController,
+                                separatorBuilder: (BuildContext context, int index) {
+                                  return const SizedBox(height: 8);
+                                },
+                                itemCount: feedItems.length + (_isLoading ? 1 : 0),
+                                itemBuilder: (context, index) {
+                                  if (index == feedItems.length) {
+                                    return Center(
+                                        child: CircularProgressIndicator(
+                                      color: Theme.of(context).colorScheme.primaryContainer,
+                                    ));
+                                  }
+                                  
+                                  return FeedItem(
+                                    item: feedItems[index],
+                                    index: index,
+                                    feedType: feedType,
+                                    feedContentElement: widget.feedContentElement,
+                                    onVerticalDragUpdate: _onVerticalDragUpdate,
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
                       ),

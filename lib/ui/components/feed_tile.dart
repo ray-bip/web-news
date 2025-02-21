@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:web_news/ui/components/feed_tile_leading.dart';
 import 'package:web_news/ui/screens/pageview_screen.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
@@ -26,7 +25,7 @@ class FeedTile extends StatefulWidget {
 class _FeedTileState extends State<FeedTile> {
   bool _tileIsActive = false;
   late GoRouter router;
-
+  
   @override
   void initState() {
     super.initState();
@@ -56,17 +55,6 @@ class _FeedTileState extends State<FeedTile> {
         _tileIsActive = true;
       });
       
-      // context.goNamed(
-      //   FeedContentScreen.routeName,
-      //   pathParameters: {
-      //     'feedUrl': Uri.encodeComponent(widget.feedUrl),
-      //   },
-      //   extra: {
-      //     'feedTitle': widget.feedTitle,
-      //     'feedContentElement': widget.feedContentElement,
-      //   },
-      // );
-
       context.goNamed(
         PageViewScreen.routeName,
         pathParameters: {
@@ -111,24 +99,16 @@ class _FeedTileState extends State<FeedTile> {
           hoverColor: isDarkMode(context)
             ? Colors.white.withAlpha(64)
             : Colors.black.withAlpha(16),
-          leading: Platform.isLinux
-          ? IconButton(
-            onPressed: () {
-              openBrowser(widget.feedUrl);
-            },
-            icon: Icon(
-              Icons.rss_feed,
-              color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
-            ),
-          )
-          : Icon(
-            Icons.rss_feed,
-            color: Theme.of(context).colorScheme.onPrimaryContainer.withAlpha(128),
+          leading: FeedTileLeading(
+            feedUrl: widget.feedUrl,
           ),
-          title: Text(
-            widget.feedTitle,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
+          title: Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              widget.feedTitle,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
           trailing: Icon(

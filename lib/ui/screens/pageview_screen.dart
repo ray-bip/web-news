@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_news/data/feed.dart';
-import 'package:web_news/ui/screens/feed_content_screen_alt.dart';
+import 'package:web_news/ui/screens/feed_content_screen.dart';
 
 class PageViewScreen extends StatefulWidget {
   static const String routeName = 'pageview';
@@ -82,7 +82,7 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
           itemBuilder: (context, index) {
             final loopedIndex = index % feeds.length;
             final feed = feeds[loopedIndex];
-            return FeedContentScreenAlt(
+            return FeedContentScreen(
               feedTitle: feed.title,
               feedUrl: feed.url,
               feedContentElement: feed.contentElement,

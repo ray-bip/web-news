@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final List<Feed> feeds = Feed.feeds;
-    
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
