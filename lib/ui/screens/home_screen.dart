@@ -22,12 +22,12 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.surface,
         leading: IconButton(
           icon: Icon(
-            Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+            context.read<ThemeProvider>().themeMode == ThemeMode.dark
               ? Icons.light_mode
               : Icons.dark_mode,
           ),
           onPressed: () {
-            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            context.read<ThemeProvider>().toggleTheme();
           },
         ),
         title: const Text(appName),

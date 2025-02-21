@@ -76,12 +76,12 @@ class WindowTopBar extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: Icon(
-                          Provider.of<ThemeProvider>(context).themeMode == ThemeMode.dark
+                          context.read<ThemeProvider>().themeMode == ThemeMode.dark
                             ? Icons.light_mode
                             : Icons.dark_mode,
                         ),
                         onPressed: () {
-                          Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                          context.read<ThemeProvider>().toggleTheme();
                         },
                       ),
                       IconButton(

@@ -16,7 +16,6 @@ class FeedItemTileContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String contentToDisplay = content;
-    print(contentToDisplay);
     
     // remove "<br><br>" from start of contentOrDescription
     if (contentToDisplay.startsWith('<br><br>')) {

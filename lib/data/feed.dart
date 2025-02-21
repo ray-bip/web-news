@@ -179,6 +179,11 @@ class Feed {
       contentElement: 'description'
     ),
     Feed(
+      title: 'Linux Mint',
+      url: 'https://blog.linuxmint.com/?feed=rss2',
+      contentElement: 'description'
+    ),
+    Feed(
       title: 'De Speld',
       url: 'https://speld.nl/feed',
       contentElement: 'content'

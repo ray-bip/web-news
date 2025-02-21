@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:screen_retriever/screen_retriever.dart';
+import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/providers/theme_provider.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
 import 'package:web_news/ui/screens/home_screen.dart';
@@ -58,8 +59,11 @@ void main() {
     initializeApplication();
   } else {
     runApp(
-      ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
+          ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ],
         child: TheApp(),
       ),
     );

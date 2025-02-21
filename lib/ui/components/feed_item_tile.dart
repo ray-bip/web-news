@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/ui/components/feed_item_tile_content.dart';
 import 'package:web_news/ui/components/feed_item_tile_leading.dart';
 import 'package:web_news/ui/components/feed_item_tile_subtitle.dart';
@@ -84,7 +86,10 @@ class _FeedItemTileState extends State<FeedItemTile> {
               borderRadius: BorderRadius.circular(2),
             ),
             child: ListTile(
-              onTap: toggleContentOrDescription,
+              onTap: () {
+                toggleContentOrDescription();
+                context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+              },
               onLongPress: () {
                 Clipboard.setData(ClipboardData(text: widget.feedItemTitle));
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -141,7 +146,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
-                    ? MediaQuery.of(context).size.height - 264
+                    ? MediaQuery.of(context).size.height - 280
                     : MediaQuery.of(context).size.height - 328,
                 ),
                 child: RawScrollbar(
