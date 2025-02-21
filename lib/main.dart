@@ -116,14 +116,17 @@ class TheApp extends StatelessWidget {
         routes: [
           GoRoute(
             name: FeedContentScreen.routeName,
-            path: 'feed_content/:feedTitle/:feedUrl/:feedContentElement',
+            path: 'feed_content/:feedUrl',
             pageBuilder: (context, state) {
+              final feedUrl = Uri.decodeComponent(state.pathParameters['feedUrl']!);
+              final extra = state.extra as Map<String, dynamic>?;
+
               return CustomTransitionPage(
                 key: state.pageKey,
                 child: FeedContentScreen(
-                  feedTitle: state.pathParameters['feedTitle']!,
-                  feedUrl: state.pathParameters['feedUrl']!,
-                  feedContentElement: state.pathParameters['feedContentElement']!,
+                  feedTitle: extra?['feedTitle'],
+                  feedUrl: feedUrl,
+                  feedContentElement: extra?['feedContentElement'],
                 ),
                 transitionsBuilder: (context, animation, secondaryAnimation, child) {
                   const begin = Offset(1.0, 0.0);

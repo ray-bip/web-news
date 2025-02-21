@@ -14,17 +14,15 @@ void openBrowser(String url) async {
 
 String sanitizeDirtyString(String dirtyString) {
   return HtmlUnescape().convert(dirtyString
+    // remove some general stuff
     .replaceAll('{__cdata:', '')
     .replaceAll('}', '')
     .replaceAll('\\t', '')
-    // remove "\\n"
     .replaceAll('\\\\n', '')
-    // remove complete hyperlinks
-    // as a test, we're keeping them for now, so the line below is commented out
-    // .replaceAll(RegExp(r'<a href="(.*?)">(.*?)<\/a>'), '')
-    // remove images
-    // as a test, we're keeping them for now, so the line below is commented out
-    // .replaceAll(RegExp(r'<img[^>]*>'), '')
+    // remove banners (assuming they're anchor tags with images inside)
+    .replaceAll(RegExp(r'<a[^>]*>.*<img[^>]*>.*</a>'), '')
+    // remove "blijf lezen" hyperlinks
+    .replaceAll(RegExp(r'<a[^>]*>.*Blijf lezen.*</a>'), '')
     // remove forms
     .replaceAll(RegExp(r'<form\b[^>]*>.*?</form>', dotAll: true, caseSensitive: false), '')
     // remove inputs
@@ -33,26 +31,6 @@ String sanitizeDirtyString(String dirtyString) {
     .replaceAll(RegExp(r'\[.*?\].*'), '...')
     // replace <!-- and everything that follows with ...
     .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
-    
-    // disable filters below, as we are now properly decoding the http response
-    // test this for a while, and remove commented out code below if no longer needed
-    // replace dumb, hideous single and double quotes
-    // .replaceAll('‘', '\'')
-    // .replaceAll('’', '\'')
-    // .replaceAll('â', '\'')
-    // .replaceAll('â', '\'')
-    // .replaceAll('â', '\'')
-    // .replaceAll('â', '\'')
-    // .replaceAll('â', '"')
-    // the empty space below contains a character, believe it or not
-    // (and it works, so don't touch it!)
-    // .replaceAll(',â', '"')
-    // replace some other weird characters with whatever is appropriate
-    // .replaceAll('â', ' ')
-    // .replaceAll('â¢', '&bull;')
-    // replace a collection of common phrases
-
-    
     .replaceAll('Het bericht  verscheen eerst op .', '')
     .trim()
   );

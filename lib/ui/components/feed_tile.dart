@@ -50,15 +50,21 @@ class _FeedTileState extends State<FeedTile> {
   @override
   Widget build(BuildContext context) {
     void goToFeedContentScreen() {
+      print('was: $_tileIsActive');
+
       setState(() {
         _tileIsActive = true;
       });
 
+      print('is: $_tileIsActive');
+
       context.goNamed(
         FeedContentScreen.routeName,
         pathParameters: {
+          'feedUrl': Uri.encodeComponent(widget.feedUrl),
+        },
+        extra: {
           'feedTitle': widget.feedTitle,
-          'feedUrl': widget.feedUrl,
           'feedContentElement': widget.feedContentElement,
         },
       );
