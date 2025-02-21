@@ -8,6 +8,7 @@ class FeedItem extends StatelessWidget {
   final int index;
   final String feedType;
   final String feedContentElement;
+  final GestureDragUpdateCallback? onVerticalDragUpdate;
 
   const FeedItem({
     super.key,
@@ -15,6 +16,7 @@ class FeedItem extends StatelessWidget {
     required this.index,
     required this.feedType,
     required this.feedContentElement,
+    required this.onVerticalDragUpdate,
   });
 
   @override
@@ -129,6 +131,7 @@ class FeedItem extends StatelessWidget {
         feedItemDescription: feedItemDescription,
         feedItemContent: feedItemContent,
         feedItemLink: feedItemLink,
+        onVerticalDragUpdate: onVerticalDragUpdate,
       ),
     );
   }

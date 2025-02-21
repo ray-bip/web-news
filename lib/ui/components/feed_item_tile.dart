@@ -16,6 +16,7 @@ class FeedItemTile extends StatefulWidget {
   final String feedItemDescription;
   final String feedItemContent;
   final String feedItemLink;
+  final GestureDragUpdateCallback? onVerticalDragUpdate;
 
   const FeedItemTile({
     super.key,
@@ -25,6 +26,7 @@ class FeedItemTile extends StatefulWidget {
     required this.feedItemDescription,
     required this.feedItemContent,
     required this.feedItemLink,
+    required this.onVerticalDragUpdate,
   });
 
   @override
@@ -85,48 +87,51 @@ class _FeedItemTileState extends State<FeedItemTile> {
               ),
               borderRadius: BorderRadius.circular(2),
             ),
-            child: ListTile(
-              onTap: () {
-                toggleContentOrDescription();
-                context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
-              },
-              onLongPress: () {
-                Clipboard.setData(ClipboardData(text: widget.feedItemTitle));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Title copied!')),
-                );
-              },
-              hoverColor: _tileIsActive
-                ? Colors.transparent
-                : isDarkMode(context)
-                  ? Colors.black
-                  : Colors.black.withAlpha(16),
-              splashColor: isDarkMode(context)
-                ? Colors.black.withAlpha(96)
-                : Colors.black.withAlpha(8),
-              isThreeLine: true,
-              contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-              leading: FeedItemTileLeading(
-                feedItemImage: widget.feedItemImage
-              ),
-              title: Padding(
-                padding: Platform.isLinux
-                  ? const EdgeInsets.fromLTRB(8, 2, 8, 0) : const EdgeInsets.only(top: 2),
-                child: Text(
-                  widget.feedItemTitle,
-                  style: TextStyle(
-                    fontSize: Platform.isLinux ? 18 : 16,
-                    color: isDarkMode(context)
-                      ? Theme.of(context).colorScheme.onSurface.withAlpha(216)
-                      : Theme.of(context).colorScheme.onSurface,
+            child: GestureDetector(
+              onVerticalDragUpdate: widget.onVerticalDragUpdate,
+              child: ListTile(
+                onTap: () {
+                  toggleContentOrDescription();
+                  context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+                },
+                onLongPress: () {
+                  Clipboard.setData(ClipboardData(text: widget.feedItemTitle));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Title copied!')),
+                  );
+                },
+                hoverColor: _tileIsActive
+                  ? Colors.transparent
+                  : isDarkMode(context)
+                    ? Colors.black
+                    : Colors.black.withAlpha(16),
+                splashColor: isDarkMode(context)
+                  ? Colors.black.withAlpha(96)
+                  : Colors.black.withAlpha(8),
+                isThreeLine: true,
+                contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                leading: FeedItemTileLeading(
+                  feedItemImage: widget.feedItemImage
+                ),
+                title: Padding(
+                  padding: Platform.isLinux
+                    ? const EdgeInsets.fromLTRB(8, 2, 8, 0) : const EdgeInsets.only(top: 2),
+                  child: Text(
+                    widget.feedItemTitle,
+                    style: TextStyle(
+                      fontSize: Platform.isLinux ? 18 : 16,
+                      color: isDarkMode(context)
+                        ? Theme.of(context).colorScheme.onSurface.withAlpha(216)
+                        : Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ),
-              ),
-              titleAlignment: ListTileTitleAlignment.titleHeight,
-              subtitle: FeedItemTileSubtitle(
-                feedItemDate: widget.feedItemDate,
-                feedItemLink: widget.feedItemLink,
-                tileIsActive: _tileIsActive,
+                titleAlignment: ListTileTitleAlignment.titleHeight,
+                subtitle: FeedItemTileSubtitle(
+                  feedItemDate: widget.feedItemDate,
+                  feedItemLink: widget.feedItemLink,
+                  tileIsActive: _tileIsActive,
+                ),
               ),
             ),
           ),

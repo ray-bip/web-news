@@ -205,6 +205,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                       index: index,
                                       feedType: feedType,
                                       feedContentElement: widget.feedContentElement,
+                                      onVerticalDragUpdate: _onVerticalDragUpdate,
                                     );
                                   },
                                 ),
