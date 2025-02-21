@@ -209,31 +209,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                                     );
                                   },
                                 ),
-                                if (Platform.isLinux)
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: GestureDetector(
-                                    onVerticalDragUpdate: _onVerticalDragUpdate,
-                                    child: Container(
-                                      margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                      height: MediaQuery.of(context).size.height - 96,
-                                      width: 32,
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: GestureDetector(
-                                    onVerticalDragUpdate: _onVerticalDragUpdate,
-                                    child: Container(
-                                      margin: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                      height: MediaQuery.of(context).size.height - 96,
-                                      width: 32,
-                                      color: Colors.transparent,
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),

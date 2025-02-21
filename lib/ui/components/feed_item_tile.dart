@@ -36,6 +36,8 @@ class FeedItemTile extends StatefulWidget {
 class _FeedItemTileState extends State<FeedItemTile> {
   bool _showContentOrDescription = false;
   bool _tileIsActive = false;
+  final GlobalKey listTileKey = GlobalKey();
+  double? listTileHeight;
 
   bool isImage(String imageLocation) {
     return imageLocation.toLowerCase().contains('.gif') ||
@@ -55,6 +57,14 @@ class _FeedItemTileState extends State<FeedItemTile> {
   
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final renderBox = listTileKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox != null) {
+      setState(() {
+        listTileHeight = renderBox.size.height;
+      });
+    }
+  });
     return Material(
       child: Column(
         children: [
@@ -90,6 +100,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
             child: GestureDetector(
               onVerticalDragUpdate: widget.onVerticalDragUpdate,
               child: ListTile(
+                key: listTileKey,
                 onTap: () {
                   toggleContentOrDescription();
                   context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
@@ -151,8 +162,8 @@ class _FeedItemTileState extends State<FeedItemTile> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
-                    ? MediaQuery.of(context).size.height - 280
-                    : MediaQuery.of(context).size.height - 328,
+                    ? MediaQuery.of(context).size.height - listTileHeight! - 152
+                    : MediaQuery.of(context).size.height - listTileHeight! - 176,
                 ),
                 child: RawScrollbar(
                   thumbColor: Platform.isLinux
@@ -212,7 +223,10 @@ class _FeedItemTileState extends State<FeedItemTile> {
                         ),
                         const SizedBox(width: 16),
                         IconButton(
-                          onPressed: toggleContentOrDescription,
+                          onPressed: () {
+                            toggleContentOrDescription();
+                            context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+                          },
                           icon: const Icon(Icons.arrow_circle_up, size: 32),
                         ),
                       ],
