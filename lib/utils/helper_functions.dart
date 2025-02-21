@@ -31,7 +31,9 @@ String sanitizeDirtyString(String dirtyString) {
     .replaceAll(RegExp(r'\[.*?\].*'), '...')
     // replace <!-- and everything that follows with ...
     .replaceAll(RegExp(r'<!--[\s\S]*$'), '...')
+    // replace some common phrases
     .replaceAll('Het bericht  verscheen eerst op .', '')
+    .replaceAll(RegExp(r'<p>The post.*GelreNieuws</a>\.</p>'), '')
     .trim()
   );
 }

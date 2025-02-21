@@ -2,19 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:web_news/ui/screens/feed_content_screen.dart';
+import 'package:web_news/ui/screens/pageview_screen.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
 class FeedTile extends StatefulWidget {
   final String feedTitle;
   final String feedUrl;
   final String feedContentElement;
+  final int feedIndex;
 
   const FeedTile({
     super.key,
     required this.feedTitle,
     required this.feedUrl,
     required this.feedContentElement,
+    required this.feedIndex,
   });
 
   @override
@@ -50,22 +52,25 @@ class _FeedTileState extends State<FeedTile> {
   @override
   Widget build(BuildContext context) {
     void goToFeedContentScreen() {
-      print('was: $_tileIsActive');
-
       setState(() {
         _tileIsActive = true;
       });
-
-      print('is: $_tileIsActive');
+      
+      // context.goNamed(
+      //   FeedContentScreen.routeName,
+      //   pathParameters: {
+      //     'feedUrl': Uri.encodeComponent(widget.feedUrl),
+      //   },
+      //   extra: {
+      //     'feedTitle': widget.feedTitle,
+      //     'feedContentElement': widget.feedContentElement,
+      //   },
+      // );
 
       context.goNamed(
-        FeedContentScreen.routeName,
+        PageViewScreen.routeName,
         pathParameters: {
-          'feedUrl': Uri.encodeComponent(widget.feedUrl),
-        },
-        extra: {
-          'feedTitle': widget.feedTitle,
-          'feedContentElement': widget.feedContentElement,
+          'feedIndex': widget.feedIndex.toString(),
         },
       );
     }
