@@ -14,7 +14,6 @@ class GlobalStateProvider extends ChangeNotifier {
 
   void updateActiveTileIndex(int? newIndex) {
     _activeTileIndex = newIndex;
-    print('new index: $_activeTileIndex');
     notifyListeners();
   }
 }

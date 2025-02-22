@@ -98,21 +98,11 @@ class Feed {
       url: 'https://nl.motorsport.com/rss/f1/news/',
       contentElement: 'description'
     ),
-    // Feed(
-    //   title: 'Open AI',
-    //   url: 'https://openai.com/news/rss.xml',
-    // contentElement: 'description'
-    // ),
     Feed(
       title: 'MIT - AI',
       url: 'https://news.mit.edu/topic/mitartificial-intelligence2-rss.xml',
       contentElement: 'content'
     ),
-    // Feed(
-    //   title: 'Machine Learning Mastery',
-    //   url: 'https://machinelearningmastery.com/feed/',
-    // contentElement: 'description'
-    // ),
     Feed(
       title: 'Gizmodo',
       url: 'https://gizmodo.com/feed',
@@ -188,6 +178,19 @@ class Feed {
       url: 'https://speld.nl/feed',
       contentElement: 'content'
     ),
+
+
+    // TO BE FIXED
+    // Feed(
+    //   title: 'Open AI',
+    //   url: 'https://openai.com/news/rss.xml',
+    // contentElement: 'description'
+    // ),
+    // Feed(
+    //   title: 'Machine Learning Mastery',
+    //   url: 'https://machinelearningmastery.com/feed/',
+    // contentElement: 'description'
+    // ),
   ];
 }
 

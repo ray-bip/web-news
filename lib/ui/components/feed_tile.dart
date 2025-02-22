@@ -28,7 +28,6 @@ class _FeedTileState extends State<FeedTile> {
   @override
   Widget build(BuildContext context) {
     bool tileIsActive = false;
-    print(context.watch<GlobalStateProvider>().activeTileIndex);
     if (widget.feedIndex == context.watch<GlobalStateProvider>().activeTileIndex) {
       tileIsActive = true;
     }
