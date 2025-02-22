@@ -8,4 +8,13 @@ class GlobalStateProvider extends ChangeNotifier {
     _isScrollingAllowed = !_isScrollingAllowed;
     notifyListeners();
   }
+
+  int? _activeTileIndex;
+  int? get activeTileIndex => _activeTileIndex;
+
+  void updateActiveTileIndex(int? newIndex) {
+    _activeTileIndex = newIndex;
+    print('new index: $_activeTileIndex');
+    notifyListeners();
+  }
 }

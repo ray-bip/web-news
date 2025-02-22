@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/providers/theme_provider.dart';
 import 'package:web_news/utils/helper_functions.dart';
 
@@ -46,6 +47,7 @@ class WindowTopBar extends StatelessWidget {
                       const SizedBox(width: 16),
                       IconButton(
                         onPressed: () {
+                          context.read<GlobalStateProvider>().updateActiveTileIndex(null);
                           Navigator.pop(context);
                         },
                         icon: Icon(

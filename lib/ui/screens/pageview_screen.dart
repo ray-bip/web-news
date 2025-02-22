@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:web_news/data/feed.dart';
+import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
 import 'package:web_news/utils/window_top_bar.dart';
 
@@ -57,6 +59,7 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
       final logicalKey = keyEvent.logicalKey;
       
       if (logicalKey == LogicalKeyboardKey.escape) {
+        context.read<GlobalStateProvider>().updateActiveTileIndex(null);
         Navigator.pop(context);
         return KeyEventResult.handled;
       } else if (keyEvent.logicalKey == LogicalKeyboardKey.arrowLeft ||
@@ -86,7 +89,10 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
         title: Text(feeds[_currentPageIndex].title),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            context.read<GlobalStateProvider>().updateActiveTileIndex(null);
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.home),
         ),
       ) : null,
@@ -113,6 +119,11 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
                     ? const AlwaysScrollableScrollPhysics()
                     : null,
                   itemCount: infiniteLength,
+                  onPageChanged: (index) {
+                    final normalizedIndex = index % feeds.length;
+                    context.read<GlobalStateProvider>()
+                      .updateActiveTileIndex(normalizedIndex);
+                  },
                   itemBuilder: (context, index) {
                     final loopedIndex = index % feeds.length;
                     final feed = feeds[loopedIndex];

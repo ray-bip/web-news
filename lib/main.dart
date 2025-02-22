@@ -7,9 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:screen_retriever/screen_retriever.dart';
 import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/providers/theme_provider.dart';
-import 'package:web_news/ui/screens/feed_content_screen.dart';
-import 'package:web_news/ui/screens/pageview_screen.dart';
 import 'package:web_news/ui/screens/home_screen.dart';
+import 'package:web_news/ui/screens/pageview_screen.dart';
 import 'package:web_news/utils/constants.dart';
 
 void main() {
@@ -35,15 +34,18 @@ void main() {
 
       // calculate window position
       windowOffset = Offset(
-        // primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
-        // primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
-        5500, 200
+        primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
+        primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
+        // 5500, 200 // for testing
       );
 
       // run the app
       runApp(
-        ChangeNotifierProvider(
-          create: (context) => ThemeProvider(),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
+            ChangeNotifierProvider(create: (context) => ThemeProvider()),
+          ],
           child: TheApp(),
         ),
       );
@@ -116,36 +118,6 @@ class TheApp extends StatelessWidget {
         path: '/',
         builder: (context, state) => HomeScreen(),
         routes: [
-          GoRoute(
-            name: FeedContentScreen.routeName,
-            path: 'feed_content/:feedUrl',
-            pageBuilder: (context, state) {
-              final feedUrl = Uri.decodeComponent(state.pathParameters['feedUrl']!);
-              final extra = state.extra as Map<String, dynamic>?;
-
-              return CustomTransitionPage(
-                key: state.pageKey,
-                child: FeedContentScreen(
-                  feedTitle: extra?['feedTitle'],
-                  feedUrl: feedUrl,
-                  feedContentElement: extra?['feedContentElement'],
-                ),
-                transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                  const begin = Offset(1.0, 0.0);
-                  const end = Offset.zero;
-                  const curve = Curves.fastOutSlowIn;
-
-                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                  var offsetAnimation = animation.drive(tween);
-
-                  return SlideTransition(
-                    position: offsetAnimation,
-                    child: child,
-                  );
-                },
-              );
-            },
-          ),
           GoRoute(
             name: PageViewScreen.routeName,
             path: 'pageview/:feedIndex',

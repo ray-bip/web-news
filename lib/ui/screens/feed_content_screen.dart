@@ -117,7 +117,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
       final logicalKey = keyEvent.logicalKey;
       
       if (logicalKey == LogicalKeyboardKey.f5) {
-        // getFeedItems();
         _refreshIndicatorKey.currentState?.show();
         return KeyEventResult.handled;
       }
@@ -127,70 +126,65 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => GlobalStateProvider(),
-      builder: (context, child) {
-        return KeyboardListener(
-          focusNode: FocusNode()..requestFocus(),
-          onKeyEvent: _onKeyEvent,
-          child: RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: getFeedItems,
-            child: Column(
-              children: [
-                Expanded(
-                  child: Container(
-                    color: isDarkMode(context)
-                      ? Theme.of(context).colorScheme.surfaceContainer
-                      : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                      child: _isLoading
-                      ? Center(
-                        child: CircularProgressIndicator(
-                          color: Theme.of(context).colorScheme.primaryContainer,
-                        ),
-                      )
-                      : Stack(
-                        children: [
-                          ListView.separated(
-                            physics: Platform.isLinux
-                              ? context.watch<GlobalStateProvider>().isScrollingAllowed
-                                ? null
-                                : const NeverScrollableScrollPhysics()
-                              : null,
-                            controller: _scrollController,
-                            separatorBuilder: (BuildContext context, int index) {
-                              return const SizedBox(height: 8);
-                            },
-                            itemCount: feedItems.length + (_isLoading ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == feedItems.length) {
-                                return Center(
-                                    child: CircularProgressIndicator(
-                                  color: Theme.of(context).colorScheme.primaryContainer,
-                                ));
-                              }
-                              
-                              return FeedItem(
-                                item: feedItems[index],
-                                index: index,
-                                feedType: feedType,
-                                feedContentElement: widget.feedContentElement,
-                                onVerticalDragUpdate: _onVerticalDragUpdate,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+    return KeyboardListener(
+      focusNode: FocusNode()..requestFocus(),
+      onKeyEvent: _onKeyEvent,
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: getFeedItems,
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: isDarkMode(context)
+                  ? Theme.of(context).colorScheme.surfaceContainer
+                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                  child: _isLoading
+                  ? Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
+                  )
+                  : Stack(
+                    children: [
+                      ListView.separated(
+                        physics: Platform.isLinux
+                          ? context.watch<GlobalStateProvider>().isScrollingAllowed
+                            ? null
+                            : const NeverScrollableScrollPhysics()
+                          : null,
+                        controller: _scrollController,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 8);
+                        },
+                        itemCount: feedItems.length + (_isLoading ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index == feedItems.length) {
+                            return Center(
+                                child: CircularProgressIndicator(
+                              color: Theme.of(context).colorScheme.primaryContainer,
+                            ));
+                          }
+                          
+                          return FeedItem(
+                            item: feedItems[index],
+                            index: index,
+                            feedType: feedType,
+                            feedContentElement: widget.feedContentElement,
+                            onVerticalDragUpdate: _onVerticalDragUpdate,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        );
-      }
+          ],
+        ),
+      ),
     );
   }
 }
