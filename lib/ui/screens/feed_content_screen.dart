@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/ui/components/feed_item.dart';
 import 'package:web_news/utils/helper_functions.dart';
-import 'package:web_news/utils/window_top_bar.dart';
 import 'package:xml2json/xml2json.dart';
 
 class FeedContentScreen extends StatefulWidget {
@@ -34,6 +33,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   late Future<void> feedItemsFuture;
   final Xml2Json xml2json = Xml2Json();
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+    GlobalKey<RefreshIndicatorState>();
 
   // make listview draggable
   void _onVerticalDragUpdate(DragUpdateDetails details) {
@@ -50,7 +51,6 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
 
   Future<void> getFeedItems({int startIndex = 0, int batchSize = 10}) async {
     if (widget.feedUrl.isEmpty || _isFetching) return;
-    
     _isFetching = true;
 
     final url = Uri.parse(widget.feedUrl);
@@ -115,9 +115,10 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
   KeyEventResult _onKeyEvent(KeyEvent keyEvent) {
     if (keyEvent is KeyDownEvent) {
       final logicalKey = keyEvent.logicalKey;
-      getFeedItems();
+      
       if (logicalKey == LogicalKeyboardKey.f5) {
-        
+        // getFeedItems();
+        _refreshIndicatorKey.currentState?.show();
         return KeyEventResult.handled;
       }
     }
@@ -133,71 +134,59 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           focusNode: FocusNode()..requestFocus(),
           onKeyEvent: _onKeyEvent,
           child: RefreshIndicator(
+            key: _refreshIndicatorKey,
             onRefresh: getFeedItems,
-            child: Container(
-              decoration: Platform.isLinux ? BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.surfaceBright,
-                  width: 1.6,
-                ),
-              ) : null,
-              child: Column(
-                children: [
-                  if (Platform.isLinux) WindowTopBar(
-                    currentRoute: FeedContentScreen.routeName,
-                    windowTitle: widget.feedTitle,
-                    refreshPage: getFeedItems,
-                  ),
-                  Expanded(
-                    child: Container(
-                      color: isDarkMode(context)
-                        ? Theme.of(context).colorScheme.surfaceContainer
-                        : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                        child: _isLoading
-                        ? Center(
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).colorScheme.primaryContainer,
-                          ),
-                        )
-                        : Stack(
-                          children: [
-                            ListView.separated(
-                              physics: Platform.isLinux
-                                ? context.watch<GlobalStateProvider>().isScrollingAllowed
-                                  ? null
-                                  : const NeverScrollableScrollPhysics()
-                                : null,
-                              controller: _scrollController,
-                              separatorBuilder: (BuildContext context, int index) {
-                                return const SizedBox(height: 8);
-                              },
-                              itemCount: feedItems.length + (_isLoading ? 1 : 0),
-                              itemBuilder: (context, index) {
-                                if (index == feedItems.length) {
-                                  return Center(
-                                      child: CircularProgressIndicator(
-                                    color: Theme.of(context).colorScheme.primaryContainer,
-                                  ));
-                                }
-                                
-                                return FeedItem(
-                                  item: feedItems[index],
-                                  index: index,
-                                  feedType: feedType,
-                                  feedContentElement: widget.feedContentElement,
-                                  onVerticalDragUpdate: _onVerticalDragUpdate,
-                                );
-                              },
-                            ),
-                          ],
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    color: isDarkMode(context)
+                      ? Theme.of(context).colorScheme.surfaceContainer
+                      : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                      child: _isLoading
+                      ? Center(
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).colorScheme.primaryContainer,
                         ),
+                      )
+                      : Stack(
+                        children: [
+                          ListView.separated(
+                            physics: Platform.isLinux
+                              ? context.watch<GlobalStateProvider>().isScrollingAllowed
+                                ? null
+                                : const NeverScrollableScrollPhysics()
+                              : null,
+                            controller: _scrollController,
+                            separatorBuilder: (BuildContext context, int index) {
+                              return const SizedBox(height: 8);
+                            },
+                            itemCount: feedItems.length + (_isLoading ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == feedItems.length) {
+                                return Center(
+                                    child: CircularProgressIndicator(
+                                  color: Theme.of(context).colorScheme.primaryContainer,
+                                ));
+                              }
+                              
+                              return FeedItem(
+                                item: feedItems[index],
+                                index: index,
+                                feedType: feedType,
+                                feedContentElement: widget.feedContentElement,
+                                onVerticalDragUpdate: _onVerticalDragUpdate,
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

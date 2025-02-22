@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web_news/data/feed.dart';
 import 'package:web_news/ui/screens/feed_content_screen.dart';
+import 'package:web_news/utils/window_top_bar.dart';
 
 class PageViewScreen extends StatefulWidget {
   static const String routeName = 'pageview';
@@ -92,21 +93,39 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
       body: KeyboardListener(
         focusNode: FocusNode()..requestFocus(),
         onKeyEvent: _onKeyEvent,
-        child: PageView.builder(
-          controller: _pageViewController,
-          physics: Platform.isLinux
-            ? const AlwaysScrollableScrollPhysics()
-            : null,
-          itemCount: infiniteLength,
-          itemBuilder: (context, index) {
-            final loopedIndex = index % feeds.length;
-            final feed = feeds[loopedIndex];
-            return FeedContentScreen(
-              feedTitle: feed.title,
-              feedUrl: feed.url,
-              feedContentElement: feed.contentElement,
-            );
-          },
+        child: Container(
+          decoration: Platform.isLinux ? BoxDecoration(
+            border: Border.all(
+              color: Theme.of(context).colorScheme.surfaceBright,
+              width: 1.6,
+            ),
+          ) : null,
+          child: Column(
+            children: [
+              if (Platform.isLinux) WindowTopBar(
+                currentRoute: FeedContentScreen.routeName,
+                windowTitle: feeds[_currentPageIndex].title,
+              ),
+              Expanded(
+                child: PageView.builder(
+                  controller: _pageViewController,
+                  physics: Platform.isLinux
+                    ? const AlwaysScrollableScrollPhysics()
+                    : null,
+                  itemCount: infiniteLength,
+                  itemBuilder: (context, index) {
+                    final loopedIndex = index % feeds.length;
+                    final feed = feeds[loopedIndex];
+                    return FeedContentScreen(
+                      feedTitle: feed.title,
+                      feedUrl: feed.url,
+                      feedContentElement: feed.contentElement,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

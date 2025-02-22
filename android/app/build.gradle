@@ -28,9 +28,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-        manifestPlaceholders = [
-            flutter_engine: "skia"
-        ] 
+        // manifestPlaceholders = [
+        //     flutter_engine: "skia"
+        // ]
     }
 
     buildTypes {

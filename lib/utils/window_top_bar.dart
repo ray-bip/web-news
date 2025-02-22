@@ -7,13 +7,11 @@ import 'package:web_news/utils/helper_functions.dart';
 class WindowTopBar extends StatelessWidget {
   final String currentRoute;
   final String windowTitle;
-  final VoidCallback? refreshPage;
   
   const WindowTopBar({
     super.key,
     required this.currentRoute,
     required this.windowTitle,
-    this.refreshPage,
   });
 
   @override
@@ -52,15 +50,6 @@ class WindowTopBar extends StatelessWidget {
                         },
                         icon: Icon(
                           Icons.home, size: 24,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        hoverColor:
-                          Theme.of(context).colorScheme.onSurface.withAlpha(32),
-                      ),
-                      IconButton(
-                        onPressed: refreshPage,
-                        icon: Icon(
-                          Icons.refresh, size: 24,
                           color: Theme.of(context).colorScheme.onSurface,
                         ),
                         hoverColor:
