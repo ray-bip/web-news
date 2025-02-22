@@ -129,85 +129,74 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     return ChangeNotifierProvider(
       create: (_) => GlobalStateProvider(),
       builder: (context, child) {
-        return Scaffold(
-          appBar: Platform.isAndroid ? AppBar(
-            backgroundColor: Theme.of(context).colorScheme.surface,
-            title: Text(widget.feedTitle),
-            centerTitle: true,
-            leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(Icons.home),
-            ),
-          ) : null,
-          body: RefreshIndicator(
-            onRefresh: getFeedItems,
-            child: KeyboardListener(
-              focusNode: FocusNode()..requestFocus(),
-              onKeyEvent: _onKeyEvent,
-              child: Container(
-                decoration: Platform.isLinux ? BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.surfaceBright,
-                    width: 1.6,
+        return RefreshIndicator(
+          onRefresh: getFeedItems,
+          child: KeyboardListener(
+            focusNode: FocusNode()..requestFocus(),
+            onKeyEvent: _onKeyEvent,
+            child: Container(
+              decoration: Platform.isLinux ? BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                  width: 1.6,
+                ),
+              ) : null,
+              child: Column(
+                children: [
+                  if (Platform.isLinux) WindowTopBar(
+                    currentRoute: FeedContentScreen.routeName,
+                    windowTitle: widget.feedTitle,
+                    refreshPage: getFeedItems,
                   ),
-                ) : null,
-                child: Column(
-                  children: [
-                    if (Platform.isLinux) WindowTopBar(
-                      currentRoute: FeedContentScreen.routeName,
-                      windowTitle: widget.feedTitle,
-                      refreshPage: getFeedItems,
-                    ),
-                    Expanded(
-                      child: Container(
-                        color: isDarkMode(context)
-                          ? Theme.of(context).colorScheme.surfaceContainer
-                          : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                          child: _isLoading
-                          ? Center(
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).colorScheme.primaryContainer,
-                            ),
-                          )
-                          : Stack(
-                            children: [
-                              ListView.separated(
-                                physics: Platform.isLinux
-                                  ? context.watch<GlobalStateProvider>().isScrollingAllowed
-                                      ? null
-                                      : const NeverScrollableScrollPhysics()
-                                  : null,
-                                controller: _scrollController,
-                                separatorBuilder: (BuildContext context, int index) {
-                                  return const SizedBox(height: 8);
-                                },
-                                itemCount: feedItems.length + (_isLoading ? 1 : 0),
-                                itemBuilder: (context, index) {
-                                  if (index == feedItems.length) {
-                                    return Center(
-                                        child: CircularProgressIndicator(
-                                      color: Theme.of(context).colorScheme.primaryContainer,
-                                    ));
-                                  }
-                                  
-                                  return FeedItem(
-                                    item: feedItems[index],
-                                    index: index,
-                                    feedType: feedType,
-                                    feedContentElement: widget.feedContentElement,
-                                    onVerticalDragUpdate: _onVerticalDragUpdate,
-                                  );
-                                },
-                              ),
-                            ],
+                  Expanded(
+                    child: Container(
+                      color: isDarkMode(context)
+                        ? Theme.of(context).colorScheme.surfaceContainer
+                        : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                        child: _isLoading
+                        ? Center(
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).colorScheme.primaryContainer,
                           ),
+                        )
+                        : Stack(
+                          children: [
+                            ListView.separated(
+                              physics: Platform.isLinux
+                                ? context.watch<GlobalStateProvider>().isScrollingAllowed
+                                    ? null
+                                    : const NeverScrollableScrollPhysics()
+                                : null,
+                              controller: _scrollController,
+                              separatorBuilder: (BuildContext context, int index) {
+                                return const SizedBox(height: 8);
+                              },
+                              itemCount: feedItems.length + (_isLoading ? 1 : 0),
+                              itemBuilder: (context, index) {
+                                if (index == feedItems.length) {
+                                  return Center(
+                                      child: CircularProgressIndicator(
+                                    color: Theme.of(context).colorScheme.primaryContainer,
+                                  ));
+                                }
+                                
+                                return FeedItem(
+                                  item: feedItems[index],
+                                  index: index,
+                                  feedType: feedType,
+                                  feedContentElement: widget.feedContentElement,
+                                  onVerticalDragUpdate: _onVerticalDragUpdate,
+                                );
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

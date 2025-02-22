@@ -38,7 +38,7 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
       
       if (channel['atom\$logo'] != null) {
         feedIcon = channel['atom\$logo']['\$t'];
-      } else if (channel['image']['url'] != null) {
+      } else if (channel['image'] != null && channel['image']['url'] != null) {
         feedIcon = channel['image']['url']['\$t'];
       }
     }
@@ -57,9 +57,11 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
 
   @override
   Widget build(BuildContext context) {
+    final double imageSize = 32;
+    
     Widget fallbackIcon = SizedBox(
-      height: 32,
-      width: 32,
+      height: imageSize,
+      width: imageSize,
       child: Center(
         child: SvgPicture.asset(
           'assets/images/rss.svg',
@@ -85,8 +87,8 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
           onTap: () => openBrowser(widget.feedUrl),
           child: SvgPicture.network(
             feedIconUrl,
-            width: 32,
-            height: 32,
+            width: imageSize,
+            height: imageSize,
             placeholderBuilder: (context) => fallbackIcon,
             errorBuilder: (context, error, stackTrace) {
               return fallbackIcon;
@@ -98,8 +100,8 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
           onTap: () => openBrowser(widget.feedUrl),
           child: Image.network(
               feedIconUrl,
-              width: 32,
-              height: 32,
+              width: imageSize,
+              height: imageSize,
               fit: BoxFit.cover,
               loadingBuilder: (context, child, loadingProgress) {
                 if (loadingProgress == null) {
@@ -120,8 +122,8 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
       } else if (feedIconUrl.endsWith('.svg')) {
         return SvgPicture.network(
           feedIconUrl,
-          width: 32,
-          height: 32,
+          width: imageSize,
+          height: imageSize,
           placeholderBuilder: (context) => fallbackIcon,
           errorBuilder: (context, error, stackTrace) {
             return fallbackIcon;
@@ -130,8 +132,8 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
       } else {
         return Image.network(
           feedIconUrl,
-          width: 32,
-          height: 32,
+          width: imageSize,
+          height: imageSize,
           fit: BoxFit.cover,
           loadingBuilder: (context, child, loadingProgress) {
             if (loadingProgress == null) {

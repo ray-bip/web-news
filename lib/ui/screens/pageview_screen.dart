@@ -21,7 +21,7 @@ class PageViewScreen extends StatefulWidget {
 class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStateMixin {
   late PageController _pageViewController;
   late FocusNode _focusNode;
-  late final int _currentPageIndex = int.parse(widget.feedIndex);
+  late int _currentPageIndex = int.parse(widget.feedIndex);
   final List<Feed> feeds = Feed.feeds;
   int get infiniteLength => feeds.length * 100;
 
@@ -31,6 +31,16 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
     _pageViewController = PageController(
       initialPage: _currentPageIndex + feeds.length * 50,
     );
+    
+    _pageViewController.addListener(() {
+      int newIndex = _pageViewController.page!.round() % feeds.length;
+      if (newIndex != _currentPageIndex) {
+        setState(() {
+          _currentPageIndex = newIndex;
+        });
+      }
+    });
+
     _focusNode = FocusNode();
   }
 
@@ -70,6 +80,15 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Platform.isAndroid ? AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Text(feeds[_currentPageIndex].title),
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.home),
+        ),
+      ) : null,
       body: KeyboardListener(
         focusNode: FocusNode()..requestFocus(),
         onKeyEvent: _onKeyEvent,
