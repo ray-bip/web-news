@@ -33,7 +33,7 @@ class FeedItemTileLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (feedItemImage.endsWith('.webm')){
-      // fix this later, return N/A for
+      // fix this later, return N/A for now
       return fallBackImage(context, 'image not available');
     } else {
       return ClipRRect(

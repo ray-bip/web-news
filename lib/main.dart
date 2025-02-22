@@ -35,8 +35,9 @@ void main() {
 
       // calculate window position
       windowOffset = Offset(
-        primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
-        primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
+        // primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
+        // primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
+        5500, 200
       );
 
       // run the app

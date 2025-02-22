@@ -129,11 +129,11 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
     return ChangeNotifierProvider(
       create: (_) => GlobalStateProvider(),
       builder: (context, child) {
-        return RefreshIndicator(
-          onRefresh: getFeedItems,
-          child: KeyboardListener(
-            focusNode: FocusNode()..requestFocus(),
-            onKeyEvent: _onKeyEvent,
+        return KeyboardListener(
+          focusNode: FocusNode()..requestFocus(),
+          onKeyEvent: _onKeyEvent,
+          child: RefreshIndicator(
+            onRefresh: getFeedItems,
             child: Container(
               decoration: Platform.isLinux ? BoxDecoration(
                 border: Border.all(
@@ -166,8 +166,8 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
                             ListView.separated(
                               physics: Platform.isLinux
                                 ? context.watch<GlobalStateProvider>().isScrollingAllowed
-                                    ? null
-                                    : const NeverScrollableScrollPhysics()
+                                  ? null
+                                  : const NeverScrollableScrollPhysics()
                                 : null,
                               controller: _scrollController,
                               separatorBuilder: (BuildContext context, int index) {

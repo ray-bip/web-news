@@ -98,7 +98,13 @@ class _FeedItemTileState extends State<FeedItemTile> {
               borderRadius: BorderRadius.circular(2),
             ),
             child: GestureDetector(
-              onVerticalDragUpdate: widget.onVerticalDragUpdate,
+              onVerticalDragUpdate: Platform.isLinux
+                ? (details) {
+                    if (widget.onVerticalDragUpdate != null) {
+                      widget.onVerticalDragUpdate!(details);
+                    }
+                  }
+                : null,
               child: ListTile(
                 key: listTileKey,
                 onTap: () {
