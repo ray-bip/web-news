@@ -123,6 +123,11 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
                     final normalizedIndex = index % feeds.length;
                     context.read<GlobalStateProvider>()
                       .updateActiveTileIndex(normalizedIndex);
+                    if (Platform.isLinux) {
+                      if (context.read<GlobalStateProvider>().isScrollingAllowed == false) {
+                        context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+                      }
+                    }
                   },
                   itemBuilder: (context, index) {
                     final loopedIndex = index % feeds.length;

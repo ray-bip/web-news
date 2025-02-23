@@ -48,6 +48,9 @@ class WindowTopBar extends StatelessWidget {
                       IconButton(
                         onPressed: () {
                           context.read<GlobalStateProvider>().updateActiveTileIndex(null);
+                          if (context.read<GlobalStateProvider>().isScrollingAllowed == false) {
+                            context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+                          }
                           Navigator.pop(context);
                         },
                         icon: Icon(

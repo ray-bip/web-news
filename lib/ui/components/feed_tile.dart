@@ -49,22 +49,13 @@ class _FeedTileState extends State<FeedTile> {
         curve: Curves.easeInOut,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: isDarkMode(context)
-              ? [
+            colors: [
                 tileIsActive
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
                   : Theme.of(context).colorScheme.primaryContainer.withAlpha(192),
                 tileIsActive
                   ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.primaryContainer,
-              ]
-              : [
-                tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(64),
-                tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(96),
               ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

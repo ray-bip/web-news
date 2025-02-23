@@ -5,7 +5,9 @@ class GlobalStateProvider extends ChangeNotifier {
   bool get isScrollingAllowed => _isScrollingAllowed;
 
   void toggleIsScrollingAllowed() {
+    print(_isScrollingAllowed);
     _isScrollingAllowed = !_isScrollingAllowed;
+    print(_isScrollingAllowed);
     notifyListeners();
   }
 

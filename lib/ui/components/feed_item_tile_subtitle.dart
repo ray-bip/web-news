@@ -30,12 +30,8 @@ class FeedItemTileSubtitle extends StatelessWidget {
               feedItemDate,
               softWrap: false,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: isDarkMode(context)
-                ? tileIsActive
+                color: tileIsActive
                   ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(128)
-                  : Theme.of(context).colorScheme.onSurface.withAlpha(192)
-                : tileIsActive
-                  ? Theme.of(context).colorScheme.onTertiaryContainer.withAlpha(192)
                   : Theme.of(context).colorScheme.onSurface.withAlpha(192),
                 fontSize: Platform.isLinux ? 12 : 11,
                 fontStyle: FontStyle.italic,

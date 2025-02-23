@@ -1,25 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_news/ui/theme/colors.dart';
 
 class ThemeProvider with ChangeNotifier {
+  late ThemeData _themeData;
   ThemeMode _themeMode = ThemeMode.dark;
+  late MaterialTheme _materialTheme;
 
-  ThemeMode get themeMode => _themeMode;
+  MaterialTheme get materialTheme => _materialTheme;
 
-  ThemeProvider() {
+  void setMaterialTheme(MaterialTheme materialTheme) {
+    _materialTheme = materialTheme;
+    _themeData = _themeMode == ThemeMode.light
+      ? _materialTheme.light()
+      : _materialTheme.dark();
+    notifyListeners();
+  }
+
+  ThemeProvider(this._materialTheme) {
     _loadTheme();
   }
 
+  ThemeMode get themeMode => _themeMode;
+  ThemeData get themeData => _themeData;
+
   void toggleTheme() async {
-    _themeMode = _themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+    if (_themeMode == ThemeMode.dark) {
+      _themeMode = ThemeMode.light;
+      _themeData = _materialTheme.light();
+    } else {
+      _themeMode = ThemeMode.dark;
+      _themeData = _materialTheme.dark();
+    }
+
     notifyListeners();
     _saveTheme();
   }
-  
+
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final isLight = prefs.getBool('isLightTheme') ?? false;
     _themeMode = isLight ? ThemeMode.light : ThemeMode.dark;
+    _themeData = _themeMode == ThemeMode.light ? _materialTheme.light() : _materialTheme.dark();
     notifyListeners();
   }
 

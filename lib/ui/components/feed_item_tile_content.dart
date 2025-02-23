@@ -17,12 +17,10 @@ class FeedItemTileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     String contentToDisplay = content;
     
-    // remove "<br><br>" from start of contentOrDescription
     if (contentToDisplay.startsWith('<br><br>')) {
       contentToDisplay = content.substring(8);
     }
 
-    // wrap the entire thing in <p></p> if that's not already the case, for consistent spacing
     if (!contentToDisplay.startsWith('<p>')) {
       contentToDisplay = '<p>$contentToDisplay</p>';
     }

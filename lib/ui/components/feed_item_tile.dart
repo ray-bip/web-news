@@ -75,23 +75,14 @@ class _FeedItemTileState extends State<FeedItemTile> {
             curve: Curves.easeInOut,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: isDarkMode(context)
-                  ? [
-                    _tileIsActive
-                      ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
-                      : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
-                    _tileIsActive
-                      ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                      : Theme.of(context).colorScheme.primaryContainer,
-                  ]
-                  : [
-                    _tileIsActive
-                      ? Theme.of(context).colorScheme.surfaceTint.withAlpha(80)
-                      : Theme.of(context).colorScheme.secondaryContainer.withAlpha(160),
-                    _tileIsActive
-                      ? Theme.of(context).colorScheme.surfaceTint.withAlpha(56)
-                      : Theme.of(context).colorScheme.secondaryContainer.withAlpha(128),
-                  ],
+                colors: [
+                  _tileIsActive
+                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(128)
+                    : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
+                  _tileIsActive
+                    ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                    : Theme.of(context).colorScheme.primaryContainer,
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
               ),
@@ -137,9 +128,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                     widget.feedItemTitle,
                     style: TextStyle(
                       fontSize: Platform.isLinux ? 18 : 16,
-                      color: isDarkMode(context)
-                        ? Theme.of(context).colorScheme.onSurface.withAlpha(216)
-                        : Theme.of(context).colorScheme.onSurface,
+                      color: Theme.of(context).colorScheme.onSurface.withAlpha(216),
                     ),
                   ),
                 ),
@@ -158,13 +147,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? const Duration(milliseconds: 0)
                 : const Duration(milliseconds: 1600),
               curve: Curves.easeInOut,
-              color: isDarkMode(context)
-                ? _tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(160)
-                : _tileIsActive
-                  ? Theme.of(context).colorScheme.surfaceTint.withAlpha(56)
-                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(144),
+              color: _tileIsActive
+                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(192)
+                : Theme.of(context).colorScheme.primaryContainer.withAlpha(160),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   maxHeight: Platform.isLinux
@@ -203,13 +188,9 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 ? const Duration(milliseconds: 0)
                 : const Duration(milliseconds: 1600),
               curve: Curves.easeInOut,
-              color: isDarkMode(context)
-                ? _tileIsActive
-                  ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
-                  : Theme.of(context).colorScheme.primaryContainer.withAlpha(128)
-                : _tileIsActive
-                  ? Theme.of(context).colorScheme.surfaceTint.withAlpha(80)
-                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(160),
+              color: _tileIsActive
+                ? Theme.of(context).colorScheme.tertiaryContainer.withAlpha(160)
+                : Theme.of(context).colorScheme.primaryContainer.withAlpha(128),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

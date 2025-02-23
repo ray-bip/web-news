@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:web_news/providers/global_state_provider.dart';
 import 'package:web_news/ui/components/feed_item.dart';
-import 'package:web_news/utils/helper_functions.dart';
 import 'package:xml2json/xml2json.dart';
 
 class FeedContentScreen extends StatefulWidget {
@@ -136,9 +135,7 @@ class _FeedContentScreenState extends State<FeedContentScreen> {
           children: [
             Expanded(
               child: Container(
-                color: isDarkMode(context)
-                  ? Theme.of(context).colorScheme.surfaceContainer
-                  : Theme.of(context).colorScheme.surfaceTint.withAlpha(40),
+                color: Theme.of(context).colorScheme.surfaceContainer,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
                   child: _isLoading
