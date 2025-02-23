@@ -102,7 +102,7 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
   void copyFeedUrl() {
     Clipboard.setData(ClipboardData(text: widget.feedUrl));
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Feed URL copied!')),
+      const SnackBar(content: Text('Feed URL copied')),
     );
   }
 

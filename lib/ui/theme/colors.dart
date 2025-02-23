@@ -11,7 +11,7 @@ class MaterialTheme {
       primary: Color(0xff006a60),
       surfaceTint: Color(0xff006a60),
       onPrimary: Color(0xffffffff),
-      primaryContainer: Color(0xff9ef2e4),
+      primaryContainer: Color.fromARGB(255, 192, 233, 226),
       onPrimaryContainer: Color(0xff005048),
       secondary: Color(0xff4a635f),
       onSecondary: Color(0xffffffff),
@@ -50,7 +50,7 @@ class MaterialTheme {
       surfaceBright: Color(0xfff4fbf8),
       surfaceContainerLowest: Color(0xffffffff),
       surfaceContainerLow: Color(0xffeff5f2),
-      surfaceContainer: Color(0xffe9efed),
+      surfaceContainer: Color.fromARGB(255, 229, 246, 243),
       surfaceContainerHigh: Color(0xffe3eae7),
       surfaceContainerHighest: Color(0xffdde4e1),
     );

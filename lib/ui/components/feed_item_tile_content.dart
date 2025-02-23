@@ -29,7 +29,7 @@ class FeedItemTileContent extends StatelessWidget {
       onLongPress: () {
         Clipboard.setData(ClipboardData(text: htmlToPlainText(contentToDisplay)));
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Text copied!')),
+          const SnackBar(content: Text('Text copied')),
         );
       },
       focusColor: Colors.transparent,
@@ -71,7 +71,7 @@ class FeedItemTileContent extends StatelessWidget {
                   onLongPress: () {
                     Clipboard.setData(ClipboardData(text: imageUrl));
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Image URL copied!')),
+                      const SnackBar(content: Text('Image URL copied')),
                     );
                   },
                   child: Image.network(

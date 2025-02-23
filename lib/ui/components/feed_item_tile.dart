@@ -105,7 +105,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                 onLongPress: () {
                   Clipboard.setData(ClipboardData(text: widget.feedItemTitle));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Title copied!')),
+                    const SnackBar(content: Text('Title copied')),
                   );
                 },
                 hoverColor: _tileIsActive
@@ -115,7 +115,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                     : Colors.black.withAlpha(16),
                 splashColor: isDarkMode(context)
                   ? Colors.black.withAlpha(96)
-                  : Colors.black.withAlpha(8),
+                  : Colors.black.withAlpha(16),
                 isThreeLine: true,
                 contentPadding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
                 leading: FeedItemTileLeading(
@@ -203,7 +203,7 @@ class _FeedItemTileState extends State<FeedItemTile> {
                           onLongPress: () {
                             Clipboard.setData(ClipboardData(text: widget.feedItemLink));
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Link copied!')),
+                              const SnackBar(content: Text('Link copied')),
                             );
                           },
                           icon: const Icon(Icons.open_in_new, size: 32),

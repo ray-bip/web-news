@@ -72,7 +72,7 @@ class _FeedTileState extends State<FeedTile> {
           splashColor: Colors.transparent,
           hoverColor: isDarkMode(context)
             ? Colors.white.withAlpha(64)
-            : Colors.black.withAlpha(16),
+            : Colors.black.withAlpha(64),
           leading: FeedTileLeading(
             feedUrl: widget.feedUrl,
             feedIconFromUser: widget.feedIconFromUser,
