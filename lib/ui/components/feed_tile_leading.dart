@@ -83,14 +83,12 @@ class _FeedTileLeadingState extends State<FeedTileLeading> {
   void initState() {
     super.initState();
     getFeedIcon(widget.feedUrl).then((icon) {
-      print(icon);
       if (icon != '') {
         setState(() {
           feedIconUrl = icon;
         });
       } else {
         feedUrlToIconUrl(widget.feedUrl).then((icon) {
-          print(icon);
           setState(() {
             feedIconUrl = icon;
           });
