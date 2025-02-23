@@ -47,7 +47,6 @@ class WindowTopBar extends StatelessWidget {
                       const SizedBox(width: 16),
                       IconButton(
                         onPressed: () {
-                          context.read<GlobalStateProvider>().updateActiveTileIndex(null);
                           if (context.read<GlobalStateProvider>().isScrollingAllowed == false) {
                             context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
                           }

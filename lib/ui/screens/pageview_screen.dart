@@ -59,7 +59,6 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
       final logicalKey = keyEvent.logicalKey;
       
       if (logicalKey == LogicalKeyboardKey.escape) {
-        context.read<GlobalStateProvider>().updateActiveTileIndex(null);
         Navigator.pop(context);
         return KeyEventResult.handled;
       } else if (keyEvent.logicalKey == LogicalKeyboardKey.arrowLeft ||
@@ -93,10 +92,7 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
           title: Text(feeds[_currentPageIndex].title),
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {
-              context.read<GlobalStateProvider>().updateActiveTileIndex(null);
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.home),
           ),
         ) : null,
