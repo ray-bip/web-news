@@ -9,14 +9,6 @@ class Feed {
     required this.contentElement,
   });
 
-  // feeds Rianne:
-  // NOS binnenland + buitenland
-  // 112 Nederland
-  // GelreNieuws
-  // Omroep Gelderland
-  // BBC World + UN
-  // Scientias feeds
-
   static final List<Feed> feeds = [
     Feed(
       title: 'Nu.nl - Binnenland',
@@ -192,6 +184,76 @@ class Feed {
     // contentElement: 'description'
     // ),
   ];
+
+  // feeds Rianne
+  // static final List<Feed> feeds = [
+  //   Feed(
+  //     title: 'NOS - Binnenland',
+  //     url: 'https://feeds.nos.nl/nosnieuwsbinnenland',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'NOS - Buitenland',
+  //     url: 'https://feeds.nos.nl/nosnieuwsbuitenland',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: '112 Nederland',
+  //     url: 'https://112nederland.nl/feed/',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'GelreNieuws',
+  //     url: 'https://www.gelrenieuws.nl/rss',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Omroep Gelderland',
+  //     url: 'https://www.gld.nl/rss/index.xml',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'BBC - World',
+  //     url: 'https://feeds.bbci.co.uk/news/world/rss.xml',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'UN - Top Stories',
+  //     url: 'https://news.un.org/feed/subscribe/en/news/all/rss.xml',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Algemeen',
+  //     url: 'https://feeds.feedburner.com/scientias-wetenschap',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Geschiedenis',
+  //     url: 'https://scientias.nl/nieuws/geschiedenis/feed/',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Astronomie & Ruimtevaart',
+  //     url: 'https://scientias.nl/nieuws/astronomie-ruimtevaart/feed/',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Gezondheid',
+  //     url: 'https://scientias.nl/nieuws/gezondheid/feed/',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Natuur & Klimaat',
+  //     url: 'https://scientias.nl/nieuws/natuur-klimaat/feed/',
+  //     contentElement: 'description'
+  //   ),
+  //   Feed(
+  //     title: 'Scientias - Technologie',
+  //     url: 'https://scientias.nl/nieuws/green-tech/feed/',
+  //     contentElement: 'description'
+  //   ),
+  // ];
+
 }
 
 

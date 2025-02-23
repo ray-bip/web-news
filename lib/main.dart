@@ -15,78 +15,62 @@ import 'package:web_news/utils/constants.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   if (Platform.isLinux) {
-    // set window size to (0, 0) initially, to hide any flickering
-    appWindow.size = const Size(0, 0);
-
-    // initialize application
-    Display? primaryDisplay;
-    Offset? primaryDisplayPosition;
-    double primaryDisplayWidth;
-    double primaryDisplayHeight;
-    Offset windowOffset;
-    
-    void initializeApplication() async {
-      // get primary display details
-      primaryDisplay = await screenRetriever.getPrimaryDisplay();
-      primaryDisplayPosition = primaryDisplay?.visiblePosition;
-      primaryDisplayWidth = primaryDisplay!.size.width;
-      primaryDisplayHeight = primaryDisplay!.size.height;
-
-      // calculate window position
-      windowOffset = Offset(
-        // primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
-        // primaryDisplayPosition!.dy + ((primaryDisplayHeight - windowHeight) / 2)
-        5500, 200 // for testing
-      );
-
-      // run the app
-      runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
-            ChangeNotifierProvider(
-              create: (context) {
-                TextTheme textTheme = createTextTheme(context, 'Source Sans 3', 'Source Sans 3');
-                MaterialTheme materialTheme = MaterialTheme(textTheme);
-                ThemeProvider themeProvider = ThemeProvider(materialTheme);
-                return themeProvider;
-              },
-            ),
-          ],
-          child: TheApp(),
-        ),
-      );
-
-      // do window management
-      doWhenWindowReady(() {
-        const initialSize = Size(windowWidth, windowHeight);
-        appWindow.minSize = initialSize;
-        appWindow.position = windowOffset;
-        appWindow.size = initialSize;
-        appWindow.title = appName;
-        appWindow.show();
-      });
-    }
-    initializeApplication();
+    initializeLinuxApplication();
   } else {
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
-          ChangeNotifierProvider(
-            create: (context) {
-              TextTheme textTheme = createTextTheme(context, 'Source Sans 3', 'Source Sans 3');
-              MaterialTheme materialTheme = MaterialTheme(textTheme);
-              ThemeProvider themeProvider = ThemeProvider(materialTheme);
-              return themeProvider;
-            },
-          ),
-        ],
-        child: TheApp(),
-      ),
-    );
+    runRunApp();
+  }
+}
+
+void initializeLinuxApplication() async {
+  // Set initial window size to (0, 0) to avoid flickering
+  appWindow.size = const Size(0, 0);
+
+  // Get primary display details
+  Display? primaryDisplay = await screenRetriever.getPrimaryDisplay();
+  Offset? primaryDisplayPosition = primaryDisplay.visiblePosition;
+  double primaryDisplayWidth = primaryDisplay.size.width;
+  double primaryDisplayHeight = primaryDisplay.size.height;
+
+  // Calculate window position
+  Offset windowOffset = Offset(
+    // primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
+    // primaryDisplayPosition.dy + ((primaryDisplayHeight - windowHeight) / 2),
+    5500, 200 // for testing
+  );
+
+  // initialize the app
+  runRunApp(windowOffset);
+}
+
+void runRunApp([Offset? windowOffset]) {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GlobalStateProvider()),
+        ChangeNotifierProvider(
+          create: (context) {
+            TextTheme textTheme = createTextTheme(context, 'Source Sans 3', 'Source Sans 3');
+            MaterialTheme materialTheme = MaterialTheme(textTheme);
+            ThemeProvider themeProvider = ThemeProvider(materialTheme);
+            return themeProvider;
+          },
+        ),
+      ],
+      child: TheApp(),
+    ),
+  );
+
+  if (windowOffset != null) {
+    doWhenWindowReady(() {
+      const initialSize = Size(windowWidth, windowHeight);
+      appWindow.minSize = initialSize;
+      appWindow.position = windowOffset;
+      appWindow.size = initialSize;
+      appWindow.title = appName;
+      appWindow.show();
+    });
   }
 }
 
