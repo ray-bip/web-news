@@ -83,64 +83,69 @@ class _PageViewScreenState extends State<PageViewScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: Platform.isAndroid ? AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Text(feeds[_currentPageIndex].title),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            context.read<GlobalStateProvider>().updateActiveTileIndex(null);
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.home),
-        ),
-      ) : null,
-      body: KeyboardListener(
-        focusNode: FocusNode()..requestFocus(),
-        onKeyEvent: _onKeyEvent,
-        child: Container(
-          decoration: Platform.isLinux ? BoxDecoration(
-            border: Border.all(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              width: 1.6,
-            ),
-          ) : null,
-          child: Column(
-            children: [
-              if (Platform.isLinux) WindowTopBar(
-                currentRoute: FeedContentScreen.routeName,
-                windowTitle: feeds[_currentPageIndex].title,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) {
+        context.read<GlobalStateProvider>().updateActiveTileIndex(null);
+      },
+      child: Scaffold(
+        appBar: Platform.isAndroid ? AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          title: Text(feeds[_currentPageIndex].title),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              context.read<GlobalStateProvider>().updateActiveTileIndex(null);
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.home),
+          ),
+        ) : null,
+        body: KeyboardListener(
+          focusNode: FocusNode()..requestFocus(),
+          onKeyEvent: _onKeyEvent,
+          child: Container(
+            decoration: Platform.isLinux ? BoxDecoration(
+              border: Border.all(
+                color: Theme.of(context).colorScheme.surfaceBright,
+                width: 1.6,
               ),
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageViewController,
-                  physics: Platform.isLinux
-                    ? const AlwaysScrollableScrollPhysics()
-                    : null,
-                  itemCount: infiniteLength,
-                  onPageChanged: (index) {
-                    final normalizedIndex = index % feeds.length;
-                    context.read<GlobalStateProvider>()
-                      .updateActiveTileIndex(normalizedIndex);
-                    if (Platform.isLinux) {
-                      if (context.read<GlobalStateProvider>().isScrollingAllowed == false) {
-                        context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
-                      }
-                    }
-                  },
-                  itemBuilder: (context, index) {
-                    final loopedIndex = index % feeds.length;
-                    final feed = feeds[loopedIndex];
-                    return FeedContentScreen(
-                      feedTitle: feed.title,
-                      feedUrl: feed.url,
-                      feedContentElement: feed.contentElement,
-                    );
-                  },
+            ) : null,
+            child: Column(
+              children: [
+                if (Platform.isLinux) WindowTopBar(
+                  currentRoute: FeedContentScreen.routeName,
+                  windowTitle: feeds[_currentPageIndex].title,
                 ),
-              ),
-            ],
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageViewController,
+                    physics: Platform.isLinux
+                      ? const AlwaysScrollableScrollPhysics()
+                      : null,
+                    itemCount: infiniteLength,
+                    onPageChanged: (index) {
+                      final normalizedIndex = index % feeds.length;
+                      context.read<GlobalStateProvider>()
+                        .updateActiveTileIndex(normalizedIndex);
+                      if (Platform.isLinux) {
+                        if (context.read<GlobalStateProvider>().isScrollingAllowed == false) {
+                          context.read<GlobalStateProvider>().toggleIsScrollingAllowed();
+                        }
+                      }
+                    },
+                    itemBuilder: (context, index) {
+                      final loopedIndex = index % feeds.length;
+                      final feed = feeds[loopedIndex];
+                      return FeedContentScreen(
+                        feedTitle: feed.title,
+                        feedUrl: feed.url,
+                        feedContentElement: feed.contentElement,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
