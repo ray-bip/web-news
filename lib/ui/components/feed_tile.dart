@@ -9,6 +9,7 @@ import 'package:web_news/utils/helper_functions.dart';
 class FeedTile extends StatefulWidget {
   final String feedTitle;
   final String feedUrl;
+  final String? feedIconFromUser;
   final String feedContentElement;
   final int feedIndex;
 
@@ -16,6 +17,7 @@ class FeedTile extends StatefulWidget {
     super.key,
     required this.feedTitle,
     required this.feedUrl,
+    this.feedIconFromUser,
     required this.feedContentElement,
     required this.feedIndex,
   });
@@ -73,6 +75,7 @@ class _FeedTileState extends State<FeedTile> {
             : Colors.black.withAlpha(16),
           leading: FeedTileLeading(
             feedUrl: widget.feedUrl,
+            feedIconFromUser: widget.feedIconFromUser,
           ),
           title: Padding(
             padding: const EdgeInsets.only(left: 4),

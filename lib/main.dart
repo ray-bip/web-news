@@ -35,9 +35,9 @@ void initializeLinuxApplication() async {
 
   // Calculate window position
   Offset windowOffset = Offset(
-    // primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
-    // primaryDisplayPosition.dy + ((primaryDisplayHeight - windowHeight) / 2),
-    5500, 200 // for testing
+    primaryDisplayPosition!.dx + ((primaryDisplayWidth - windowWidth) / 2),
+    primaryDisplayPosition.dy + ((primaryDisplayHeight - windowHeight) / 2),
+    // 5500, 200 // for testing
   );
 
   // initialize the app

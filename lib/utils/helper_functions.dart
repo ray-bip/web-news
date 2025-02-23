@@ -61,3 +61,24 @@ String? extractImageFromContent(String htmlContent) {
 String htmlToPlainText(String htmlContent) {
   return htmlContent.replaceAll(RegExp(r'<[^>]+>'), '');
 }
+
+String feedSiteLinkToBaseDomain(String feedSiteLink) {
+  final regex = RegExp(r'^https?://([^/?#]+)');
+  final match = regex.firstMatch(feedSiteLink);
+  if (match != null) {
+    String domain = match.group(1)!;
+
+    Map<String, String> domainReplacements = {
+      '//news.': '//www.',
+    };
+
+    domainReplacements.forEach((key, value) {
+      if (domain.contains(key.replaceAll('//', ''))) {
+        domain = domain.replaceFirst(key.replaceAll('//', ''), value.replaceAll('//', ''));
+      }
+    });
+
+    return 'https://$domain';
+  }
+  return feedSiteLink;
+}
